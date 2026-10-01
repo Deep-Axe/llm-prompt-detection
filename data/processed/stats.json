@@ -1,0 +1,79 @@
+{
+  "seed": 4442,
+  "split": {
+    "train": 0.7,
+    "val": 0.15,
+    "test": 0.15
+  },
+  "holdout_rule": "DAN community_id % 3 == 0 and count >= 10",
+  "files": {
+    "jbb_harmful": {
+      "path": "data/raw/jbb_harmful.csv",
+      "sha256": "4a8ec6832056b631eb092dccc60d37a61c3d441268268888b3d006288afeffa1",
+      "bytes": 23116
+    },
+    "jbb_benign": {
+      "path": "data/raw/jbb_benign.csv",
+      "sha256": "3cda234d21a991fa309bbfea4b6d9dae31ccdf8e9d452424b6a983e4fdc33468",
+      "bytes": 20570
+    },
+    "dan": {
+      "path": "data/raw/jailbreak_prompts_2023_12_25.csv",
+      "sha256": "accf97463de96c33c48453dfee9600191ff6fd5a0c43f3f11d5ebf98d1a5de55",
+      "bytes": 3778717
+    },
+    "alpaca": {
+      "path": "data/raw/alpaca_data.json",
+      "sha256": "2eddafc6b977608d778aaab8dfc7e50e547b3af9826dfb9e909d9fc362e4a419",
+      "bytes": 22773992
+    }
+  },
+  "loaded": {
+    "jbb_harmful": 100,
+    "jbb_benign": 100,
+    "dan_flagged_jailbreak": 1405,
+    "alpaca_long_enough": 51939
+  },
+  "alpaca_after_filter": 51939,
+  "duplicates_removed": {
+    "jbb_harmful": 0,
+    "jbb_benign": 0,
+    "dan": 49,
+    "alpaca": 0,
+    "jbb_harmful_already_in_dan": 0
+  },
+  "alpaca_removed_as_harmful_or_hard_negative": {
+    "exact": 0,
+    "contained_goal": 0
+  },
+  "alpaca_sampled": 1260,
+  "heldout_families": [
+    "dan:111",
+    "dan:12",
+    "dan:123",
+    "dan:48",
+    "dan:9"
+  ],
+  "heldout_rows": 196,
+  "dan_without_community_id": 658,
+  "in_distribution": {
+    "test|0|alpaca": 189,
+    "test|1|dan": 174,
+    "test|1|jbb_harmful": 15,
+    "train|0|alpaca": 882,
+    "train|1|dan": 812,
+    "train|1|jbb_harmful": 70,
+    "val|0|alpaca": 189,
+    "val|1|dan": 174,
+    "val|1|jbb_harmful": 15
+  },
+  "heldout_by_family": {
+    "dan:111": 51,
+    "dan:12": 47,
+    "dan:123": 36,
+    "dan:48": 13,
+    "dan:9": 49
+  },
+  "hard_negatives": 100,
+  "corpus_rows": 2716
+}
