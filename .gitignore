@@ -1,5 +1,9 @@
 data/raw/
 data/processed/*.jsonl
+data/processed/large/
+kaggle/input/
+kaggle/output/
+kaggle/staging/
 data/.hf-cache/
 .venv/
 **/__pycache__/
