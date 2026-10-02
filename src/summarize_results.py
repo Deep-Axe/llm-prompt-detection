@@ -26,7 +26,7 @@ def main():
     if not all(h==hashes[0] for h in hashes): raise ValueError('Models used different datasets')
     output=ROOT/'results/comparison.csv'
     with output.open('w',newline='') as f:
-        writer=csv.DictWriter(f,fieldnames=list(records[0])); writer.writeheader(); writer.writerows(records)
+        writer=csv.DictWriter(f,fieldnames=list(records[0]),lineterminator="\n"); writer.writeheader(); writer.writerows(records)
     (ROOT/'results/comparison.json').write_text(json.dumps({'data_hashes':hashes[0],'models':records},indent=2)+'\n')
     lines=['# Recorded preliminary results','',
         'Fixed seed 4442, unchanged corpus partitions, and probability threshold 0.5. No hyperparameter search was performed.', '',
