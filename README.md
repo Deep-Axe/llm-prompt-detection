@@ -1,6 +1,40 @@
 # LLM prompt detection
 
-Dataset preparation and a controlled comparison of TF-IDF MLP, 1D CNN, BiLSTM, and frozen DistilBERT classifiers for adversarial LLM inputs. The corpus combines DAN jailbreak templates, JailbreakBench harmful goals, and Alpaca instructions, with separate held-out communities and matched benign requests.
+Dataset preparation and training code for TF-IDF MLP, 1D CNN, BiLSTM, and DistilBERT prompt classifiers. The expanded experiment uses 100,000 unique WildJailbreak training prompts and fine-tunes the full DistilBERT encoder. The earlier DAN/JailbreakBench/Alpaca experiment remains available as a separate small-corpus baseline.
+
+## Expanded 100,000-row experiment
+
+[WildJailbreak](https://huggingface.co/datasets/allenai/wildjailbreak) provides benign and harmful vanilla requests and adversarial variants. Access requires accepting its upstream terms. The task here is prompt harmfulness classification; a safe refusal in the response column does not make the input benign. Completions are excluded from the classifier input.
+
+Preparation normalizes and deduplicates prompt text, removes conflicting labels, groups variants by their underlying vanilla request, and caps the training partition at exactly 100,000 unique prompts. Validation has 39,502 prompts, test has 38,911, and the official evaluation has 2,210. Exact prompts never repeat across partitions. The main partitions share no underlying requests; the official evaluation does not expose those identifiers, so request overlap there cannot be checked.
+
+```bash
+hf download allenai/wildjailbreak train/train.tsv eval/eval.tsv README.md \
+  --repo-type dataset --revision 5ddc12a7894f842b0619b8e1c7ee496b198af009 \
+  --local-dir data/raw/large/wildjailbreak --cache-dir data/.hf-cache
+python src/prepare_large_corpus.py
+python src/audit_large_corpus.py
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python src/train_large_mlp.py
+python src/train_large_neural.py cnn
+python src/train_large_neural.py bilstm
+```
+
+MLP trains on the local CPU; CNN and BiLSTM use the local RTX 3060. Full DistilBERT fine-tuning runs on Kaggle because of its larger memory requirements and the limited free system RAM here. The private Kaggle input contains the same checksummed partitions and pinned pretrained encoder as the local run:
+
+```bash
+python src/download_encoder.py
+python src/package_kaggle.py --username YOUR_KAGGLE_USERNAME
+kaggle datasets create -p kaggle/input --keep-tabular
+# Wait until `kaggle datasets status USER/wildjailbreak-100k-grouped` says ready.
+kaggle kernels push -p kaggle/distilbert --accelerator NvidiaTeslaT4
+kaggle kernels status USER/prompt-detection-distilbert-100k
+```
+
+All models train for three epochs and select their checkpoint using validation F1. Test data are used only after selection. DistilBERT uses AdamW at 2e-5, mixed precision, gradient checkpointing, and updates every encoder layer. Runtime checks verify encoder gradients and changed weights. MLP uses hashed word/character TF-IDF with training-only IDF to keep RAM bounded. The 256-token context budget uses regex tokens for MLP/CNN/BiLSTM and WordPiece for DistilBERT.
+
+Expanded results and provenance are written to `results/large/`; weights and individual predictions go to ignored `artifacts/large/`. Retrieve the Kaggle result JSON into `results/large/distilbert.json`, then run `python src/compare_large_results.py`. The comparison rejects mismatched partitions or a frozen DistilBERT run. Training time includes validation and differs by hardware; it is not an architecture latency comparison.
+
+## Earlier small-corpus baseline
 
 ## Prepare the data
 

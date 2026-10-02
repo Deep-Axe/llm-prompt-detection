@@ -1,4 +1,27 @@
-# Training setup and remaining work
+# Training setup
+
+## Expanded experiment
+
+The larger condition uses WildJailbreak, pinned at revision `5ddc12a7894f842b0619b8e1c7ee496b198af009`. Its vanilla and adversarial benign examples avoid relying exclusively on short Alpaca instructions for the negative class. Labels describe prompt harmfulness; response safety and prompt injection labels from other datasets are not silently merged into this condition.
+
+After normalization, deduplication, conflict removal, and request grouping, the experiment uses 100,000 training prompts, 39,502 validation prompts, and 38,911 test prompts. The eligible training pool had 183,005 rows; the 100,000-row cap gives every architecture the same fixed training budget. There are another 2,210 official evaluation prompts. The main split groups adversarial variants and their underlying vanilla request before assigning partitions. Exact overlap is excluded from official evaluation, but the official file lacks underlying request identifiers. See `results/large/data_manifest.json` and `data_audit.json` for the recorded checks and counts.
+
+| Model | Configuration | Training location |
+| --- | --- | --- |
+| MLP (Ashlesh) | Hashed word 1–2 / character 3–5 TF-IDF, 32,768 features, 64-unit hidden layer; Adam 0.001, batch 256 | Local CPU, disk-backed feature batches |
+| CNN (Aditya) | Training-only 20,000-token vocabulary, 64-dimensional embeddings, widths 3/4/5 and 64 filters; AdamW 0.001, batch 64 | Local RTX 3060 |
+| BiLSTM (Deepam) | Same vocabulary/embeddings, 64 hidden units per direction, mean/max pooling; AdamW 0.001, batch 64 | Local RTX 3060 |
+| DistilBERT (Deepam) | All encoder and classifier parameters trainable; AdamW 2e-5, weight decay 0.01, 10% warmup then linear decay, batch 32, FP16 and gradient checkpointing | Kaggle T4 GPU |
+
+Each architecture runs three epochs with seed 4442 and selects its checkpoint by validation F1. Threshold stays at 0.5. Every model trains on every one of the 100,000 selected prompts each epoch. All have a 256-token limit, although regex and WordPiece tokenization differ. This is a basic baseline comparison, with no hyperparameter search or multi-seed claim.
+
+System RAM availability, rather than the existence of a GPU, drives the split between local and Kaggle execution. The local machine has a working 6 GB RTX 3060, but only around 1–2 GB system RAM was free when the jobs started. Small sequence models fit easily; feature and token caches stay on disk. Kaggle provides more room for full transformer fine-tuning without competing with the local desktop. The CNN capacity benchmark is recorded separately from the completed training results.
+
+Full fine-tuning checks are explicit: all encoder parameters require gradients, each encoder layer must receive nonzero gradients, and an encoder attention weight matrix must differ from its initial value after training. A frozen encoder with only a trained classifier cannot pass the expanded comparison checks.
+
+The corpus remains largely synthetic. Grouping requests reduces leakage from variants of the same request but does not guarantee unseen tactics. Harmfulness labels do not establish whether an otherwise benign request is an instruction injection in a particular application context. Report main test F1/MCC/AUC alongside official harmful recall and benign acceptance. Keep the official class imbalance visible. Neither the 100,000-row count nor a high F1 establishes deployment robustness.
+
+## Earlier small-corpus setup
 
 The local machine has an AMD Ryzen 9 5900HX, 16 GB system RAM, and an NVIDIA RTX 3060 laptop GPU with 6 GB VRAM. At setup, about 5 GB VRAM and 2.5 GB system RAM were available. `nvidia-smi` reports driver 535.309.01. The experiment uses PyTorch 2.5.1 with the CUDA 12.1 runtime, avoiding a driver upgrade.
 
