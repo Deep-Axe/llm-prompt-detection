@@ -11,11 +11,13 @@ After normalization, deduplication, conflict removal, and request grouping, the 
 | MLP (Ashlesh) | Hashed word 1–2 / character 3–5 TF-IDF, 32,768 features, 64-unit hidden layer; Adam 0.001, batch 256 | Local CPU, disk-backed feature batches |
 | CNN (Aditya) | Training-only 20,000-token vocabulary, 64-dimensional embeddings, widths 3/4/5 and 64 filters; AdamW 0.001, batch 64 | Local RTX 3060 |
 | BiLSTM (Deepam) | Same vocabulary/embeddings, 64 hidden units per direction, mean/max pooling; AdamW 0.001, batch 64 | Local RTX 3060 |
-| DistilBERT (Deepam) | All encoder and classifier parameters trainable; AdamW 2e-5, weight decay 0.01, 10% warmup then linear decay, batch 32, FP16 and gradient checkpointing | Kaggle T4 GPU |
+| DistilBERT (Deepam) | All encoder and classifier parameters trainable; AdamW 2e-5, weight decay 0.01, 10% warmup then linear decay, batch 32, FP16, gradient checkpointing | Kaggle, one T4 used from its two-card allocation |
 
 Each architecture runs three epochs with seed 4442 and selects its checkpoint by validation F1. Threshold stays at 0.5. Every model trains on every one of the 100,000 selected prompts each epoch. All have a 256-token limit, although regex and WordPiece tokenization differ. This is a basic baseline comparison, with no hyperparameter search or multi-seed claim.
 
-System RAM availability, rather than the existence of a GPU, drives the split between local and Kaggle execution. The local machine has a working 6 GB RTX 3060, but only around 1–2 GB system RAM was free when the jobs started. Small sequence models fit easily; feature and token caches stay on disk. Kaggle provides more room for full transformer fine-tuning without competing with the local desktop. The CNN capacity benchmark is recorded separately from the completed training results.
+System RAM availability and measured throughput drive the split between local and Kaggle execution. The local machine has a working 6 GB RTX 3060, but only around 1–2 GB system RAM was free when the jobs started. Small sequence models fit easily; feature and token caches stay on disk. A full-encoder benchmark with batch 8 and gradient accumulation 4 used 1,347 MB of allocated GPU memory and projected roughly 27 minutes per epoch. A later batch-32 benchmark without encoder recomputation used 2,559 MB and projected about 11 minutes per epoch. Both confirm that local full fine-tuning is possible; Kaggle keeps the sustained job away from the constrained desktop RAM.
+
+The recorded Kaggle baseline uses one T4 with batch 32 and encoder recomputation. Its allocation exposes two cards, so this setup leaves capacity unused. A two-GPU option is available in the runner (`USE_BOTH_GPUS=True`): total batch 64, data parallel, and no gradient checkpointing. That option is not the recorded baseline and changes the optimization batch size. Capacity benchmarks and unexecuted configurations must not be presented as completed training results.
 
 Full fine-tuning checks are explicit: all encoder parameters require gradients, each encoder layer must receive nonzero gradients, and an encoder attention weight matrix must differ from its initial value after training. A frozen encoder with only a trained classifier cannot pass the expanded comparison checks.
 
@@ -54,7 +56,7 @@ The length diagnostic and source slices are essential: DAN templates are much lo
 
 1. Repeat chosen configurations across several seeds; tune only on validation data.
 2. Review assumed benign labels and obtain longer realistic benign prompts.
-3. Define a second corpus condition with related template variants grouped before splitting; run every architecture under that condition.
+3. Extend the expanded corpus's exact-request grouping with audits of semantic near-duplicates and shared templates.
 4. Evaluate prompt injection as a separately documented condition that preserves its label meaning and application context.
 5. Compare latency on the same processor if the claim concerns architecture rather than the deployed CPU/GPU configuration.
 

@@ -1,0 +1,22 @@
+{
+  "mlp": {
+    "samples": 64,
+    "max_abs_probability_difference": 0.0,
+    "class_agreement": 1.0
+  },
+  "cnn": {
+    "samples": 64,
+    "max_abs_probability_difference": 0.0,
+    "class_agreement": 1.0
+  },
+  "bilstm": {
+    "samples": 64,
+    "max_abs_probability_difference": 0.0,
+    "class_agreement": 1.0
+  },
+  "distilbert": {
+    "samples": 64,
+    "max_abs_probability_difference": 4.76837158203125e-07,
+    "class_agreement": 1.0
+  }
+}

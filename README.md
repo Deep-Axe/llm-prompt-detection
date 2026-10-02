@@ -4,6 +4,8 @@ Dataset preparation and training code for TF-IDF MLP, 1D CNN, BiLSTM, and Distil
 
 ## Expanded 100,000-row experiment
 
+All four three-epoch runs are complete. The [results table](results/large/README.md) records the shared test metrics and official challenge results; [the comparison plot](results/large/comparison.png) includes request-group bootstrap intervals. Saved checkpoints were reloaded and checked against the recorded predictions.
+
 [WildJailbreak](https://huggingface.co/datasets/allenai/wildjailbreak) provides benign and harmful vanilla requests and adversarial variants. Access requires accepting its upstream terms. The task here is prompt harmfulness classification; a safe refusal in the response column does not make the input benign. Completions are excluded from the classifier input.
 
 Preparation normalizes and deduplicates prompt text, removes conflicting labels, groups variants by their underlying vanilla request, and caps the training partition at exactly 100,000 unique prompts. Validation has 39,502 prompts, test has 38,911, and the official evaluation has 2,210. Exact prompts never repeat across partitions. The main partitions share no underlying requests; the official evaluation does not expose those identifiers, so request overlap there cannot be checked.
@@ -24,15 +26,26 @@ MLP trains on the local CPU; CNN and BiLSTM use the local RTX 3060. Full DistilB
 ```bash
 python src/download_encoder.py
 python src/package_kaggle.py --username YOUR_KAGGLE_USERNAME
+# The current Kaggle CLI needs Python 3.11+; keep it separate from training's 3.10.
+uv tool install kaggle --python 3.11
 kaggle datasets create -p kaggle/input --keep-tabular
 # Wait until `kaggle datasets status USER/wildjailbreak-100k-grouped` says ready.
 kaggle kernels push -p kaggle/distilbert --accelerator NvidiaTeslaT4
 kaggle kernels status USER/prompt-detection-distilbert-100k
 ```
 
-All models train for three epochs and select their checkpoint using validation F1. Test data are used only after selection. DistilBERT uses AdamW at 2e-5, mixed precision, gradient checkpointing, and updates every encoder layer. Runtime checks verify encoder gradients and changed weights. MLP uses hashed word/character TF-IDF with training-only IDF to keep RAM bounded. The 256-token context budget uses regex tokens for MLP/CNN/BiLSTM and WordPiece for DistilBERT.
+All models train for three epochs and select their checkpoint using validation F1. Test data are used only after selection. DistilBERT uses AdamW at 2e-5, mixed precision, batch 32, gradient checkpointing, and updates every encoder layer. Runtime checks verify encoder gradients and changed weights. The recorded Kaggle baseline uses one T4 from its two-card allocation. Set `USE_BOTH_GPUS=True` in its entry script to use a total batch of 64 across both cards without recomputation; that is a separate configuration. MLP uses hashed word/character TF-IDF with training-only IDF to keep RAM bounded. The 256-token context budget uses regex tokens for MLP/CNN/BiLSTM and WordPiece for DistilBERT.
 
-Expanded results and provenance are written to `results/large/`; weights and individual predictions go to ignored `artifacts/large/`. Retrieve the Kaggle result JSON into `results/large/distilbert.json`, then run `python src/compare_large_results.py`. The comparison rejects mismatched partitions or a frozen DistilBERT run. Training time includes validation and differs by hardware; it is not an architecture latency comparison.
+Expanded results and provenance are written to `results/large/`; weights and individual predictions go to ignored `artifacts/large/`. Collect the finished Kaggle output and create the comparison:
+
+```bash
+python src/collect_kaggle_run.py --kernel USER/prompt-detection-distilbert-100k --watch
+python src/compare_large_results.py
+python src/export_large_models.py
+python src/plot_large_results.py  # requires matplotlib
+```
+
+Collection verifies full encoder training and partition checksums before importing weights and predictions. The comparison also checks prediction identifiers and rejects mismatched partitions or a frozen DistilBERT run. Training time includes validation and differs by hardware; it is not an architecture latency comparison. Model cards and a checksum inventory are generated locally; no model upload is performed by these commands.
 
 ## Earlier small-corpus baseline
 

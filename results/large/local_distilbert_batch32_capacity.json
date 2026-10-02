@@ -1,0 +1,25 @@
+{
+  "model": "distilbert",
+  "benchmark_only": true,
+  "rows_processed": 1024,
+  "seconds": 6.490005607003695,
+  "estimated_epoch_seconds": 633.7896100589546,
+  "peak_gpu_allocated_mb": 2558.69970703125,
+  "encoder_gradient_verified": true,
+  "config": {
+    "model": "distilbert",
+    "data": "/home/deep/Documents/dl_codex/data/processed/large",
+    "output": "artifacts/large/local_capacity_no_checkpoint",
+    "artifacts": "/home/deep/Documents/dl_codex/artifacts/large",
+    "encoder": "/home/deep/Documents/dl_codex/data/models/distilbert",
+    "device": "cuda",
+    "epochs": 3,
+    "batch_size": 32,
+    "accumulation": 1,
+    "max_tokens": 256,
+    "seed": 4442,
+    "benchmark_steps": 32,
+    "data_parallel": false,
+    "no_gradient_checkpointing": true
+  }
+}

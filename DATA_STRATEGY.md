@@ -21,11 +21,21 @@ Alpaca's overlap filter removed zero rows. That is not a safety audit. There are
 
 Use the **same dataset condition for every architecture**, with the same row identifiers and splits. Keep separate score slices for each source. Comparing an MLP trained on Alpaca/DAN with a transformer trained on WildGuard would say little about architecture.
 
-The first condition is the imported corpus, preserved so the initial results remain reproducible. Its limitations should accompany every result table. A second, versioned condition should address the length and template shortcuts. Form near-duplicate/template groups before splitting; review ambiguous labels; add more realistic non-jailbreak prompts; and hold out whole groups. Apply that condition to all four architectures as well. Match sequence limits for sequence models and report any remaining representation differences.
+The first condition is the imported corpus, preserved so the initial results remain reproducible. Its limitations should accompany every result table. The expanded condition below adds longer benign prompts and keeps variants of each underlying request together. Further work should group semantic near-duplicates, review ambiguous labels, and add realistic user prompts. Apply each new condition to all four architectures. Match context budgets and report remaining representation differences.
 
 Separate training on an injection dataset is worthwhile **as a separate task condition for each model**, rather than one dataset per architecture. Transfer from the original jailbreak corpus to injection text can also be reported, but failure there may reflect a label mismatch. Neither experiment alone demonstrates indirect-injection detection in a real application.
 
-## Sources to acquire next
+## Expanded dataset condition
+
+WildJailbreak is now acquired at revision `5ddc12a7894f842b0619b8e1c7ee496b198af009` after provider access was enabled. The downloaded training file contains 261,538 rows. Its four categories provide both short vanilla and longer adversarial examples in each class, reducing the original reliance on short Alpaca negatives and long DAN positives. Completions are not model inputs, and a refusal does not change the prompt's harmfulness label.
+
+The expanded comparison uses exactly 100,000 unique training prompts, 39,502 validation prompts, 38,911 test prompts, and 2,210 official evaluation prompts. Variants of the same normalized vanilla request remain in one main partition. Exact normalized duplicates are removed globally, conflicting prompt labels are excluded, and evaluation prompts take precedence over training duplicates. The official evaluation omits the vanilla request, so underlying-request overlap with that set cannot be assessed. Main-split overlap and file checksums are recorded in `results/large/data_audit.json` and `data_manifest.json`.
+
+Training is capped from an eligible pool of 183,005 rows to give every architecture the same 100,000-row budget. No repetitions or duplicated versions are added to reach the target. The length-only test F1 is 0.694, compared with 0.906 on the earlier corpus. Length still predicts some labels, and grouping exact underlying requests does not eliminate shared tactics or paraphrases. Upstream labels and the largely synthetic origin remain limitations.
+
+WildJailbreak defines a prompt harmfulness task. Prompt injection can occur in text that is otherwise harmless, so injection datasets should form a separate condition with context and their own label definition. Response-safety and preference datasets are not suitable substitutes for prompt labels. Dataset version totals must not be added together without checking overlapping records.
+
+## Other candidate sources
 
 | Priority | Source | Recommended use | Checks before merging |
 | --- | --- | --- | --- |
@@ -37,8 +47,8 @@ The authors' [DAN repository](https://github.com/verazuo/jailbreak_llms) documen
 
 Do not merge the 107,250 evaluation-question file as attack templates. Do not double-count AdvBench behaviors already present in JBB. Do not consume HarmBench test behaviors as extra training positives while also calling the resulting evaluation external.
 
-Candidate-source documentation was checked on 2 October 2026. The local acquisition attempt failed on DNS resolution, so **no new source has been downloaded or merged**. `src/download_extensions.py` downloads an immutable snapshot into a separate directory and produces a checksum manifest when network access is available.
+Candidate-source documentation was checked on 2 October 2026. The earlier optional-source acquisition attempt failed on DNS resolution. Network access now works, and WildJailbreak supplies the larger comparison; the optional extension candidates have not been merged into it. An AIDataFdn prompt-injection CSV was downloaded during source screening but is not used for training: its different label definition and limited provenance would make it a poor silent addition to this condition.
 
 ## Next steps
 
-Run the four specified architectures on the same corpus and partitions, after defining their basic configurations and the common metric harness. Report the length diagnostic alongside the model results. The four-model training code and recorded results are documented in TRAINING_PLAN.md and results/README.md. Each source-specific result remains necessary when interpreting the overall comparison.
+Compare the expanded four-model results on the shared partitions, including each data-type slice and the official benign acceptance rate. Preserve the earlier comparison separately. Add reviewed natural user prompts and a context-aware injection condition for subsequent transfer tests. Repeat promising configurations across seeds before drawing stronger architecture conclusions.

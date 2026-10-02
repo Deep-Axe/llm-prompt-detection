@@ -1,0 +1,51 @@
+{
+  "method": "paired percentile bootstrap over underlying test request groups",
+  "repeats": 1000,
+  "seed": 4442,
+  "test_groups": 14824,
+  "scope": "test sampling uncertainty only; excludes training-seed variation and label error",
+  "f1_95_percent_intervals": {
+    "mlp": [
+      0.9325917646514387,
+      0.9384439134517939
+    ],
+    "cnn": [
+      0.9256401227183056,
+      0.9320650259182403
+    ],
+    "bilstm": [
+      0.9393979945135253,
+      0.9451732881621279
+    ],
+    "distilbert": [
+      0.9775739755450304,
+      0.980776192474974
+    ]
+  },
+  "paired_f1_difference_95_percent_intervals": {
+    "cnn minus mlp": [
+      -0.009567935792523987,
+      -0.0034397456173960433
+    ],
+    "bilstm minus mlp": [
+      0.004197366809603423,
+      0.009411090055866916
+    ],
+    "bilstm minus cnn": [
+      0.01087641752039099,
+      0.015736114433351402
+    ],
+    "distilbert minus mlp": [
+      0.040791721581008335,
+      0.04646030386536767
+    ],
+    "distilbert minus cnn": [
+      0.047326457639040684,
+      0.05319692296927096
+    ],
+    "distilbert minus bilstm": [
+      0.034298215692458674,
+      0.03953757575650285
+    ]
+  }
+}
