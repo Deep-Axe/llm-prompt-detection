@@ -47,6 +47,27 @@ python src/plot_large_results.py  # requires matplotlib
 
 Collection verifies full encoder training and partition checksums before importing weights and predictions. The comparison also checks prediction identifiers and rejects mismatched partitions or a frozen DistilBERT run. Training time includes validation and differs by hardware; it is not an architecture latency comparison. Model cards and a checksum inventory are generated locally; no model upload is performed by these commands.
 
+## Published models
+
+The four expanded checkpoints are hosted in [DeeAxe/llm-prompt-detection on Hugging Face](https://huggingface.co/DeeAxe/llm-prompt-detection), in `mlp/`, `cnn/`, `bilstm/`, and `distilbert/`. The model card explains the project, shared data condition, results, licenses, and loading instructions. This is prompt harmfulness classification; context-dependent prompt injection remains a separate experiment. The repository includes an inference helper that reproduces the token limits and saved preprocessing.
+
+DistilBERT loads with `AutoModelForSequenceClassification.from_pretrained("DeeAxe/llm-prompt-detection", subfolder="distilbert")` and the matching tokenizer. For the other models, download the repository and run its `predict.py`. The published files were checked against local hashes, and packaged checkpoints reproduced the checked held-out classifications. Release revision and checksums are recorded in `results/large/huggingface_publication.json`.
+
+To package and publish an updated release explicitly:
+
+```bash
+python src/export_large_models.py
+hf download distilbert/distilbert-base-uncased LICENSE \
+  --revision 12040accade4e8a0f71eabdb258fecc2e7e948be \
+  --local-dir artifacts/huggingface_base_license
+python src/package_hf_models.py --repo-id USER/llm-prompt-detection
+hf upload USER/llm-prompt-detection artifacts/huggingface/llm-prompt-detection . \
+  --repo-type model --exclude '**/__pycache__/**'
+python src/verify_hf_publication.py --repo-id USER/llm-prompt-detection
+```
+
+Prompt data, per-example predictions, token caches, and weights stay outside GitHub. The local report remains ignored by Git.
+
 ## Earlier small-corpus baseline
 
 ## Prepare the data
