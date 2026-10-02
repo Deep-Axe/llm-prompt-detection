@@ -7,7 +7,7 @@
     "location": "artifacts/large/mlp",
     "uploaded": true,
     "repo_id": "DeeAxe/llm-prompt-detection",
-    "revision": "f1c29807d8822b0e0dd6976dc41db4ebcd061d0f",
+    "revision": "de0e978d79f4ef1dc165e0630db4b41d91f4f60f",
     "subfolder": "mlp"
   },
   "cnn": {
@@ -19,7 +19,7 @@
     "location": "artifacts/large/cnn",
     "uploaded": true,
     "repo_id": "DeeAxe/llm-prompt-detection",
-    "revision": "f1c29807d8822b0e0dd6976dc41db4ebcd061d0f",
+    "revision": "de0e978d79f4ef1dc165e0630db4b41d91f4f60f",
     "subfolder": "cnn"
   },
   "bilstm": {
@@ -31,7 +31,7 @@
     "location": "artifacts/large/bilstm",
     "uploaded": true,
     "repo_id": "DeeAxe/llm-prompt-detection",
-    "revision": "f1c29807d8822b0e0dd6976dc41db4ebcd061d0f",
+    "revision": "de0e978d79f4ef1dc165e0630db4b41d91f4f60f",
     "subfolder": "bilstm"
   },
   "distilbert": {
@@ -46,7 +46,7 @@
     "location": "artifacts/large/distilbert",
     "uploaded": true,
     "repo_id": "DeeAxe/llm-prompt-detection",
-    "revision": "f1c29807d8822b0e0dd6976dc41db4ebcd061d0f",
+    "revision": "de0e978d79f4ef1dc165e0630db4b41d91f4f60f",
     "subfolder": "distilbert"
   }
 }
