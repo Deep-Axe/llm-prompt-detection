@@ -16,6 +16,19 @@ Existing raw files are reused. The processed corpus has 1,764 training, 378 vali
 
 Alpaca labels are assumed benign; overlap checks are not a safety review. The corpus has length and template-similarity shortcuts. [DATA_STRATEGY.md](DATA_STRATEGY.md) documents these limitations and additional data conditions.
 
+## Model assignments
+
+The assignments follow the project synopsis; the shared runner does not change model ownership.
+
+| Model | Assigned member | Entry command |
+| --- | --- | --- |
+| TF-IDF + MLP | M. Ashlesh Mallya | `python src/train_mlp.py` |
+| 1D CNN | S Aditya | `python src/train_cnn.py --device cuda` |
+| BiLSTM | Deepam Ahuja | `python src/train_bilstm.py --device cuda` |
+| Frozen DistilBERT + linear head | Deepam Ahuja | `python src/train_distilbert.py --device cuda` |
+
+Ashlesh also owns acquisition, Aditya the shared preprocessing, and Deepam the evaluation harness and held-out analysis. This repository update was implemented and run with coding-agent assistance. Assignments describe the team's responsibilities; they do not claim that each member authored these commits. Each member should review, explain, and develop the model assigned to them.
+
 ## Train locally
 
 Python 3.10 and an RTX 3060 with 6 GB VRAM are used for the recorded GPU runs. [TRAINING_PLAN.md](TRAINING_PLAN.md) describes the hardware decision, configurations, and evaluation protocol. The CUDA 12.1 wheel is compatible with the installed driver; see the [PyTorch installation matrix](https://pytorch.org/get-started/previous-versions/).
