@@ -17,3 +17,6 @@ report/
 
 *.bundle
 /publish-data-prep.sh
+
+artifacts/
+data/models/

@@ -41,4 +41,4 @@ Candidate-source documentation was checked on 2 October 2026. The local acquisit
 
 ## Next steps
 
-Run the four specified architectures on the same corpus and partitions, after defining their basic configurations and the common metric harness. Report the length diagnostic alongside the model results. Model-training scripts and neural-model results are not included in this data-preparation submission.
+Run the four specified architectures on the same corpus and partitions, after defining their basic configurations and the common metric harness. Report the length diagnostic alongside the model results. The four-model training code and recorded results are documented in TRAINING_PLAN.md and results/README.md. Each source-specific result remains necessary when interpreting the overall comparison.
