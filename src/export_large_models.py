@@ -11,6 +11,8 @@ from prepare_large_corpus import file_hash
 
 def main():
     inventory = {}
+    published_path = ROOT / 'results/large/huggingface_publication.json'
+    published = json.loads(published_path.read_text()) if published_path.exists() else None
     for name in ['mlp','cnn','bilstm','distilbert']:
         report = json.loads((ROOT / f'results/large/{name}.json').read_text())
         folder = ROOT / f'artifacts/large/{name}'
@@ -63,6 +65,10 @@ data and base models retain their upstream licenses.
         (folder / 'README.md').write_text(card)
         inventory[name] = {'files':metadata['files'], 'test_f1':report['metrics']['test']['f1'],
                            'location':f'artifacts/large/{name}', 'uploaded':False}
+        if published and all(published['files'].get(f'{name}/{Path(p).name}') == sha
+                             for p, sha in metadata['files'].items()):
+            inventory[name].update(uploaded=True, repo_id=published['repo_id'],
+                                   revision=published['revision'], subfolder=name)
     (ROOT / 'results/large/checkpoint_manifest.json').write_text(json.dumps(inventory, indent=2)+'\n')
     print('Prepared four local model cards and checkpoint checksum inventory; no upload performed.')
 
