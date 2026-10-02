@@ -1,0 +1,80 @@
+{
+  "dataset": "allenai/wildjailbreak",
+  "revision": "5ddc12a7894f842b0619b8e1c7ee496b198af009",
+  "license": "ODC-BY",
+  "task": "binary prompt harmfulness",
+  "seed": 4442,
+  "label_mapping": {
+    "vanilla_benign": 0,
+    "adversarial_benign": 0,
+    "vanilla_harmful": 1,
+    "adversarial_harmful": 1
+  },
+  "raw_counts": {
+    "raw_eval": 2210,
+    "raw_train": 261538,
+    "duplicate_texts": 105,
+    "conflicting_labels": 1,
+    "duplicate_bridge_groups": 5,
+    "excluded_train_variants": 14
+  },
+  "official_eval_limit": "Upstream evaluation omits vanilla requests; exact text overlap removed, underlying-request overlap cannot be checked.",
+  "train_pool_before_cap": 183005,
+  "split_method": "70/15/15 hash of normalized vanilla request; train capped by text hash",
+  "raw_file_sha256": {
+    "train/train.tsv": "376719bfdb46ad1a19e7ba4f587f80cc7cb1368cc213ee647ef739c170550f7a",
+    "eval/eval.tsv": "eeb7e43aafa0151588f5cb8994b99adc0ee34a57819d92f43a6084f0b7fe4fa4"
+  },
+  "partitions": {
+    "train": {
+      "rows": 100000,
+      "groups": 56872,
+      "counts": {
+        "label_1": 50715,
+        "adversarial_harmful": 31655,
+        "label_0": 49285,
+        "adversarial_benign": 30086,
+        "vanilla_benign": 19199,
+        "vanilla_harmful": 19060
+      },
+      "sha256": "92aad92389864e81cffb07eb02639a551677690a215364fe318df07c26457d6c"
+    },
+    "val": {
+      "rows": 39502,
+      "groups": 15164,
+      "counts": {
+        "label_0": 19385,
+        "adversarial_benign": 11822,
+        "label_1": 20117,
+        "adversarial_harmful": 12517,
+        "vanilla_harmful": 7600,
+        "vanilla_benign": 7563
+      },
+      "sha256": "192ad4cd320e159f7db6d49e98402647015591d0abaa8693ed89c2a7cca4f235"
+    },
+    "test": {
+      "rows": 38911,
+      "groups": 14824,
+      "counts": {
+        "label_1": 19780,
+        "adversarial_harmful": 12331,
+        "label_0": 19131,
+        "adversarial_benign": 11756,
+        "vanilla_benign": 7375,
+        "vanilla_harmful": 7449
+      },
+      "sha256": "7e5b9ccd899b8394c1ecdbf169e38ddfe14b33a733d6bc2d48e26ac35e81479b"
+    },
+    "official_eval": {
+      "rows": 2210,
+      "groups": 2210,
+      "counts": {
+        "label_1": 2000,
+        "adversarial_harmful": 2000,
+        "label_0": 210,
+        "adversarial_benign": 210
+      },
+      "sha256": "ffa338c1a10a7b31cb242f0036083dbe74577ea6ca1116c304966de5367555c8"
+    }
+  }
+}
