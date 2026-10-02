@@ -17,6 +17,10 @@ The imported corpus and community holdout are unchanged. All models share row id
 
 Sequence models use a limit of 128 tokens. Regex and WordPiece tokenization differ, and the MLP uses full text. Record those representation differences when interpreting the results. The sequence optimizers use Adam at 0.001 with gradient clipping; no hyperparameter search is performed. DistilBERT source revision and hashes are committed separately from its downloaded weights.
 
+## Team assignments
+
+The synopsis assigns TF-IDF + MLP and acquisition to M. Ashlesh Mallya; CNN and preprocessing to S Aditya; BiLSTM, frozen DistilBERT, and evaluation to Deepam Ahuja. All four models are included in the assisted implementation and initial run. Shared training and metric utilities avoid duplicating the experimental protocol; they do not transfer the first two models to Deepam. Commit authorship is kept accurate, and the team should record their own subsequent review and implementation work separately.
+
 ## Evaluation
 
 Report accuracy, precision, recall, F1, MCC, ROC-AUC, trapezoidal PR-AUC, average precision, log loss, and Brier score on mixed-class partitions. Report recall on positive-only slices and acceptance on benign-only slices. Include total and trainable parameters, feature/encoder time, weight-training time, synchronized batch cost, and warmed single-request latency. Retain prompt IDs and source/family tags in error records; omit prompt text from published diagnostics.
