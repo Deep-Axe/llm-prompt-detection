@@ -9,6 +9,9 @@ import zipfile
 os.environ['OPENBLAS_NUM_THREADS'] = '1'
 os.environ['OMP_NUM_THREADS'] = '1'
 os.environ['TOKENIZERS_PARALLELISM'] = 'false'
+# False reproduces the recorded single-GPU baseline. The larger-batch option
+# uses both cards in Kaggle's T4 allocation without changing corpus partitions.
+USE_BOTH_GPUS = False
 # Keep Torch/CUDA provided by Kaggle; pin the tokenizer/model implementation.
 subprocess.run([sys.executable, '-m', 'pip', 'install', '-q', 'transformers==4.46.3',
                 'huggingface-hub==0.36.2', 'scikit-learn==1.3.2', 'numpy==1.26.4'], check=True)
@@ -26,9 +29,12 @@ else:
     if len(manifests) != 1:
         raise RuntimeError(f'Expected one experiment manifest, found {len(manifests)}')
     shutil.copytree(manifests[0].parents[3], root, dirs_exist_ok=True)
-subprocess.run([sys.executable, str(root / 'src/train_large_neural.py'), 'distilbert',
-                '--batch-size', '32', '--accumulation', '1', '--epochs', '3',
-                '--max-tokens', '256', '--device', 'cuda'], cwd=root, check=True)
+command = [sys.executable, str(root / 'src/train_large_neural.py'), 'distilbert',
+           '--batch-size', '64' if USE_BOTH_GPUS else '32', '--accumulation', '1',
+           '--epochs', '3', '--max-tokens', '256', '--device', 'cuda']
+if USE_BOTH_GPUS:
+    command += ['--data-parallel', '--no-gradient-checkpointing']
+subprocess.run(command, cwd=root, check=True)
 # Retain deployable weights and test predictions without exporting token caches.
 with zipfile.ZipFile('/kaggle/working/distilbert_model.zip', 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=1) as z:
     for path in (root / 'artifacts/large/distilbert/model').rglob('*'):

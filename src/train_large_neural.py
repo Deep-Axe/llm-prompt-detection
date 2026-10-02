@@ -28,6 +28,8 @@ def main():
     p.add_argument('--max-tokens', type=int, default=256)
     p.add_argument('--seed', type=int, default=4442)
     p.add_argument('--benchmark-steps', type=int, default=0)
+    p.add_argument('--data-parallel', action='store_true', help='Use all visible CUDA GPUs')
+    p.add_argument('--no-gradient-checkpointing', action='store_true', help='Skip encoder recomputation when VRAM is ample')
     args = p.parse_args()
     if min(args.epochs, args.batch_size, args.accumulation) < 1 or args.max_tokens < 5:
         p.error('Invalid training dimensions')
@@ -45,13 +47,17 @@ def main():
         model = AutoModelForSequenceClassification.from_pretrained(args.encoder, num_labels=2, local_files_only=True)
         model.requires_grad_(True)
         # Checkpointing trades compute for VRAM; all encoder layers receive gradients.
-        model.gradient_checkpointing_enable()
+        if not args.no_gradient_checkpointing:
+            model.gradient_checkpointing_enable()
         lr = 2e-5
         encoder_initial = model.distilbert.transformer.layer[0].attention.q_lin.weight.detach().clone()
     else:
         model = SentenceCNN(len(vocab)+2) if args.model == 'cnn' else BiLSTM(len(vocab)+2)
         lr = .001
     model.to(device)
+    if args.data_parallel and (device.type != 'cuda' or torch.cuda.device_count() < 2):
+        raise RuntimeError('Data parallel requested but fewer than two CUDA GPUs are visible')
+    runner = nn.DataParallel(model) if args.data_parallel else model
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=.01 if transformer else 0)
     n = manifest['partitions']['train']['rows']
     steps_per_epoch = math.ceil(math.ceil(n / args.batch_size) / args.accumulation)
@@ -76,9 +82,9 @@ def main():
     def forward(ids, lengths, labels=None):
         if transformer:
             mask = torch.arange(ids.shape[1], device=device)[None, :] < lengths[:, None]
-            result = model(input_ids=ids, attention_mask=mask, labels=labels.long() if labels is not None else None)
-            return result.loss if labels is not None else result.logits.softmax(-1)[:, 1]
-        logits = model(ids, lengths)
+            result = runner(input_ids=ids, attention_mask=mask, labels=labels.long() if labels is not None else None)
+            return result.loss.mean() if labels is not None else result.logits.softmax(-1)[:, 1]
+        logits = runner(ids, lengths)
         return nn.functional.binary_cross_entropy_with_logits(logits, labels) if labels is not None else logits.sigmoid()
     def predict(split):
         model.eval(); preds = []
@@ -107,9 +113,9 @@ def main():
                 scaler.unscale_(optimizer)
                 if transformer and not gradient_verified:
                     gradients = [layer.attention.q_lin.weight.grad for layer in model.distilbert.transformer.layer]
-                    if not all(g is not None and torch.isfinite(g).all() and g.abs().sum()>0 for g in gradients):
+                    if not all(g is not None and g.abs().sum()>0 for g in gradients):
                         raise RuntimeError('Not all DistilBERT encoder layers received nonzero gradients')
-                    gradient_verified = True
+                    gradient_verified = all(torch.isfinite(g).all() for g in gradients)
                 nn.utils.clip_grad_norm_(model.parameters(), 1.)
                 scaler.step(optimizer); scaler.update(); scheduler.step()
                 optimizer.zero_grad(set_to_none=True); optimizer_steps += 1
@@ -164,7 +170,8 @@ def main():
               'code_hashes': code_hashes(['train_large_neural.py','large_data.py','neural_models.py','evaluation.py']),
               'model_source': json.loads((args.encoder / 'source.json').read_text()) if transformer else None,
               'environment': {'torch':torch.__version__, 'python':platform.python_version(),
-                              'gpu':torch.cuda.get_device_name() if device.type=='cuda' else None},
+                              'gpu':torch.cuda.get_device_name() if device.type=='cuda' else None,
+                              'gpu_count_used':torch.cuda.device_count() if args.data_parallel else int(device.type=='cuda')},
               'peak_gpu_allocated_mb':torch.cuda.max_memory_allocated()/2**20 if device.type=='cuda' else None}
     (output / f'{args.model}.json').write_text(json.dumps(result, indent=2)+'\n')
     print(json.dumps({'model':args.model, 'test_f1':scores['test']['f1'],

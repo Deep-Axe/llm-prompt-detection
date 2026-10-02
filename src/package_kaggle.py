@@ -32,7 +32,7 @@ def main():
     kernel_metadata = {'id':f'{args.username}/prompt-detection-distilbert-100k',
                        'title':'Prompt detection DistilBERT 100k', 'code_file':'train.py',
                        'language':'python', 'kernel_type':'script', 'is_private':True,
-                       'enable_gpu':True, 'enable_internet':True,
+                       'enable_gpu':True, 'enable_internet':True, 'machine_shape':'NvidiaTeslaT4',
                        'dataset_sources':[metadata['id']], 'competition_sources':[], 'kernel_sources':[]}
     (kernel / 'kernel-metadata.json').write_text(json.dumps(kernel_metadata, indent=2)+'\n')
     print(f'Packaged {folder / "experiment.zip"}; submit input first, then kernel.')
