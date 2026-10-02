@@ -39,6 +39,9 @@ def main():
     for filename in ['comparison.csv', 'comparison.json', 'comparison.png', 'uncertainty.json',
                      'data_manifest.json', 'checkpoint_verification.json']:
         shutil.copy2(ROOT / f'results/large/{filename}', target / filename)
+    hub_check = ROOT / 'results/large/hub_inference_verification.json'
+    if hub_check.exists():
+        shutil.copy2(hub_check, target / hub_check.name)
     (target / 'requirements.txt').write_text('torch==2.5.1\ntransformers==4.46.3\nhuggingface-hub==0.36.2\nscikit-learn==1.3.2\nnumpy==1.24.4\nscipy==1.15.3\njoblib\n')
     (target / 'LICENSE.md').write_text('''# Licenses and attribution
 
@@ -139,9 +142,29 @@ with torch.inference_mode():
 
 ## Load any of the four models
 
-Use Python 3.10 and install requirements.txt in a separate environment. Download
-the repository, then run its explicit local inference helper (no remote-code
-loading is needed):
+Use Python 3.10 and install requirements.txt in a separate environment. The
+project's inference helper accepts this repository ID directly and fetches only
+the selected architecture's files:
+
+```bash
+python src/predict_large_models.py --repo-id {args.repo_id} --model cnn --text "Explain how rainbows form."
+```
+
+From the source repository, Python usage is:
+
+```python
+from src.predict_large_models import PromptClassifier
+classifier = PromptClassifier.from_hub("{args.repo_id}", architecture="cnn")
+probabilities = classifier.probabilities(["Explain how rainbows form."])
+```
+
+Downloads are cached. Inference executes on the local CPU by default; select
+`--device cuda` to use a local GPU. `--revision COMMIT_SHA` pins a release and
+`--offline` reuses an existing cached version. Output includes the resolved Hub
+revision. This model repository distributes checkpoints; no hosted inference
+endpoint is deployed.
+
+You can also download the repository and run its bundled helper:
 
 ```python
 from huggingface_hub import snapshot_download

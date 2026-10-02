@@ -51,7 +51,28 @@ Collection verifies full encoder training and partition checksums before importi
 
 The four expanded checkpoints are hosted in [DeeAxe/llm-prompt-detection on Hugging Face](https://huggingface.co/DeeAxe/llm-prompt-detection), in `mlp/`, `cnn/`, `bilstm/`, and `distilbert/`. The model card explains the project, shared data condition, results, licenses, and loading instructions. This is prompt harmfulness classification; context-dependent prompt injection remains a separate experiment. The repository includes an inference helper that reproduces the token limits and saved preprocessing.
 
-DistilBERT loads with `AutoModelForSequenceClassification.from_pretrained("DeeAxe/llm-prompt-detection", subfolder="distilbert")` and the matching tokenizer. For the other models, download the repository and run its `predict.py`. The published files were checked against local hashes, and packaged checkpoints reproduced the checked held-out classifications. Release revision and checksums are recorded in `results/large/huggingface_publication.json`.
+Run inference by selecting the published repository and architecture:
+
+```bash
+python src/predict_large_models.py --repo-id DeeAxe/llm-prompt-detection \
+  --model distilbert --text "Explain how rainbows form."
+```
+
+Model choices are `mlp`, `cnn`, `bilstm`, and `distilbert`. The helper fetches only the selected model's checkpoint and preprocessing files, caches them, and runs inference on CPU by default. Add `--device cuda` for a local GPU, `--revision COMMIT_SHA` to pin a release, or `--offline` to reuse a cached release. The JSON output identifies the repository and resolved revision. Hugging Face supplies the model files; predictions execute locally. The repository is a checkpoint release, and no hosted inference service has been deployed.
+
+Python usage:
+
+```python
+# Run from this repository.
+from src.predict_large_models import PromptClassifier
+
+classifier = PromptClassifier.from_hub(
+    "DeeAxe/llm-prompt-detection", architecture="distilbert"
+)
+probability = classifier.probabilities(["Explain how rainbows form."])[0]
+```
+
+Local folders remain supported through `--root /path/to/downloaded/repository`. DistilBERT also loads with `AutoModelForSequenceClassification.from_pretrained("DeeAxe/llm-prompt-detection", subfolder="distilbert")` and the matching tokenizer. The published files were checked against local hashes, and packaged checkpoints reproduced the checked held-out classifications. Release revision and checksums are recorded in `results/large/huggingface_publication.json`.
 
 To package and publish an updated release explicitly:
 
