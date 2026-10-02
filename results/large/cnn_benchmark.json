@@ -1,0 +1,23 @@
+{
+  "model": "cnn",
+  "benchmark_only": true,
+  "rows_processed": 1920,
+  "seconds": 1.3041217130012228,
+  "estimated_epoch_seconds": 67.92300588548035,
+  "peak_gpu_allocated_mb": 76.68798828125,
+  "encoder_gradient_verified": false,
+  "config": {
+    "model": "cnn",
+    "data": "/home/deep/Documents/dl_codex/data/processed/large",
+    "output": "/home/deep/Documents/dl_codex/results/large",
+    "artifacts": "/home/deep/Documents/dl_codex/artifacts/large",
+    "encoder": "/home/deep/Documents/dl_codex/data/models/distilbert",
+    "device": "cuda",
+    "epochs": 3,
+    "batch_size": 64,
+    "accumulation": 1,
+    "max_tokens": 256,
+    "seed": 4442,
+    "benchmark_steps": 30
+  }
+}

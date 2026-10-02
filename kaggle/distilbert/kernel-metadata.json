@@ -1,0 +1,15 @@
+{
+  "id": "deepamahuja/prompt-detection-distilbert-100k",
+  "title": "Prompt detection DistilBERT 100k",
+  "code_file": "train.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [
+    "deepamahuja/wildjailbreak-100k-grouped"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}
