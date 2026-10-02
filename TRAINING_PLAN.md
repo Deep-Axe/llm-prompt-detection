@@ -8,10 +8,10 @@ After normalization, deduplication, conflict removal, and request grouping, the 
 
 | Model | Configuration | Training location |
 | --- | --- | --- |
-| MLP (Ashlesh) | Hashed word 1–2 / character 3–5 TF-IDF, 32,768 features, 64-unit hidden layer; Adam 0.001, batch 256 | Local CPU, disk-backed feature batches |
-| CNN (Aditya) | Training-only 20,000-token vocabulary, 64-dimensional embeddings, widths 3/4/5 and 64 filters; AdamW 0.001, batch 64 | Local RTX 3060 |
-| BiLSTM (Deepam) | Same vocabulary/embeddings, 64 hidden units per direction, mean/max pooling; AdamW 0.001, batch 64 | Local RTX 3060 |
-| DistilBERT (Deepam) | All encoder and classifier parameters trainable; AdamW 2e-5, weight decay 0.01, 10% warmup then linear decay, batch 32, FP16, gradient checkpointing | Kaggle, one T4 used from its two-card allocation |
+| MLP | Hashed word 1–2 / character 3–5 TF-IDF, 32,768 features, 64-unit hidden layer; Adam 0.001, batch 256 | Local CPU, disk-backed feature batches |
+| CNN | Training-only 20,000-token vocabulary, 64-dimensional embeddings, widths 3/4/5 and 64 filters; AdamW 0.001, batch 64 | Local RTX 3060 |
+| BiLSTM | Same vocabulary/embeddings, 64 hidden units per direction, mean/max pooling; AdamW 0.001, batch 64 | Local RTX 3060 |
+| DistilBERT | All encoder and classifier parameters trainable; AdamW 2e-5, weight decay 0.01, 10% warmup then linear decay, batch 32, FP16, gradient checkpointing | Kaggle, one T4 used from its two-card allocation |
 
 Each architecture runs three epochs with seed 4442 and selects its checkpoint by validation F1. Threshold stays at 0.5. Every model trains on every one of the 100,000 selected prompts each epoch. All have a 256-token limit, although regex and WordPiece tokenization differ. This is a basic baseline comparison, with no hyperparameter search or multi-seed claim.
 
@@ -42,9 +42,6 @@ The imported corpus and community holdout are unchanged. All models share row id
 
 Sequence models use a limit of 128 tokens. Regex and WordPiece tokenization differ, and the MLP uses full text. Record those representation differences when interpreting the results. The sequence optimizers use Adam at 0.001 with gradient clipping; no hyperparameter search is performed. DistilBERT source revision and hashes are committed separately from its downloaded weights.
 
-## Team assignments
-
-The synopsis assigns TF-IDF + MLP and acquisition to M. Ashlesh Mallya; CNN and preprocessing to S Aditya; BiLSTM, frozen DistilBERT, and evaluation to Deepam Ahuja. All four models are included in the assisted implementation and initial run. Shared training and metric utilities avoid duplicating the experimental protocol; they do not transfer the first two models to Deepam. Commit authorship is kept accurate, and the team should record their own subsequent review and implementation work separately.
 
 ## Evaluation
 
