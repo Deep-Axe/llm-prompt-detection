@@ -1,0 +1,3 @@
+# Optional: candidate Hub snapshots; not needed to run cached-corpus experiments.
+huggingface-hub>=0.34,<1.0
+pyarrow>=14

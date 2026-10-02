@@ -1,0 +1,65 @@
+{
+  "raw_hashes_match": {
+    "jbb_harmful": true,
+    "jbb_benign": true,
+    "dan": true,
+    "alpaca": true
+  },
+  "exact_duplicates": 0,
+  "processed_hashes": {
+    "corpus.jsonl": "a0339a79b7aea2ee0214fb0f4532a2c027be3cb1f031d973e223253644a59847",
+    "hard_negatives.jsonl": "58e5c3c29aad5a064f1d1ba905b185da50e44d90ef79926ece09dd51b2f9d639"
+  },
+  "counts": {
+    "heldout|1|dan": 196,
+    "test|0|alpaca": 189,
+    "test|1|dan": 174,
+    "test|1|jbb_harmful": 15,
+    "train|0|alpaca": 882,
+    "train|1|dan": 812,
+    "train|1|jbb_harmful": 70,
+    "val|0|alpaca": 189,
+    "val|1|dan": 174,
+    "val|1|jbb_harmful": 15
+  },
+  "lengths": {
+    "alpaca": {
+      "n": 1260,
+      "median": 68.0,
+      "p90": 131.0,
+      "max": 766
+    },
+    "dan": {
+      "n": 1356,
+      "median": 1762.5,
+      "p90": 5062.5,
+      "max": 55051
+    },
+    "jbb_harmful": {
+      "n": 100,
+      "median": 81.5,
+      "p90": 121.10000000000001,
+      "max": 155
+    }
+  },
+  "dan_similarity_to_training": {
+    "val": {
+      "dan_rows": 174,
+      "nearest_train_cosine_ge_0.9": 39,
+      "nearest_train_cosine_ge_0.95": 26
+    },
+    "test": {
+      "dan_rows": 174,
+      "nearest_train_cosine_ge_0.9": 47,
+      "nearest_train_cosine_ge_0.95": 37
+    },
+    "heldout": {
+      "dan_rows": 196,
+      "nearest_train_cosine_ge_0.9": 0,
+      "nearest_train_cosine_ge_0.95": 0
+    }
+  },
+  "known_dan_communities_shared_train_test": 45,
+  "alpaca_label_status": "assumed benign; overlap checks are not safety review",
+  "similarity_method": "train-fitted character TF-IDF 3-5 grams, 20000 features, cosine; diagnostic only"
+}
