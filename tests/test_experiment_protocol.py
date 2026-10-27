@@ -8,9 +8,28 @@ import torch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1] / 'src'))
 from aggregate_experiments import aggregate
 from experiment_state import capture_rng, restore_rng, update_validation, atomic_torch
+from experiment_data import cache_fingerprint, prepare
 
 
 class ProtocolTests(unittest.TestCase):
+    def test_feature_cache_reuses_files_across_seeds_and_rejects_changed_data(self):
+        import json
+        config={'model':'mlp','seed':4442,'data_hashes':{'train':'fixed'},'max_tokens':256,
+                'smoke_only':False,'batch_size':256,'model_settings':{},
+                'code_hashes':dict.fromkeys(['experiment_data.py','large_data.py','train_large_mlp.py'],'code')}
+        second=deepcopy(config); second['seed']=4443
+        self.assertEqual(cache_fingerprint(config),cache_fingerprint(second))
+        with tempfile.TemporaryDirectory() as folder:
+            source=Path(folder)/'source'; source.mkdir()
+            (source/'complete.json').write_text(json.dumps({'fingerprint':cache_fingerprint(config),'counts':{}}))
+            np.save(source/'values.npy',np.arange(4))
+            target=Path(folder)/'seed_4443'
+            reused=prepare(Path('unused'),target,{},second,None,source)
+            self.assertTrue(reused['reused'])
+            self.assertTrue((source/'values.npy').samefile(target/'cache/values.npy'))
+            second['data_hashes']['train']='changed'
+            with self.assertRaises(ValueError): prepare(Path('unused'),Path(folder)/'wrong',{},second,None,source)
+
     def test_early_stopping_state_survives_checkpoint(self):
         state={'epoch':0,'best_score':None,'bad_epochs':0,'chosen_epoch':None,'early_stopped':False}
         self.assertTrue(update_validation(state,.8,2))
