@@ -1,0 +1,139 @@
+{
+  "purpose": "bounded save/resume smoke verification; not a full training comparison",
+  "protocol_sha256": "50974cb89ddd5ec6bc3a21625d051c9701a4e3db56bb45155b151bfd7ea30a70",
+  "models": {
+    "mlp": {
+      "passed": true,
+      "seed": 4442,
+      "smoke_only": true,
+      "train_rows": 512,
+      "epochs_run": 2,
+      "interrupted_after_updates": 1,
+      "resumed_mid_epoch": true,
+      "optimizer_state_verified": true,
+      "scheduler_state_verified": null,
+      "amp_state_verified": null,
+      "rng_state_verified": true,
+      "max_weight_difference": 0.0,
+      "max_probability_differences": {
+        "train": 0.0,
+        "val": 0.0,
+        "test": 0.0,
+        "official_eval": 0.0
+      },
+      "gpu": null,
+      "encoder_gradient_verified": null,
+      "encoder_weight_changed": null
+    },
+    "cnn": {
+      "passed": true,
+      "seed": 4442,
+      "smoke_only": true,
+      "train_rows": 512,
+      "epochs_run": 2,
+      "interrupted_after_updates": 1,
+      "resumed_mid_epoch": true,
+      "optimizer_state_verified": true,
+      "scheduler_state_verified": true,
+      "amp_state_verified": null,
+      "rng_state_verified": true,
+      "max_weight_difference": 0.0,
+      "max_probability_differences": {
+        "train": 0.0,
+        "val": 0.0,
+        "test": 0.0,
+        "official_eval": 0.0
+      },
+      "gpu": "Tesla T4",
+      "encoder_gradient_verified": null,
+      "encoder_weight_changed": null
+    },
+    "bilstm": {
+      "passed": true,
+      "seed": 4442,
+      "smoke_only": true,
+      "train_rows": 512,
+      "epochs_run": 2,
+      "interrupted_after_updates": 1,
+      "resumed_mid_epoch": true,
+      "optimizer_state_verified": true,
+      "scheduler_state_verified": true,
+      "amp_state_verified": null,
+      "rng_state_verified": true,
+      "max_weight_difference": 0.0,
+      "max_probability_differences": {
+        "train": 0.0,
+        "val": 0.0,
+        "test": 0.0,
+        "official_eval": 0.0
+      },
+      "gpu": "Tesla T4",
+      "encoder_gradient_verified": null,
+      "encoder_weight_changed": null
+    },
+    "distilbert": {
+      "passed": true,
+      "seed": 4442,
+      "smoke_only": true,
+      "train_rows": 512,
+      "epochs_run": 2,
+      "interrupted_after_updates": 1,
+      "resumed_mid_epoch": true,
+      "optimizer_state_verified": true,
+      "scheduler_state_verified": true,
+      "amp_state_verified": true,
+      "rng_state_verified": true,
+      "max_weight_difference": 0.0,
+      "max_probability_differences": {
+        "train": 0.0,
+        "val": 0.0,
+        "test": 0.0,
+        "official_eval": 0.0
+      },
+      "gpu": "Tesla T4",
+      "encoder_gradient_verified": true,
+      "encoder_weight_changed": true
+    }
+  },
+  "status": "passed",
+  "baseline_files_checked": 20,
+  "baseline_unchanged": true,
+  "kaggle_kernel": "deepamahuja/prompt-detection-protocol-resume-check",
+  "local_baseline_files_checked": 30,
+  "local_baseline_unchanged": true,
+  "runner_code_hashes": {
+    "train_experiment.py": "8ed05226a3758ae9944c7825fdbf9e51dc17ca34dca409393efa46efa952f429",
+    "experiment_state.py": "b7e09485f1d3154d6350d228b47e5068afbd12beab19681c67fde3d5631274ad",
+    "experiment_data.py": "dc4c001b57ab7f9446cb951302a9f5a4f3271efbfb845aac69f76d5c11bab5ea",
+    "neural_models.py": "600f3a10eaea9dbc237adf4181d0e8c854c27adcfb0f215550ce9137db3c8cb5",
+    "large_data.py": "9472aa4d72d0995cfaad96607b13505e3b013203db1cfc857b3584f5d32ab440",
+    "evaluation.py": "55f6cf347c139d4e7014cf9ebe25f98d2dc2d15c9a899016dc295d9825084820",
+    "train_large_mlp.py": "9f6a1cb0582ec5d9f6d4d2e98af40b72b3bbad3f0622ffda2065f9674f5dfdc1"
+  },
+  "environments": {
+    "mlp": {
+      "python": "3.12.13",
+      "torch": "2.10.0+cu128",
+      "device": "cpu",
+      "gpu": null
+    },
+    "distilbert": {
+      "python": "3.12.13",
+      "torch": "2.10.0+cu128",
+      "device": "cuda",
+      "gpu": "Tesla T4"
+    },
+    "bilstm": {
+      "python": "3.12.13",
+      "torch": "2.10.0+cu128",
+      "device": "cuda",
+      "gpu": "Tesla T4"
+    },
+    "cnn": {
+      "python": "3.12.13",
+      "torch": "2.10.0+cu128",
+      "device": "cuda",
+      "gpu": "Tesla T4"
+    }
+  }
+}
