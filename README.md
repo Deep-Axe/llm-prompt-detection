@@ -4,7 +4,7 @@ This project compares four models for detecting harmful prompts: a TF–IDF MLP,
 
 The current experiment uses 100,000 unique training prompts from [WildJailbreak](https://huggingface.co/datasets/allenai/wildjailbreak). All four models completed three epochs on the same split. DistilBERT was fine-tuned across the full encoder and classification head.
 
-[Models on Hugging Face](https://huggingface.co/DeeAxe/llm-prompt-detection) · [Detailed results](results/large/README.md) · [Training settings](TRAINING_PLAN.md)
+[Models on Hugging Face](https://huggingface.co/DeeAxe/llm-prompt-detection) · [Detailed results](results/large/README.md) · [Training settings](EXPERIMENTS.md)
 
 ## Results
 
@@ -101,7 +101,7 @@ python src/train_large_neural.py distilbert \
 
 Each run selects its checkpoint using validation F1. The input limit is 256 tokens; MLP, CNN, and BiLSTM use regex tokens, while DistilBERT uses WordPiece. Vocabulary and TF–IDF statistics are fitted on training data only. Checkpoints and predictions are saved under `artifacts/large/`, and aggregate metrics under `results/large/`.
 
-The completed MLP run used local CPU, CNN and BiLSTM used an RTX 3060, and DistilBERT used one Kaggle T4. [TRAINING_PLAN.md](TRAINING_PLAN.md) records the model configurations, hardware, and training budgets.
+The completed MLP run used local CPU, CNN and BiLSTM used an RTX 3060, and DistilBERT used one Kaggle T4. [EXPERIMENTS.md](EXPERIMENTS.md) records the model configurations, hardware, and training budgets.
 
 ### Train DistilBERT on Kaggle
 
@@ -142,7 +142,7 @@ The comparison checks that all models used the same partitions and prediction id
 
 ## Extended experiments
 
-The Part C runners add early stopping, resumable checkpoints, and separate outputs for each dataset condition, model, and seed. [EXPERIMENTS.md](EXPERIMENTS.md) covers the frozen protocol, Kaggle verification, and aggregation of repeated runs. The remaining work and parallel tracks are in [plan.md](plan.md).
+The training runners add early stopping, resumable checkpoints, and separate outputs for each dataset condition, model, and seed. [EXPERIMENTS.md](EXPERIMENTS.md) covers the frozen protocol, Kaggle verification, and aggregation of repeated runs.
 
 ## Repository layout
 

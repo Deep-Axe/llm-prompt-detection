@@ -1,4 +1,4 @@
-"""Isolated, resumable training under a frozen Part C protocol."""
+"""Isolated, resumable training under a frozen training protocol."""
 import argparse
 from copy import deepcopy
 import json
@@ -26,7 +26,7 @@ CODE_FILES=['train_experiment.py','experiment_state.py','experiment_data.py','ne
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('model',choices=['mlp','cnn','bilstm','distilbert','deberta'])
-    parser.add_argument('--protocol',type=Path,default=ROOT / 'configs/part_c_protocol.json')
+    parser.add_argument('--protocol',type=Path,default=ROOT / 'configs/training_protocol.json')
     parser.add_argument('--condition',default='wildjailbreak-100k')
     parser.add_argument('--data',type=Path,default=ROOT / 'data/processed/large')
     parser.add_argument('--encoder',type=Path,default=ROOT / 'data/models/distilbert')

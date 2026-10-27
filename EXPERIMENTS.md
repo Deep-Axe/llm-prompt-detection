@@ -1,10 +1,10 @@
-# Part C experiment runners
+# Training and repeated-seed evaluation
 
 The completed 100,000-row baseline remains in `results/large/` and `artifacts/large/`. New runs use separate directories under `results/experiments/` and `artifacts/experiments/`.
 
 ## Frozen protocol
 
-[configs/part_c_protocol.json](configs/part_c_protocol.json) records:
+[configs/training_protocol.json](configs/training_protocol.json) records:
 
 - Baseline results commit, current repository commit, complete baseline reports, and baseline file hashes.
 - Dataset revision, partition hashes, and pretrained encoder sources.
@@ -17,7 +17,7 @@ MLP uses a 256-row feature batch per `partial_fit` call in the new runner. The e
 To freeze another protocol version, use a new filename:
 
 ```bash
-python src/freeze_experiment_protocol.py --output configs/part_c_protocol_v2.json
+python src/freeze_experiment_protocol.py --output configs/training_protocol_v2.json
 ```
 
 The existing protocol file is never silently replaced.

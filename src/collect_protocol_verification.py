@@ -28,8 +28,8 @@ def main():
     subprocess.run(['kaggle','kernels','output',args.kernel,'-p',str(target),'-o','--file-pattern',
                     r'(^|/)(resume_verification[.]json|smoke_aggregation[.]json|protocol_smoke_results[.]zip|.*[.]log)$'],check=True)
     report=json.loads((target / 'resume_verification.json').read_text())
-    protocol=json.loads((ROOT / 'configs/part_c_protocol.json').read_text())
-    if report['protocol_sha256']!=file_hash(ROOT / 'configs/part_c_protocol.json'): raise ValueError('Protocol hash differs')
+    protocol=json.loads((ROOT / 'configs/training_protocol.json').read_text())
+    if report['protocol_sha256']!=file_hash(ROOT / 'configs/training_protocol.json'): raise ValueError('Protocol hash differs')
     if report['status']!='passed' or set(report['models'])!={'mlp','cnn','bilstm','distilbert'}:
         raise ValueError('Four-model verification is incomplete')
     for model,check in report['models'].items():
