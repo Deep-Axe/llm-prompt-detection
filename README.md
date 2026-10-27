@@ -185,6 +185,7 @@ python src/collect_training_runs.py --source-dir artifacts/training_source --wat
   --kernels YOUR_USERNAME/prompt-detection-distilbert-seeds \
             YOUR_USERNAME/prompt-detection-bilstm-distilbert-seeds
 python src/aggregate_experiments.py
+python src/summarize_training_results.py
 ```
 
 The summary reports means and sample standard deviations across seeds, and identifies incomplete seed sets. Completed checkpoints and predictions remain outside GitHub.
