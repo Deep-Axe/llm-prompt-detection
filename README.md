@@ -140,6 +140,10 @@ python -m unittest discover -s tests -v
 
 The comparison checks that all models used the same partitions and prediction identifiers. It produces a results table, CSV, and paired bootstrap intervals over test request groups. Per-model JSON files include validation history, classification and calibration metrics, data-type slices, parameter counts, timings, and file hashes.
 
+## Extended experiments
+
+The Part C runners add early stopping, resumable checkpoints, and separate outputs for each dataset condition, model, and seed. [EXPERIMENTS.md](EXPERIMENTS.md) covers the frozen protocol, Kaggle verification, and aggregation of repeated runs. The remaining work and parallel tracks are in [plan.md](plan.md).
+
 ## Repository layout
 
 | Path | Contents |
