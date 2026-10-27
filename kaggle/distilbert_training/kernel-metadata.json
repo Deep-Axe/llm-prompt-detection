@@ -1,0 +1,19 @@
+{
+  "id": "deepamahuja/prompt-detection-distilbert-seeds",
+  "title": "Prompt detection distilbert seeds",
+  "code_file": "train.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "machine_shape": "NvidiaTeslaT4",
+  "docker_image_pinning_type": "original",
+  "docker_image": "gcr.io/kaggle-private-byod/python@sha256:37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+  "dataset_sources": [
+    "deepamahuja/wildjailbreak-100k-grouped",
+    "deepamahuja/prompt-detection-training-runners"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

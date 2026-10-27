@@ -40,7 +40,9 @@ def main():
         'The MLP uses full text and runs on CPU. CNN and BiLSTM use the first 128 regex tokens; DistilBERT uses 128 WordPiece tokens including special tokens, with only its linear head trained. Token budgets have the same numerical cap but different tokenization. CUDA timings are synchronized. Batch timings include text processing and, for DistilBERT, the encoder; cached embeddings are not used for latency measurement.', '',
         'MLP and GPU-model timings are measured on different processors and cannot establish an intrinsic architecture speed ranking. JSON files retain full metrics, parameter counts, training/encoding times, GPU peak allocation, error identifiers, and corpus hashes. Checkpoints and downloaded weights remain local in ignored directories.', '',
         'These are initial single-seed, fixed-budget results. They do not establish tuned performance or robustness to real indirect prompt injection.']
-    (ROOT/'results/README.md').write_text('\n'.join(lines)+'\n')
+    notes=ROOT/'traige/results'
+    notes.mkdir(parents=True,exist_ok=True)
+    (notes/'README.md').write_text('\n'.join(lines)+'\n')
     print('\n'.join(lines[:13]))
 
 

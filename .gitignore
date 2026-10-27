@@ -25,6 +25,7 @@ report/
 artifacts/
 data/models/
 
-# Local planning and submission notes
-/plan.md
-/TRAINING_PLAN.md
+# Local notes
+/traige/
+*.md
+!/README.md
