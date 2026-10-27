@@ -26,10 +26,10 @@ def atomic_torch(path, state):
     os.replace(temp, path)
 
 
-def capture_rng():
+def capture_rng(include_cuda=True):
     return {'python': random.getstate(), 'numpy': np.random.get_state(),
             'torch': torch.get_rng_state(),
-            'cuda': torch.cuda.get_rng_state_all() if torch.cuda.is_available() else None}
+            'cuda': torch.cuda.get_rng_state_all() if include_cuda and torch.cuda.is_available() else None}
 
 
 def restore_rng(state):

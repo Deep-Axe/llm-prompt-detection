@@ -1,12 +1,12 @@
 """Isolated, resumable training under a frozen training protocol."""
 import argparse
-from copy import deepcopy
 import json
 import math
 import os
 from pathlib import Path
 import platform
 import random
+import shutil
 import time
 os.environ.setdefault('CUBLAS_WORKSPACE_CONFIG', ':4096:8')
 import joblib
@@ -38,6 +38,8 @@ def main():
     parser.add_argument('--smoke',action='store_true',help='Bounded save/resume verification, never a full training result')
     parser.add_argument('--interrupt-after-updates',type=int,default=0,help='Exit 75 after this many optimizer updates')
     parser.add_argument('--checkpoint-every',type=int,default=100)
+    parser.add_argument('--reuse-cache',type=Path,help='Reuse compatible immutable preprocessing files')
+    parser.add_argument('--prepare-only',action='store_true',help='Build preprocessing files without training')
     args=parser.parse_args()
     protocol=json.loads(args.protocol.read_text())
     if args.seed not in protocol['seeds']: parser.error('Seed is outside the frozen protocol')
@@ -64,6 +66,8 @@ def main():
         'accumulation':protocol['gradient_accumulation'], 'device_type':torch.device(args.device).type,
         'smoke_only':args.smoke,'smoke_train_rows':protocol['smoke_policy']['train_rows'],
         'smoke_eval_rows':protocol['smoke_policy']['evaluation_rows_per_partition']}
+    revision_file=ROOT / 'source_revision.json'
+    config['source_revision']=json.loads(revision_file.read_text()) if revision_file.exists() else None
     if config['threshold']!=.5: raise ValueError('Metric harness requires the frozen 0.5 threshold')
     config['fingerprint']=digest_json(config)
     relative=Path(args.condition) / args.model / f'seed_{args.seed}'
@@ -76,6 +80,9 @@ def main():
     if (last.exists() or (output / 'result.json').exists()) and not args.resume:
         raise FileExistsError('Existing run: choose a new root or pass --resume')
     if args.resume and not last.exists(): raise FileNotFoundError('No resumable checkpoint in this run')
+    existing_config=output / 'config.json'
+    if existing_config.exists() and json.loads(existing_config.read_text())['fingerprint']!=config['fingerprint']:
+        raise ValueError('Existing run configuration differs; choose a new output directory')
     atomic_json(output / 'config.json',config)
     random.seed(args.seed); np.random.seed(args.seed); torch.manual_seed(args.seed)
     if torch.cuda.is_available(): torch.cuda.manual_seed_all(args.seed)
@@ -83,7 +90,13 @@ def main():
     torch.backends.cudnn.benchmark=False; torch.backends.cudnn.deterministic=True
     device=torch.device(args.device)
     if device.type=='cuda': torch.cuda.reset_peak_memory_stats(device)
-    cache_info=prepare(args.data,artifact,manifest,config,args.encoder)
+    feature_start=time.perf_counter()
+    cache_info=prepare(args.data,artifact,manifest,config,args.encoder,args.reuse_cache)
+    feature_seconds=time.perf_counter()-feature_start
+    if args.prepare_only:
+        atomic_json(output / 'status.json',{'status':'prepared','model':args.model,'seed':args.seed,
+            'feature_seconds':feature_seconds,'cache_build_seconds':cache_info['cache_build_seconds']})
+        return 0
     cache=artifact / 'cache'
     metadata={s:json.loads((cache / f'{s}_metadata.json').read_text()) for s in PARTITIONS}
     n=cache_info['counts']['train']
@@ -166,7 +179,7 @@ def main():
     def checkpoint():
         if device.type=='cuda': torch.cuda.synchronize(device)
         state['training_seconds']=previous_seconds+time.perf_counter()-elapsed_start
-        payload={'fingerprint':config['fingerprint'],'config':config,'state':state,'rng':capture_rng()}
+        payload={'fingerprint':config['fingerprint'],'config':config,'state':state,'rng':capture_rng(include_cuda=device.type=='cuda')}
         if args.model=='mlp':
             payload['model']=model
             temp=last.with_suffix('.tmp'); joblib.dump(payload,temp); os.replace(temp,last)
@@ -240,6 +253,16 @@ def main():
             scores[f'{split}/{family}']=metrics([metadata[split][i] for i in indices],values[indices])
         np.savez_compressed(artifact / f'{split}_predictions.npz',ids=np.array([r['id'] for r in metadata[split]]),
             labels=np.array([r['label'] for r in metadata[split]]),probabilities=values)
+    if transformer:
+        model.config.id2label={0:'benign',1:'harmful'}
+        model.config.label2id={'benign':0,'harmful':1}
+        model.save_pretrained(artifact / 'model')
+        from transformers import AutoTokenizer
+        AutoTokenizer.from_pretrained(args.encoder,local_files_only=True).save_pretrained(artifact / 'model')
+    elif args.model=='mlp':
+        joblib.dump(features | {'model':model,'max_tokens':config['max_tokens']},artifact / 'checkpoint.joblib')
+    else:
+        shutil.copy2(cache / 'vocabulary.json',artifact / 'vocabulary.json')
     result={'schema_version':1,'status':'complete','model':args.model,'condition':args.condition,'seed':args.seed,
         'protocol_sha256':config['protocol_sha256'],'run_fingerprint':config['fingerprint'],'config':config,
         'smoke_only':args.smoke,'source_train_rows':manifest['partitions']['train']['rows'],'train_rows':n,
@@ -247,11 +270,14 @@ def main():
         'early_stopped':state['early_stopped'],'chosen_epoch':state['chosen_epoch'],'history':state['history'],
         'optimizer_updates':state['optimizer_updates'],'update_attempts':state['update_attempts'],
         'training_and_validation_seconds':state['training_seconds'],'threshold':config['threshold'],
+        'feature_seconds':feature_seconds,'cache_build_seconds':cache_info['cache_build_seconds'],
+        'preprocessing_cache_reused':cache_info['reused'],
         'selection':protocol['selection'],'data_hashes':hashes,'code_hashes':config['code_hashes'],'metrics':scores,
         'encoder_frozen':False if transformer else None,'encoder_gradient_verified':state['encoder_gradient_verified'] if transformer else None,
         'encoder_weight_changed':encoder_changed,'verified_encoder_layers':len(layer_probes) if transformer else None,
         'total_parameters':sum(a.size for a in model.coefs_+model.intercepts_) if args.model=='mlp' else sum(p.numel() for p in model.parameters()),
-        'environment':{'python':platform.python_version(),'torch':torch.__version__,'device':str(device),
+        'environment':{'python':platform.python_version(),'torch':torch.__version__,'numpy':np.__version__,
+            'scikit_learn':__import__('sklearn').__version__,'device':str(device),
             'gpu':torch.cuda.get_device_name(device) if device.type=='cuda' else None},
         'peak_gpu_allocated_mb':torch.cuda.max_memory_allocated(device)/2**20 if device.type=='cuda' else None,
         'checkpoint_sha256':file_hash(best_path),'checkpoint_format':'sklearn joblib' if args.model=='mlp' else 'torch state_dict',
