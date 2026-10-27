@@ -1,0 +1,140 @@
+{
+  "wildjailbreak_pools": {
+    "dataset": "allenai/wildjailbreak",
+    "revision": "5ddc12a7894f842b0619b8e1c7ee496b198af009",
+    "rule": "Eligible train rows ordered by normalized-text id. Each larger pool is a prefix of that order and contains the frozen 100,000-row set. Validation and test assignments are unchanged.",
+    "label_mapping": {
+      "vanilla_benign": 0,
+      "adversarial_benign": 0,
+      "vanilla_harmful": 1,
+      "adversarial_harmful": 1
+    },
+    "raw_counts": {
+      "raw_eval": 2210,
+      "raw_train": 261538,
+      "duplicate_texts": 105,
+      "conflicting_labels": 1,
+      "duplicate_bridge_groups": 5,
+      "excluded_train_variants": 14
+    },
+    "eligible_train_rows": 183005,
+    "pools": {
+      "100000": {
+        "rows": 100000,
+        "groups": 56872,
+        "benign": 49285,
+        "harmful": 50715,
+        "families": {
+          "adversarial_harmful": 31655,
+          "adversarial_benign": 30086,
+          "vanilla_benign": 19199,
+          "vanilla_harmful": 19060
+        },
+        "id_sha256": "513c3162ecabd948bf214e297c32e8023b2b65b9a643770ccaec490d8a823377",
+        "request_overlap_with_val_or_test": 0,
+        "contains_frozen_100k": true
+      },
+      "150000": {
+        "rows": 150000,
+        "groups": 66683,
+        "benign": 73945,
+        "harmful": 76055,
+        "families": {
+          "adversarial_harmful": 47447,
+          "adversarial_benign": 45220,
+          "vanilla_benign": 28725,
+          "vanilla_harmful": 28608
+        },
+        "id_sha256": "5a26742684ec0690ab9fafceca43fb554e595f889f0fc8c9247a4364aa28a03c",
+        "request_overlap_with_val_or_test": 0,
+        "contains_frozen_100k": true
+      },
+      "183005": {
+        "rows": 183005,
+        "groups": 70008,
+        "benign": 90125,
+        "harmful": 92880,
+        "families": {
+          "adversarial_harmful": 57880,
+          "adversarial_benign": 55117,
+          "vanilla_benign": 35008,
+          "vanilla_harmful": 35000
+        },
+        "id_sha256": "383a6cf0c1ef6886754bb49da530e8192031ac30c086ae3669c3d9277f1ea14d",
+        "request_overlap_with_val_or_test": 0,
+        "contains_frozen_100k": true
+      }
+    },
+    "unchanged_partitions": {
+      "val": {
+        "rows": 39502,
+        "sha256": "192ad4cd320e159f7db6d49e98402647015591d0abaa8693ed89c2a7cca4f235"
+      },
+      "test": {
+        "rows": 38911,
+        "sha256": "7e5b9ccd899b8394c1ecdbf169e38ddfe14b33a733d6bc2d48e26ac35e81479b"
+      },
+      "official_eval": {
+        "rows": 2210,
+        "sha256": "ffa338c1a10a7b31cb242f0036083dbe74577ea6ca1116c304966de5367555c8"
+      }
+    },
+    "trained": false
+  },
+  "wildguardmix": {
+    "dataset": "allenai/wildguardmix",
+    "task": "prompt harmfulness only",
+    "splits": {
+      "train": {
+        "rows": 86759,
+        "missing_prompt_harm_label": 0,
+        "duplicate_rows_same_label": 38928,
+        "label_conflicts_removed": 16,
+        "unique_labeled_prompts": 47788,
+        "harmful": 24750,
+        "unharmful": 23038,
+        "raw_label_counts": {
+          "unharmful": 40543,
+          "harmful": 46216
+        },
+        "adversarial_flag_counts": {
+          "True": 40956,
+          "False": 45803
+        },
+        "exact_overlap_with_wildjailbreak": {
+          "eligible_train": 13403,
+          "train_100k": 7304,
+          "val": 2891,
+          "test": 2851,
+          "official_eval": 0
+        }
+      },
+      "test": {
+        "rows": 1725,
+        "missing_prompt_harm_label": 26,
+        "duplicate_rows_same_label": 0,
+        "label_conflicts_removed": 0,
+        "unique_labeled_prompts": 1699,
+        "harmful": 754,
+        "unharmful": 945,
+        "raw_label_counts": {
+          "unharmful": 945,
+          "harmful": 754
+        },
+        "adversarial_flag_counts": {
+          "False": 903,
+          "True": 796
+        },
+        "exact_overlap_with_wildjailbreak": {
+          "eligible_train": 4,
+          "train_100k": 4,
+          "val": 0,
+          "test": 0,
+          "official_eval": 0
+        }
+      }
+    },
+    "use": "Separate from the WildJailbreak training set. The WildGuard test split stays out of training.",
+    "trained": false
+  }
+}

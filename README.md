@@ -81,6 +81,8 @@ Preparation removes normalized duplicates and conflicting labels, keeps each ori
 
 The audit checks exact prompt overlap across all partitions and underlying-request overlap across the main splits. The official evaluation omits the original request identifiers, so its overlap check is limited to exact text. Counts, source revisions, and file hashes are saved in [the data manifest](results/large/data_manifest.json).
 
+The same ordering also defines training pools of 150,000 and 183,005 prompts. Both contain the 100,000-prompt set and share no underlying request with validation or test. The reported models use only the 100,000-prompt pool. WildGuardMix was not added: 2,851 of its unique labeled training prompts also appear in the WildJailbreak test split. The counts are in [results/data_conditions.json](results/data_conditions.json).
+
 ## Train the models
 
 Run the MLP on CPU and the sequence models on GPU:
