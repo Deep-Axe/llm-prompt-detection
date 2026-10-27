@@ -4,7 +4,7 @@ This project compares four models for detecting harmful prompts: a TF–IDF MLP,
 
 The current experiment uses 100,000 unique training prompts from [WildJailbreak](https://huggingface.co/datasets/allenai/wildjailbreak). All four models completed three epochs on the same split. DistilBERT was fine-tuned across the full encoder and classification head.
 
-[Models on Hugging Face](https://huggingface.co/DeeAxe/llm-prompt-detection) · [Detailed results](results/large/README.md) · [Training settings](EXPERIMENTS.md)
+[Models on Hugging Face](https://huggingface.co/DeeAxe/llm-prompt-detection) · [Baseline results](results/large/comparison.csv) · [Training configuration](configs/training_protocol.json)
 
 ## Results
 
@@ -101,7 +101,7 @@ python src/train_large_neural.py distilbert \
 
 Each run selects its checkpoint using validation F1. The input limit is 256 tokens; MLP, CNN, and BiLSTM use regex tokens, while DistilBERT uses WordPiece. Vocabulary and TF–IDF statistics are fitted on training data only. Checkpoints and predictions are saved under `artifacts/large/`, and aggregate metrics under `results/large/`.
 
-The completed MLP run used local CPU, CNN and BiLSTM used an RTX 3060, and DistilBERT used one Kaggle T4. [EXPERIMENTS.md](EXPERIMENTS.md) records the model configurations, hardware, and training budgets.
+The completed MLP run used local CPU, CNN and BiLSTM used an RTX 3060, and DistilBERT used one Kaggle T4. Model configurations and training budgets are recorded in [configs/training_protocol.json](configs/training_protocol.json).
 
 ### Train DistilBERT on Kaggle
 
@@ -142,7 +142,50 @@ The comparison checks that all models used the same partitions and prediction id
 
 ## Extended experiments
 
-The training runners add early stopping, resumable checkpoints, and separate outputs for each dataset condition, model, and seed. [EXPERIMENTS.md](EXPERIMENTS.md) covers the frozen protocol, Kaggle verification, and aggregation of repeated runs.
+The training runners select checkpoints by validation F1, use early stopping with patience two, and save optimizer, scheduler, random-number, and mixed-precision state. Seeds are 4442, 4443, and 4444. Epoch caps are ten for MLP/CNN/BiLSTM and five for DistilBERT.
+
+Queue the three MLP runs on CPU followed by the three CNN runs on GPU:
+
+```bash
+python src/run_training_sweep.py
+```
+
+A single run can be started or resumed directly:
+
+```bash
+python src/train_experiment.py cnn --seed 4442 --device cuda
+python src/train_experiment.py cnn --seed 4442 --device cuda --resume
+```
+
+Each condition, model, and seed has its own directory under `results/experiments/` and `artifacts/experiments/`. Prepared features can be reused across seeds. The recorded recovery checks compare interrupted and uninterrupted training in [results/protocol_verification/](results/protocol_verification/).
+
+For Kaggle, export a committed source snapshot and package the training input:
+
+```bash
+python src/snapshot_training_source.py --output artifacts/training_source --copy-data
+python src/package_training_kaggle.py --source-dir artifacts/training_source --username YOUR_USERNAME
+kaggle datasets create -p kaggle/input/training_runners --keep-tabular
+```
+
+After the code dataset is ready, submit the two queues:
+
+```bash
+kaggle kernels push -p kaggle/distilbert_training --accelerator NvidiaTeslaT4
+kaggle kernels push -p kaggle/bilstm_training --accelerator NvidiaTeslaT4
+```
+
+Independent seeds use separate GPUs. The second queue trains the three BiLSTM seeds and takes the remaining DistilBERT seed as a GPU becomes free. Both queues use the same source snapshot and prepared 100,000-row input.
+
+Collect and validate the finished runs, then aggregate their metrics:
+
+```bash
+python src/collect_training_runs.py --source-dir artifacts/training_source --watch \
+  --kernels YOUR_USERNAME/prompt-detection-distilbert-seeds \
+            YOUR_USERNAME/prompt-detection-bilstm-distilbert-seeds
+python src/aggregate_experiments.py
+```
+
+The summary reports means and sample standard deviations across seeds, and identifies incomplete seed sets. Completed checkpoints and predictions remain outside GitHub.
 
 ## Repository layout
 
@@ -156,7 +199,7 @@ The training runners add early stopping, resumable checkpoints, and separate out
 
 Raw data, processed prompts, checkpoints, and prediction files stay in ignored local folders. Published checkpoints are hosted on Hugging Face.
 
-The earlier DAN/JailbreakBench/Alpaca experiment remains available through `src/run_experiments.py` and [its results summary](results/README.md). It used 1,764 training prompts and a frozen DistilBERT encoder. [DATA_STRATEGY.md](DATA_STRATEGY.md) explains the length and template overlap issues that led to the larger experiment.
+The earlier DAN/JailbreakBench/Alpaca experiment remains available through `src/run_experiments.py` and [its result files](results/). It used 1,764 training prompts and a frozen DistilBERT encoder. Length differences and related templates made that corpus an easy classification problem, motivating the larger dataset.
 
 ## License
 

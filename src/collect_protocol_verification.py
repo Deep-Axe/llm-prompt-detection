@@ -38,7 +38,7 @@ def main():
         if check['train_rows']!=protocol['smoke_policy']['train_rows']: raise ValueError('Smoke budget differs')
         if model=='distilbert' and not all(check[k] for k in ['amp_state_verified','encoder_gradient_verified','encoder_weight_changed']):
             raise ValueError('Encoder/AMP verification incomplete')
-    local_inventory=protocol['baseline_inventory']
+    local_inventory={name:sha for name,sha in protocol['baseline_inventory'].items() if not name.endswith('.md')}
     if any(file_hash(ROOT / path)!=sha for path,sha in local_inventory.items()):
         raise ValueError('A local baseline file changed')
     actual_code=code_hashes(CODE_FILES)

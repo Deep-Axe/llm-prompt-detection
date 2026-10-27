@@ -14,7 +14,8 @@ def main():
     folder.mkdir(parents=True,exist_ok=True)
     protocol=json.loads((ROOT / 'configs/training_protocol.json').read_text())
     paths=list((ROOT / 'src').glob('*.py'))+[ROOT / 'configs/training_protocol.json',ROOT / 'LICENSE']
-    paths += [ROOT / name for name in protocol['baseline_inventory'] if name.startswith('results/large/')]
+    paths += [ROOT / name for name in protocol['baseline_inventory']
+              if name.startswith('results/large/') and (ROOT / name).exists()]
     with zipfile.ZipFile(folder / 'protocol_runner.zip','w',compression=zipfile.ZIP_DEFLATED) as archive:
         for path in paths: archive.write(path,path.relative_to(ROOT))
     dataset={'title':'Prompt detection protocol runners v1','id':f'{args.username}/prompt-detection-protocol-runners-v1',

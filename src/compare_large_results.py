@@ -77,7 +77,9 @@ def main():
               'All models have a 256-token context budget, but regex and WordPiece tokenization differ. These are single-seed baseline runs on a largely synthetic corpus, with upstream labels retained. Harmfulness detection is not a complete test of context-dependent prompt injection. The official evaluation is mostly harmful, so benign acceptance must be read alongside F1.', '',
               'The accompanying uncertainty.json gives paired 95% bootstrap intervals over underlying test request groups (1,000 resamples). These measure test sampling uncertainty, not training-seed variation or annotation quality.', '',
               'Hardware differs between local and Kaggle training; training times describe these runs and should not be treated as an architecture speed ranking. Weights, prompt data, and individual predictions remain outside Git. See the JSON reports for metrics, validation histories, code hashes, and partition hashes.']
-    (folder / 'README.md').write_text('\n'.join(lines)+'\n')
+    notes = ROOT / 'traige/results/large'
+    notes.mkdir(parents=True, exist_ok=True)
+    (notes / 'README.md').write_text('\n'.join(lines)+'\n')
     print('\n'.join(lines[:12]))
 
 
