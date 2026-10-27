@@ -16,7 +16,7 @@ def main():
     p.add_argument('--models',nargs='+',default=['mlp','cnn','bilstm','distilbert'])
     p.add_argument('--device',default='cuda')
     p.add_argument('--root',type=Path,default=ROOT / 'artifacts/resume_verification')
-    p.add_argument('--protocol',type=Path,default=ROOT / 'configs/part_c_protocol.json')
+    p.add_argument('--protocol',type=Path,default=ROOT / 'configs/training_protocol.json')
     args=p.parse_args()
     protocol=json.loads(args.protocol.read_text())
     baseline_before={path:file_hash(ROOT / path) for path in protocol['baseline_inventory'] if (ROOT / path).exists()}

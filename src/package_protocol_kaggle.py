@@ -12,8 +12,8 @@ def main():
     args=p.parse_args()
     folder=ROOT / 'kaggle/input/protocol_runners'
     folder.mkdir(parents=True,exist_ok=True)
-    protocol=json.loads((ROOT / 'configs/part_c_protocol.json').read_text())
-    paths=list((ROOT / 'src').glob('*.py'))+[ROOT / 'configs/part_c_protocol.json',ROOT / 'LICENSE']
+    protocol=json.loads((ROOT / 'configs/training_protocol.json').read_text())
+    paths=list((ROOT / 'src').glob('*.py'))+[ROOT / 'configs/training_protocol.json',ROOT / 'LICENSE']
     paths += [ROOT / name for name in protocol['baseline_inventory'] if name.startswith('results/large/')]
     with zipfile.ZipFile(folder / 'protocol_runner.zip','w',compression=zipfile.ZIP_DEFLATED) as archive:
         for path in paths: archive.write(path,path.relative_to(ROOT))

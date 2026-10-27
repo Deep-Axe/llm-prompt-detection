@@ -1,4 +1,4 @@
-"""Freeze the completed baseline and the protocol for isolated Part C runs."""
+"""Freeze the completed baseline and the protocol for isolated prompt-classifier runs."""
 import argparse
 import json
 from pathlib import Path
@@ -11,7 +11,7 @@ from prepare_large_corpus import file_hash
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--output', type=Path, default=ROOT / 'configs/part_c_protocol.json')
+    p.add_argument('--output', type=Path, default=ROOT / 'configs/training_protocol.json')
     args = p.parse_args()
     if args.output.exists():
         raise FileExistsError('Protocol already exists; use a new filename to define another version')
@@ -38,7 +38,7 @@ def main():
                     'model_source':{'repository':'microsoft/deberta-v3-base',
                                     'revision':HfApi().model_info('microsoft/deberta-v3-base').sha}},
     }
-    protocol = {'schema_version':1, 'name':'part-c-v1',
+    protocol = {'schema_version':1, 'name':'wildjailbreak-100k-repeated-seeds',
         'baseline_results_commit':'a73b606',
         'repository_commit_at_freeze':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
         'seeds':[4442,4443,4444], 'threshold':.5, 'selection':'highest validation F1',

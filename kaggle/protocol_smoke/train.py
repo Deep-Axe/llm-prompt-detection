@@ -1,4 +1,4 @@
-"""Kaggle GPU verification of interrupted/resumed Part C runners."""
+"""Kaggle GPU verification of interrupted/resumed prompt-classifier runners."""
 import os
 os.environ['OPENBLAS_NUM_THREADS']='1'
 os.environ['OMP_NUM_THREADS']='1'
@@ -31,7 +31,7 @@ overlays=list(inputs.rglob('protocol_runner.zip'))
 if len(overlays)==1:
     with zipfile.ZipFile(overlays[0]) as z: z.extractall(root)
 else:
-    configs=list(inputs.rglob('configs/part_c_protocol.json'))
+    configs=list(inputs.rglob('configs/training_protocol.json'))
     if len(configs)!=1: raise RuntimeError('Cannot locate protocol runner input')
     shutil.copytree(configs[0].parents[1],root,dirs_exist_ok=True)
 verification=root / 'artifacts/resume_verification'
