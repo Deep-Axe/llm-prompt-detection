@@ -1,0 +1,61 @@
+{
+  "condition": "wildguardmix-transfer",
+  "role": "external evaluation only",
+  "source": {
+    "repository": "allenai/wildguardmix",
+    "revision": "d29c47f41c8b51348b5c8e8c81c039b3132b66d1",
+    "files_sha256": {
+      "train/wildguard_train.parquet": "02ecea8a724a9146a1e473a95a7cdf262adfe9c7d5408953ca86d2fcfbdc8953",
+      "test/wildguard_test.parquet": "6ccc2909c1ae6d41424fac69f1fc32535b1de39cb8f80407d81e8bc64a0bebca",
+      "README.md": "4cdee2c6fa839a2802237826a09f594522a31b2c33afe691f46be5ee98d66512"
+    },
+    "license": "ODC-BY",
+    "verified_against_hub": true
+  },
+  "task": "binary prompt harmfulness",
+  "label_mapping": {
+    "unharmful": 0,
+    "harmful": 1
+  },
+  "partitions": {
+    "test": {
+      "rows": 1695,
+      "groups": 1695,
+      "counts": {
+        "label_0": 941,
+        "adversarial_benign": 454,
+        "vanilla_benign": 487,
+        "label_1": 754,
+        "adversarial_harmful": 341,
+        "vanilla_harmful": 413
+      },
+      "sha256": "35ce8c6fd60479c9d9e67863dab490674f9977e13432d5379811447950c0b680",
+      "id_sha256": "b19058c6c8c5108438cfc85abbaceb83bcbd47a1dda5f5ed833123a97ea9cc4b"
+    }
+  },
+  "audit": {
+    "train_source": {
+      "raw_rows": 86759,
+      "duplicate_rows_same_label": 38926,
+      "empty_prompts": 14,
+      "conflicting_prompt_ids": 15,
+      "rows_after_conflict": 1,
+      "unique_labeled_prompts": 47788
+    },
+    "test_source": {
+      "raw_rows": 1725,
+      "missing_prompt_harm_label": 26,
+      "unique_labeled_prompts": 1699
+    },
+    "test_prompts_removed_for_wildjailbreak_overlap": 4,
+    "train_prompts_removed_for_wildjailbreak_overlap": 19145,
+    "train_prompts_removed_for_own_test_overlap": 0,
+    "train_candidates_vs_external_test_overlap": 0,
+    "candidate_train_rows": 28643,
+    "external_test_rows": 1695,
+    "overlap_scope": "normalized exact prompt matching; original-request and semantic overlap unavailable"
+  },
+  "selection_policy": "all validation-selected model checkpoints and seeds; fixed threshold 0.5; no tuning on this set",
+  "model_inputs": "prompt text only; response text, refusal labels, and adversarial flags excluded",
+  "group_definition": "normalized exact prompt ID; original requests not supplied"
+}
