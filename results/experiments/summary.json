@@ -1,6 +1,66 @@
 {
-  "runs_found": 6,
+  "runs_found": 12,
   "summary": [
+    {
+      "protocol_sha256": "3800592e3d72ab0ee0516f5619d87780d2cd4ba4bb83cf55e15316e97f4bd821",
+      "condition": "wildjailbreak-100k",
+      "model": "bilstm",
+      "seeds": [
+        4442,
+        4443,
+        4444
+      ],
+      "runs": 3,
+      "data_hashes": {
+        "train": "92aad92389864e81cffb07eb02639a551677690a215364fe318df07c26457d6c",
+        "val": "192ad4cd320e159f7db6d49e98402647015591d0abaa8693ed89c2a7cca4f235",
+        "test": "7e5b9ccd899b8394c1ecdbf169e38ddfe14b33a733d6bc2d48e26ac35e81479b",
+        "official_eval": "ffa338c1a10a7b31cb242f0036083dbe74577ea6ca1116c304966de5367555c8"
+      },
+      "metrics": {
+        "accuracy": {
+          "mean": 0.9484378881721535,
+          "std": 0.0011308829820810902
+        },
+        "precision": {
+          "mean": 0.9495661452850056,
+          "std": 0.0008211217562533617
+        },
+        "recall": {
+          "mean": 0.9489720256150994,
+          "std": 0.0031059455582044594
+        },
+        "f1": {
+          "mean": 0.9492663935855573,
+          "std": 0.001211857173531646
+        },
+        "mcc": {
+          "mean": 0.8968535077459211,
+          "std": 0.002251088353208425
+        },
+        "roc_auc": {
+          "mean": 0.9894884404137673,
+          "std": 0.00018157730782729467
+        },
+        "average_precision": {
+          "mean": 0.9902649798059141,
+          "std": 0.0001685002433997717
+        },
+        "brier_score": {
+          "mean": 0.03904768546561716,
+          "std": 0.0010713230433339088
+        },
+        "official_recall": {
+          "mean": 0.8381666666666666,
+          "std": 0.008460693430998076
+        },
+        "official_benign_acceptance": {
+          "mean": 0.5174603174603175,
+          "std": 0.007273929674533114
+        }
+      },
+      "complete_seed_set": true
+    },
     {
       "protocol_sha256": "3800592e3d72ab0ee0516f5619d87780d2cd4ba4bb83cf55e15316e97f4bd821",
       "condition": "wildjailbreak-100k",
@@ -57,6 +117,66 @@
         "official_benign_acceptance": {
           "mean": 0.5015873015873016,
           "std": 0.05560088853376824
+        }
+      },
+      "complete_seed_set": true
+    },
+    {
+      "protocol_sha256": "3800592e3d72ab0ee0516f5619d87780d2cd4ba4bb83cf55e15316e97f4bd821",
+      "condition": "wildjailbreak-100k",
+      "model": "distilbert",
+      "seeds": [
+        4442,
+        4443,
+        4444
+      ],
+      "runs": 3,
+      "data_hashes": {
+        "train": "92aad92389864e81cffb07eb02639a551677690a215364fe318df07c26457d6c",
+        "val": "192ad4cd320e159f7db6d49e98402647015591d0abaa8693ed89c2a7cca4f235",
+        "test": "7e5b9ccd899b8394c1ecdbf169e38ddfe14b33a733d6bc2d48e26ac35e81479b",
+        "official_eval": "ffa338c1a10a7b31cb242f0036083dbe74577ea6ca1116c304966de5367555c8"
+      },
+      "metrics": {
+        "accuracy": {
+          "mean": 0.9794573942244268,
+          "std": 0.00042410950783361944
+        },
+        "precision": {
+          "mean": 0.9805405087090309,
+          "std": 0.001115282031157957
+        },
+        "recall": {
+          "mean": 0.9790192113245703,
+          "std": 0.0003157228512840649
+        },
+        "f1": {
+          "mean": 0.9797789236618865,
+          "std": 0.00040284199490967534
+        },
+        "mcc": {
+          "mean": 0.9589063136631021,
+          "std": 0.0008514962637665014
+        },
+        "roc_auc": {
+          "mean": 0.9978090671105436,
+          "std": 6.797331695888337e-05
+        },
+        "average_precision": {
+          "mean": 0.9979202250742755,
+          "std": 8.411096381334312e-05
+        },
+        "brier_score": {
+          "mean": 0.019152762970956683,
+          "std": 0.0006033060986455714
+        },
+        "official_recall": {
+          "mean": 0.9121666666666667,
+          "std": 0.0036170890690351027
+        },
+        "official_benign_acceptance": {
+          "mean": 0.5968253968253969,
+          "std": 0.01982539047110602
         }
       },
       "complete_seed_set": true

@@ -1,0 +1,10 @@
+{
+  "kernel": "deepamahuja/prompt-detection-bilstm-distilbert-seeds",
+  "metrics_recomputed": true,
+  "source_revision": {
+    "commit": "35f6e99e225a9fcd354d370fccea8a7376211396",
+    "archive_sha256": "aab65a86f95f5ba30293e0c717ae8bc0b9004bba822fb5c19754352f9c680603"
+  },
+  "model_archive_sha256": "2656d981a7136fe38be3e6766de2e5a36d593dbad40695d9c50f1cda329fa7d5",
+  "prediction_archive_sha256": "fabc3e9b132c291aef859b08493041a5f0c6db06772f7d163bbf4333d30390bf"
+}

@@ -26,25 +26,25 @@
   {
     "model": "bilstm",
     "baseline_test_f1": 0.9423110731597056,
-    "seed_count": 0,
-    "complete_seed_set": false,
-    "test_f1_mean": null,
-    "test_f1_std": null,
-    "test_accuracy_mean": null,
-    "test_mcc_mean": null,
-    "official_harmful_recall_mean": null,
-    "official_benign_acceptance_mean": null
+    "seed_count": 3,
+    "complete_seed_set": true,
+    "test_f1_mean": 0.9492663935855573,
+    "test_f1_std": 0.001211857173531646,
+    "test_accuracy_mean": 0.9484378881721535,
+    "test_mcc_mean": 0.8968535077459211,
+    "official_harmful_recall_mean": 0.8381666666666666,
+    "official_benign_acceptance_mean": 0.5174603174603175
   },
   {
     "model": "distilbert",
     "baseline_test_f1": 0.9792104530146111,
-    "seed_count": 0,
-    "complete_seed_set": false,
-    "test_f1_mean": null,
-    "test_f1_std": null,
-    "test_accuracy_mean": null,
-    "test_mcc_mean": null,
-    "official_harmful_recall_mean": null,
-    "official_benign_acceptance_mean": null
+    "seed_count": 3,
+    "complete_seed_set": true,
+    "test_f1_mean": 0.9797789236618865,
+    "test_f1_std": 0.00040284199490967534,
+    "test_accuracy_mean": 0.9794573942244268,
+    "test_mcc_mean": 0.9589063136631021,
+    "official_harmful_recall_mean": 0.9121666666666667,
+    "official_benign_acceptance_mean": 0.5968253968253969
   }
 ]
