@@ -1,0 +1,65 @@
+{
+  "runs_found": 3,
+  "summary": [
+    {
+      "protocol_sha256": "3800592e3d72ab0ee0516f5619d87780d2cd4ba4bb83cf55e15316e97f4bd821",
+      "condition": "wildjailbreak-100k",
+      "model": "mlp",
+      "seeds": [
+        4442,
+        4443,
+        4444
+      ],
+      "runs": 3,
+      "data_hashes": {
+        "train": "92aad92389864e81cffb07eb02639a551677690a215364fe318df07c26457d6c",
+        "val": "192ad4cd320e159f7db6d49e98402647015591d0abaa8693ed89c2a7cca4f235",
+        "test": "7e5b9ccd899b8394c1ecdbf169e38ddfe14b33a733d6bc2d48e26ac35e81479b",
+        "official_eval": "ffa338c1a10a7b31cb242f0036083dbe74577ea6ca1116c304966de5367555c8"
+      },
+      "metrics": {
+        "accuracy": {
+          "mean": 0.936350475015634,
+          "std": 0.0007275020344054384
+        },
+        "precision": {
+          "mean": 0.9330329154593793,
+          "std": 0.0014768875863539214
+        },
+        "recall": {
+          "mean": 0.9424334344455678,
+          "std": 0.0011149123631292968
+        },
+        "f1": {
+          "mean": 0.9377087253262858,
+          "std": 0.0006842309597119715
+        },
+        "mcc": {
+          "mean": 0.8726913289724688,
+          "std": 0.0014476839608828032
+        },
+        "roc_auc": {
+          "mean": 0.9843490318300496,
+          "std": 0.00024574280350268097
+        },
+        "average_precision": {
+          "mean": 0.9851545976870009,
+          "std": 0.00023580949597721215
+        },
+        "brier_score": {
+          "mean": 0.04756496944011344,
+          "std": 0.0005633688155220019
+        },
+        "official_recall": {
+          "mean": 0.836,
+          "std": 0.0021794494717703263
+        },
+        "official_benign_acceptance": {
+          "mean": 0.5285714285714286,
+          "std": 0.032991443953692946
+        }
+      },
+      "complete_seed_set": true
+    }
+  ]
+}
