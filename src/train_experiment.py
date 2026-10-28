@@ -17,10 +17,11 @@ from evaluation import ROOT, metrics, code_hashes
 from experiment_data import prepare
 from experiment_state import atomic_json, atomic_torch, capture_rng, restore_rng, digest_json, update_validation
 from large_data import PARTITIONS, validate_manifest
+from condition_data import condition_directory
 from neural_models import SentenceCNN, BiLSTM
 from prepare_large_corpus import file_hash
 
-CODE_FILES=['train_experiment.py','experiment_state.py','experiment_data.py','neural_models.py','large_data.py','evaluation.py','train_large_mlp.py']
+CODE_FILES=['train_experiment.py','experiment_state.py','experiment_data.py','neural_models.py','large_data.py','evaluation.py','train_large_mlp.py','condition_data.py']
 
 
 def main():
@@ -28,7 +29,7 @@ def main():
     parser.add_argument('model',choices=['mlp','cnn','bilstm','distilbert','deberta'])
     parser.add_argument('--protocol',type=Path,default=ROOT / 'configs/training_protocol.json')
     parser.add_argument('--condition',default='wildjailbreak-100k')
-    parser.add_argument('--data',type=Path,default=ROOT / 'data/processed/large')
+    parser.add_argument('--data',type=Path)
     parser.add_argument('--encoder',type=Path,default=ROOT / 'data/models/distilbert')
     parser.add_argument('--seed',type=int,default=4442)
     parser.add_argument('--device',default='cuda')
@@ -45,6 +46,7 @@ def main():
     if args.seed not in protocol['seeds']: parser.error('Seed is outside the frozen protocol')
     if args.checkpoint_every<1 or args.interrupt_after_updates<0: parser.error('Invalid checkpoint interval')
     definition=protocol['models'][args.model]
+    args.data=condition_directory(protocol,args.condition,args.data)
     manifest=validate_manifest(args.data)
     hashes={s:manifest['partitions'][s]['sha256'] for s in PARTITIONS}
     expected=protocol['conditions'][args.condition]
@@ -87,6 +89,7 @@ def main():
     random.seed(args.seed); np.random.seed(args.seed); torch.manual_seed(args.seed)
     if torch.cuda.is_available(): torch.cuda.manual_seed_all(args.seed)
     torch.set_num_threads(1)
+    torch.use_deterministic_algorithms(True)
     torch.backends.cudnn.benchmark=False; torch.backends.cudnn.deterministic=True
     device=torch.device(args.device)
     if device.type=='cuda': torch.cuda.reset_peak_memory_stats(device)

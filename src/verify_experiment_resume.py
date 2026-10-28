@@ -17,21 +17,22 @@ def main():
     p.add_argument('--device',default='cuda')
     p.add_argument('--root',type=Path,default=ROOT / 'artifacts/resume_verification')
     p.add_argument('--protocol',type=Path,default=ROOT / 'configs/training_protocol.json')
+    p.add_argument('--condition',default='wildjailbreak-100k')
     args=p.parse_args()
     protocol=json.loads(args.protocol.read_text())
-    baseline_before={path:file_hash(ROOT / path) for path in protocol['baseline_inventory'] if (ROOT / path).exists()}
-    if any(sha!=protocol['baseline_inventory'][p] for p,sha in baseline_before.items()): raise ValueError('Baseline already differs from frozen inventory')
+    baseline_before={path:file_hash(ROOT / path) for path in protocol.get('baseline_inventory',{}) if (ROOT / path).exists()}
+    if any(sha!=protocol.get('baseline_inventory',{})[p] for p,sha in baseline_before.items()): raise ValueError('Baseline already differs from frozen inventory')
     report={'purpose':'bounded save/resume smoke verification; not a full training comparison',
             'protocol_sha256':file_hash(args.protocol),'models':{}}
     for name in args.models:
         base=[sys.executable,str(ROOT / 'src/train_experiment.py'),name,'--protocol',str(args.protocol),
-              '--smoke','--device','cpu' if name=='mlp' else args.device,'--seed','4442','--checkpoint-every','100']
+              '--condition',args.condition,'--smoke','--device','cpu' if name=='mlp' else args.device,'--seed','4442','--checkpoint-every','100']
         def command(lane,extra=()):
             return base+['--run-root',str(args.root / lane / 'artifacts'),'--result-root',str(args.root / lane / 'results')]+list(extra)
         subprocess.run(command('reference'),cwd=ROOT,check=True)
         paused=subprocess.run(command('resumed',['--interrupt-after-updates','1']),cwd=ROOT)
         if paused.returncode!=75: raise ValueError(f'Expected controlled interruption for {name}: {paused.returncode}')
-        relative=Path('smoke/wildjailbreak-100k') / name / 'seed_4442'
+        relative=Path('smoke') / args.condition / name / 'seed_4442'
         checkpoint=args.root / 'resumed/artifacts' / relative / ('last.joblib' if name=='mlp' else 'last.pt')
         if name=='mlp':
             import joblib

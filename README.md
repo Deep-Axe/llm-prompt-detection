@@ -228,3 +228,23 @@ The earlier DAN/JailbreakBench/Alpaca experiment remains available through `src/
 ## License
 
 Project code is released under the [MIT license](LICENSE). Dataset and pretrained-model licenses are listed in their source documentation and the [model repository](https://huggingface.co/DeeAxe/llm-prompt-detection/blob/main/LICENSE.md).
+
+
+For the larger training pools, materialize the audited datasets and select a condition explicitly:
+
+```bash
+python src/prepare_dataset_conditions.py
+python src/train_experiment.py mlp --protocol configs/dataset_scaling.json \
+  --condition wildjailbreak-183005 --seed 4442 --device cpu
+```
+
+Use `wildjailbreak-150k` for the 150,000-row condition. Each pool fits its own vocabulary or TF–IDF statistics using only its training prompts. GPU training uses deterministic operations; [save/resume verification](results/protocol_verification/dataset_scaling_resume.json) checks all four architectures against uninterrupted runs. Original checkpoints and results are preserved.
+
+Evaluate available validation-selected checkpoints on the frozen WildGuardMix transfer set:
+
+```bash
+python src/evaluate_transfer.py --device cuda
+python src/summarize_training_results.py
+```
+
+The transfer evaluator skips training runs that have not finished and reuses verified evaluation records. Its metrics are in `results/transfer/wildguardmix-transfer/`; per-prompt predictions remain local. Training-size comparisons are written to `results/experiments/scaling_comparison.csv`.

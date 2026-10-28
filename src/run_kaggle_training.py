@@ -14,6 +14,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--source-dir',type=Path,required=True)
     p.add_argument('--tasks',required=True)
+    p.add_argument('--protocol',default='configs/training_protocol.json')
     args=p.parse_args()
     subprocess.run([sys.executable,'-m','pip','install','-q','transformers==4.46.3',
                     'huggingface-hub==0.36.2','scikit-learn==1.3.2','numpy==1.26.4'],check=True)
@@ -38,7 +39,7 @@ def main():
     success=False
     try:
         subprocess.run([sys.executable,str(root / 'src/run_training_sweep.py'),'--tasks',str(task_path),
-            '--gpus',*gpu_ids,'--log-root','/kaggle/working/training_logs'],cwd=root,check=True)
+            '--protocol',str(root / args.protocol),'--gpus',*gpu_ids,'--log-root','/kaggle/working/training_logs'],cwd=root,check=True)
         success=True
     finally:
         results=root / 'results/experiments'
@@ -48,10 +49,11 @@ def main():
         for result_path in results.rglob('result.json'):
             result=json.loads(result_path.read_text())
             model=result['model']; seed=result['seed']
+            prefix='' if result['condition']=='wildjailbreak-100k' else result['condition']+'_'
             artifact=root / 'artifacts/experiments' / result_path.parent.relative_to(results)
-            with zipfile.ZipFile(f'/kaggle/working/{model}_seed_{seed}_predictions.zip','w',compression=zipfile.ZIP_DEFLATED) as archive:
+            with zipfile.ZipFile(f'/kaggle/working/{prefix}{model}_seed_{seed}_predictions.zip','w',compression=zipfile.ZIP_DEFLATED) as archive:
                 for path in artifact.glob('*_predictions.npz'): archive.write(path,path.name)
-            with zipfile.ZipFile(f'/kaggle/working/{model}_seed_{seed}_model.zip','w',compression=zipfile.ZIP_DEFLATED,compresslevel=1) as archive:
+            with zipfile.ZipFile(f'/kaggle/working/{prefix}{model}_seed_{seed}_model.zip','w',compression=zipfile.ZIP_DEFLATED,compresslevel=1) as archive:
                 if model in ('distilbert','deberta'):
                     for path in (artifact / 'model').iterdir():
                         if path.is_file(): archive.write(path,'model/'+path.name)

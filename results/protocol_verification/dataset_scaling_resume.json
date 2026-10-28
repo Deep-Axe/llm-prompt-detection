@@ -1,0 +1,113 @@
+{
+  "purpose": "bounded save/resume smoke verification; not a full training comparison",
+  "protocol_sha256": "90c6310ecea006d88192ce71808e7f15ded92886c0625a18df43fb63010e1d30",
+  "models": {
+    "distilbert": {
+      "passed": true,
+      "seed": 4442,
+      "smoke_only": true,
+      "train_rows": 512,
+      "epochs_run": 2,
+      "interrupted_after_updates": 1,
+      "resumed_mid_epoch": true,
+      "optimizer_state_verified": true,
+      "scheduler_state_verified": true,
+      "amp_state_verified": true,
+      "rng_state_verified": true,
+      "max_weight_difference": 0.0,
+      "max_probability_differences": {
+        "train": 0.0,
+        "val": 0.0,
+        "test": 0.0,
+        "official_eval": 0.0
+      },
+      "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "encoder_gradient_verified": true,
+      "encoder_weight_changed": true
+    },
+    "mlp": {
+      "passed": true,
+      "seed": 4442,
+      "smoke_only": true,
+      "train_rows": 512,
+      "epochs_run": 2,
+      "interrupted_after_updates": 1,
+      "resumed_mid_epoch": true,
+      "optimizer_state_verified": true,
+      "scheduler_state_verified": null,
+      "amp_state_verified": null,
+      "rng_state_verified": true,
+      "max_weight_difference": 0.0,
+      "max_probability_differences": {
+        "train": 0.0,
+        "val": 0.0,
+        "test": 0.0,
+        "official_eval": 0.0
+      },
+      "gpu": null,
+      "encoder_gradient_verified": null,
+      "encoder_weight_changed": null
+    },
+    "cnn": {
+      "passed": true,
+      "seed": 4442,
+      "smoke_only": true,
+      "train_rows": 512,
+      "epochs_run": 2,
+      "interrupted_after_updates": 1,
+      "resumed_mid_epoch": true,
+      "optimizer_state_verified": true,
+      "scheduler_state_verified": true,
+      "amp_state_verified": null,
+      "rng_state_verified": true,
+      "max_weight_difference": 0.0,
+      "max_probability_differences": {
+        "train": 0.0,
+        "val": 0.0,
+        "test": 0.0,
+        "official_eval": 0.0
+      },
+      "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "encoder_gradient_verified": null,
+      "encoder_weight_changed": null
+    },
+    "bilstm": {
+      "passed": true,
+      "seed": 4442,
+      "smoke_only": true,
+      "train_rows": 512,
+      "epochs_run": 2,
+      "interrupted_after_updates": 1,
+      "resumed_mid_epoch": true,
+      "optimizer_state_verified": true,
+      "scheduler_state_verified": true,
+      "amp_state_verified": null,
+      "rng_state_verified": true,
+      "max_weight_difference": 0.0,
+      "max_probability_differences": {
+        "train": 0.0,
+        "val": 0.0,
+        "test": 0.0,
+        "official_eval": 0.0
+      },
+      "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "encoder_gradient_verified": null,
+      "encoder_weight_changed": null
+    }
+  },
+  "status": "passed",
+  "baseline_files_checked": 29,
+  "baseline_unchanged": true,
+  "code_hashes": {
+    "train_experiment.py": "4a8911616be0f54944e3b25ab086ba888ed80fa1aa2beb22387d0a7e04a92365",
+    "experiment_state.py": "9ccb7c2faf508954f348be41e2536e3fe1a56046d303aba1736eee325155dbf5",
+    "experiment_data.py": "42b08d0b5eda8315727cde990871e84713dff50fb7a428a1b8853f911f305fc8",
+    "neural_models.py": "600f3a10eaea9dbc237adf4181d0e8c854c27adcfb0f215550ce9137db3c8cb5",
+    "large_data.py": "9472aa4d72d0995cfaad96607b13505e3b013203db1cfc857b3584f5d32ab440",
+    "evaluation.py": "55f6cf347c139d4e7014cf9ebe25f98d2dc2d15c9a899016dc295d9825084820",
+    "train_large_mlp.py": "9f6a1cb0582ec5d9f6d4d2e98af40b72b3bbad3f0622ffda2065f9674f5dfdc1",
+    "condition_data.py": "0136f35a3363fd6089b407d6cce0abb775fc6310594a350f69e5cabf117a696f"
+  },
+  "condition": "wildjailbreak-183005",
+  "source_train_rows": 183005
+}
