@@ -10,6 +10,7 @@ import tarfile
 from evaluation import ROOT
 from experiment_state import atomic_json
 from large_data import validate_manifest
+from condition_data import condition_directory
 
 
 def main():
@@ -17,9 +18,11 @@ def main():
     p.add_argument('--revision',default='HEAD')
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--copy-data',action='store_true')
+    p.add_argument('--protocol',default='configs/training_protocol.json')
+    p.add_argument('--conditions',nargs='+',default=['wildjailbreak-100k'])
     args=p.parse_args()
     revision=subprocess.check_output(['git','rev-parse',args.revision],cwd=ROOT,text=True).strip()
-    archive=subprocess.check_output(['git','archive',revision,'src','configs/training_protocol.json','LICENSE'],cwd=ROOT)
+    archive=subprocess.check_output(['git','archive',revision,'src','configs','LICENSE'],cwd=ROOT)
     args.output.mkdir(parents=True,exist_ok=True)
     marker=args.output / 'source_revision.json'
     expected={'commit':revision,'archive_sha256':hashlib.sha256(archive).hexdigest()}
@@ -33,11 +36,18 @@ def main():
             tar.extractall(args.output)
         atomic_json(marker,expected)
     if args.copy_data:
-        destination=args.output / 'data/processed/large'
-        destination.mkdir(parents=True,exist_ok=True)
-        for name in ['manifest.json','train.jsonl','val.jsonl','test.jsonl','official_eval.jsonl']:
-            if not (destination / name).exists(): shutil.copy2(ROOT / 'data/processed/large' / name,destination / name)
-        validate_manifest(destination)
+        protocol=json.loads((args.output / args.protocol).read_text())
+        for condition in args.conditions:
+            source=condition_directory(protocol,condition)
+            destination=condition_directory(protocol,condition,root=args.output)
+            destination.mkdir(parents=True,exist_ok=True)
+            for name in ['manifest.json','train.jsonl','val.jsonl','test.jsonl','official_eval.jsonl']:
+                if not (destination / name).exists():
+                    try:
+                        __import__('os').link(source / name,destination / name)
+                    except OSError:
+                        shutil.copy2(source / name,destination / name)
+            validate_manifest(destination)
     print(args.output)
 
 

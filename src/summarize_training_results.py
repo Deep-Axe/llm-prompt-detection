@@ -33,14 +33,29 @@ def summarize():
         writer=csv.DictWriter(handle,fieldnames=list(comparison[0]),lineterminator='\n')
         writer.writeheader();writer.writerows(comparison)
     with (folder / 'validation_curves.csv').open('w',newline='') as handle:
-        fields=['model','seed','epoch','train_loss','validation_f1','validation_mcc','selected_epoch']
+        fields=['condition','protocol_sha256','model','seed','epoch','train_loss','validation_f1','validation_mcc','selected_epoch']
         writer=csv.DictWriter(handle,fieldnames=fields,lineterminator='\n');writer.writeheader()
         for report in sorted(reports,key=lambda r:(r['model'],r['seed'])):
             if report.get('smoke_only'): continue
             for epoch in report['history']:
-                writer.writerow({'model':report['model'],'seed':report['seed'],'epoch':epoch['epoch'],
+                writer.writerow({'condition':report['condition'],'protocol_sha256':report['protocol_sha256'],'model':report['model'],'seed':report['seed'],'epoch':epoch['epoch'],
                     'train_loss':epoch['train_loss'],'validation_f1':epoch['val']['f1'],
                     'validation_mcc':epoch['val']['mcc'],'selected_epoch':report['chosen_epoch']})
+    scaling=[]
+    for group in groups:
+        if group['model'] not in MODELS: continue
+        reference=next((g for g in groups if g['condition']=='wildjailbreak-100k' and g['model']==group['model']),None)
+        row={k:group[k] for k in ['condition','model','protocol_sha256','runs','complete_seed_set']}
+        for metric in ['f1','accuracy','mcc','official_recall','official_benign_acceptance']:
+            for statistic in ['mean','std']:
+                row[f'{metric}_{statistic}']=group['metrics'][metric][statistic]
+        row['reference_100k_f1_mean']=reference['metrics']['f1']['mean'] if reference else None
+        scaling.append(row)
+    atomic_json(folder/'scaling_comparison.json',scaling)
+    if scaling:
+        with (folder/'scaling_comparison.csv').open('w',newline='') as handle:
+            writer=csv.DictWriter(handle,fieldnames=list(scaling[0]),lineterminator='\n')
+            writer.writeheader();writer.writerows(scaling)
     return comparison
 
 
