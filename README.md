@@ -4,9 +4,9 @@ This project compares four models for detecting harmful prompts: a TF–IDF MLP,
 
 The current experiment uses 100,000 unique training prompts from [WildJailbreak](https://huggingface.co/datasets/allenai/wildjailbreak). All four models completed three epochs on the same split. DistilBERT was fine-tuned across the full encoder and classification head.
 
-[Models on Hugging Face](https://huggingface.co/DeeAxe/llm-prompt-detection) · [Baseline results](results/large/comparison.csv) · [Training configuration](configs/training_protocol.json)
+[Models on Hugging Face](https://huggingface.co/DeeAxe/llm-prompt-detection) · [Baseline results](results/large/comparison.csv) · [Repeated-seed results](results/experiments/comparison.csv) · [Training configuration](configs/training_protocol.json)
 
-## Results
+## Three-epoch baseline
 
 The shared test set contains 38,911 prompts. The official challenge provides a further 2,000 harmful and 210 benign prompts.
 
