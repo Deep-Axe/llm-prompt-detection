@@ -14,14 +14,14 @@
   {
     "model": "cnn",
     "baseline_test_f1": 0.9289827255278311,
-    "seed_count": 0,
-    "complete_seed_set": false,
-    "test_f1_mean": null,
-    "test_f1_std": null,
-    "test_accuracy_mean": null,
-    "test_mcc_mean": null,
-    "official_harmful_recall_mean": null,
-    "official_benign_acceptance_mean": null
+    "seed_count": 3,
+    "complete_seed_set": true,
+    "test_f1_mean": 0.9410227454497938,
+    "test_f1_std": 0.0023816483659038754,
+    "test_accuracy_mean": 0.9394772686386883,
+    "test_mcc_mean": 0.8791093741103232,
+    "official_harmful_recall_mean": 0.8576666666666667,
+    "official_benign_acceptance_mean": 0.5015873015873016
   },
   {
     "model": "bilstm",

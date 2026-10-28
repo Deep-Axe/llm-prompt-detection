@@ -1,6 +1,66 @@
 {
-  "runs_found": 3,
+  "runs_found": 6,
   "summary": [
+    {
+      "protocol_sha256": "3800592e3d72ab0ee0516f5619d87780d2cd4ba4bb83cf55e15316e97f4bd821",
+      "condition": "wildjailbreak-100k",
+      "model": "cnn",
+      "seeds": [
+        4442,
+        4443,
+        4444
+      ],
+      "runs": 3,
+      "data_hashes": {
+        "train": "92aad92389864e81cffb07eb02639a551677690a215364fe318df07c26457d6c",
+        "val": "192ad4cd320e159f7db6d49e98402647015591d0abaa8693ed89c2a7cca4f235",
+        "test": "7e5b9ccd899b8394c1ecdbf169e38ddfe14b33a733d6bc2d48e26ac35e81479b",
+        "official_eval": "ffa338c1a10a7b31cb242f0036083dbe74577ea6ca1116c304966de5367555c8"
+      },
+      "metrics": {
+        "accuracy": {
+          "mean": 0.9394772686386883,
+          "std": 0.0027592163473694788
+        },
+        "precision": {
+          "mean": 0.9325603714152674,
+          "std": 0.008613854090816055
+        },
+        "recall": {
+          "mean": 0.9497135153353556,
+          "std": 0.0061204926340223615
+        },
+        "f1": {
+          "mean": 0.9410227454497938,
+          "std": 0.0023816483659038754
+        },
+        "mcc": {
+          "mean": 0.8791093741103232,
+          "std": 0.005311320392753605
+        },
+        "roc_auc": {
+          "mean": 0.9864968220547818,
+          "std": 0.0006642004271878623
+        },
+        "average_precision": {
+          "mean": 0.9873020150819688,
+          "std": 0.0005162958061670533
+        },
+        "brier_score": {
+          "mean": 0.049173349885390315,
+          "std": 0.0010005787253557312
+        },
+        "official_recall": {
+          "mean": 0.8576666666666667,
+          "std": 0.014511489700693507
+        },
+        "official_benign_acceptance": {
+          "mean": 0.5015873015873016,
+          "std": 0.05560088853376824
+        }
+      },
+      "complete_seed_set": true
+    },
     {
       "protocol_sha256": "3800592e3d72ab0ee0516f5619d87780d2cd4ba4bb83cf55e15316e97f4bd821",
       "condition": "wildjailbreak-100k",
