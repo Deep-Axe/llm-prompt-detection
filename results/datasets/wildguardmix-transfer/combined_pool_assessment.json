@@ -5,5 +5,9 @@
   "combined_unique_training_candidates": 211648,
   "decision": "Evaluate nested WildJailbreak scaling and external transfer first. A combined study also needs validation coverage for both sources.",
   "deduplication": "All WildJailbreak partitions and the original WildGuard test were excluded from new training candidates.",
-  "semantic_overlap_limit": "Only normalized exact overlap is measured."
+  "semantic_overlap_limit": "Only normalized exact overlap is measured.",
+  "combined_label_counts": {
+    "label_0": 105343,
+    "label_1": 106305
+  }
 }

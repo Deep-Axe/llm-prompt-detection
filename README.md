@@ -243,9 +243,12 @@ The earlier DAN/JailbreakBench/Alpaca experiment remains available through `src/
 Project code is released under the [MIT license](LICENSE). Dataset and pretrained-model licenses are listed in their source documentation and the [model repository](https://huggingface.co/DeeAxe/llm-prompt-detection/blob/main/LICENSE.md).
 
 
-For the larger training pools, materialize the audited datasets and select a condition explicitly:
+For the larger training pools and transfer evaluation, download the pinned WildGuardMix files, materialize the audited datasets, and select a training condition:
 
 ```bash
+hf download allenai/wildguardmix train/wildguard_train.parquet test/wildguard_test.parquet README.md \
+  --repo-type dataset --revision d29c47f41c8b51348b5c8e8c81c039b3132b66d1 \
+  --local-dir data/raw/large/wildguardmix
 python src/prepare_dataset_conditions.py
 python src/train_experiment.py mlp --protocol configs/dataset_scaling.json \
   --condition wildjailbreak-183005 --seed 4442 --device cpu
