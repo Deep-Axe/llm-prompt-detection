@@ -103,11 +103,21 @@ def main():
     while remaining:
         for kernel in list(remaining):
             if kernel in collected: remaining.remove(kernel); continue
-            status=subprocess.run(['kaggle','kernels','status',kernel],capture_output=True,text=True,check=True).stdout
+            try:
+                status=subprocess.run(['kaggle','kernels','status',kernel],capture_output=True,text=True,check=True).stdout
+            except subprocess.CalledProcessError as error:
+                if not args.watch: raise
+                print(f'Kaggle status request failed for {kernel}; retrying: {error}',flush=True)
+                continue
             print(status.strip(),flush=True)
             if 'ERROR' in status or 'CANCEL' in status: raise RuntimeError(status)
             if 'COMPLETE' in status:
-                imported=collect(kernel,args.source_dir,args.protocol)
+                try:
+                    imported=collect(kernel,args.source_dir,args.protocol)
+                except subprocess.CalledProcessError as error:
+                    if not args.watch: raise
+                    print(f'Kaggle output request failed for {kernel}; retrying: {error}',flush=True)
+                    continue
                 collected[kernel]=imported; atomic_json(record,collected); remaining.remove(kernel)
                 subprocess.run([__import__('sys').executable,str(ROOT / 'src/aggregate_experiments.py')],cwd=ROOT,check=True)
         if remaining:
