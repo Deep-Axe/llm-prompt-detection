@@ -1,0 +1,5 @@
+model,baseline_test_f1,seed_count,complete_seed_set,test_f1_mean,test_f1_std,test_accuracy_mean,test_mcc_mean,official_harmful_recall_mean,official_benign_acceptance_mean
+mlp,0.9355326178828471,3,True,0.9377087253262858,0.0006842309597119715,0.936350475015634,0.8726913289724688,0.836,0.5285714285714286
+cnn,0.9289827255278311,0,False,,,,,,
+bilstm,0.9423110731597056,0,False,,,,,,
+distilbert,0.9792104530146111,0,False,,,,,,
