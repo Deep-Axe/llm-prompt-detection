@@ -116,7 +116,10 @@ def parquet_records(path):
 def freeze_wildguard(raw,reference_db,output_root,evaluation_root):
     train,train_counts=clean_wildguard(parquet_records(raw/'train/wildguard_train.parquet'))
     test,test_counts=clean_wildguard(parquet_records(raw/'test/wildguard_test.parquet'))
-    source=json.loads((raw/'source.json').read_text())
+    source=json.loads((ROOT/'configs/transfer_evaluation.json').read_text())['manifest']['source']
+    local_source=raw/'source.json'
+    if local_source.exists() and json.loads(local_source.read_text())!=source:
+        raise ValueError('WildGuardMix source metadata differs from the frozen revision')
     for name,sha in source['files_sha256'].items():
         if file_hash(raw/name)!=sha: raise ValueError('WildGuardMix source changed')
     wildjailbreak_ids={row[0] for row in reference_db.execute('SELECT id FROM rows')}
@@ -158,7 +161,9 @@ def freeze_wildguard(raw,reference_db,output_root,evaluation_root):
         'partition':candidate_stats,'audit':audit,'trained':False}
     atomic_json(candidate_folder/'manifest.json',candidate_manifest)
     atomic_json(public/'training_candidates_manifest.json',candidate_manifest)
-    combined={'role':'combined-pool assessment; no combined training performed',
+    train_counts_by_label=dict(reference_db.execute("SELECT label,COUNT(*) FROM rows WHERE split='train' GROUP BY label"))
+    combined={'combined_label_counts':{f'label_{label}':train_counts_by_label[label]+candidate_stats['counts'][f'label_{label}'] for label in [0,1]},
+        'role':'combined-pool assessment; no combined training performed',
         'wildjailbreak_training_rows':183005,'additional_unique_training_candidates':len(candidates),
         'combined_unique_training_candidates':183005+len(candidates),
         'decision':'Evaluate nested WildJailbreak scaling and external transfer first. A combined study also needs validation coverage for both sources.',
@@ -180,6 +185,10 @@ def main():
     baseline=validate_manifest(args.baseline)
     for name,sha in baseline['raw_file_sha256'].items():
         if file_hash(args.raw/name)!=sha: raise ValueError('WildJailbreak source changed')
+    public_baseline=ROOT/'results/datasets/wildjailbreak-100k'
+    public_baseline.mkdir(parents=True,exist_ok=True)
+    atomic_json(public_baseline/'manifest.json',baseline)
+    atomic_json(public_baseline/'overlap_audit.json',audit_partitions(args.baseline))
     reference,counts=build_rows(args.raw)
     eligible={row[0]:tuple(row[1:]) for row in reference.execute("SELECT id,grp,label,family FROM rows WHERE split='train'")}
     if len(eligible)!=183005: raise ValueError('Eligible pool changed')
