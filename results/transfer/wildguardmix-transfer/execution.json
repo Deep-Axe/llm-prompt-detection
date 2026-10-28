@@ -1,0 +1,19 @@
+{
+  "training_condition": "wildjailbreak-100k",
+  "precision": "float32",
+  "device_by_model": {
+    "mlp": "cpu",
+    "cnn": "cpu",
+    "bilstm": "cpu",
+    "distilbert": "cuda:0"
+  },
+  "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+  "evaluation_rows": 1695,
+  "seeds": [
+    4442,
+    4443,
+    4444
+  ],
+  "threshold": 0.5,
+  "note": "Accuracy evaluation only; inference time was not benchmarked."
+}

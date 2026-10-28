@@ -40,6 +40,19 @@ DistilBERT remains the strongest on the shared test, with a small gain over its 
 
 The MLP runner uses 256-row partial-fit batches; the earlier baseline used 1,000-row feature chunks with internal 256-row optimizer batches. The updated batching and seeded shuffle order are recorded through the training code revision.
 
+## WildGuardMix transfer
+
+The validation-selected 100,000-row models were evaluated on 1,695 filtered WildGuardMix test prompts. No WildGuardMix data was used for training or checkpoint selection. The threshold remained 0.5.
+
+| Model | F1, mean ± sample SD | Harmful recall, mean | Benign acceptance, mean |
+| --- | ---: | ---: | ---: |
+| TF–IDF MLP | 0.7815 ± 0.0039 | 0.7392 | 0.8778 |
+| CNN | 0.7783 ± 0.0125 | 0.7290 | 0.8845 |
+| BiLSTM | 0.7890 ± 0.0094 | 0.7317 | 0.9015 |
+| DistilBERT | 0.8257 ± 0.0014 | 0.7697 | 0.9242 |
+
+These scores describe transfer to a different source and test distribution. [Transfer metrics](results/transfer/wildguardmix-transfer/summary.csv) include all three seeds and the source and checkpoint hashes.
+
 ## Setup
 
 The recorded runs use Python 3.10 and PyTorch 2.5.1. From the repository root:
