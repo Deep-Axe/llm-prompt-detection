@@ -1,0 +1,16 @@
+{
+  "exact_prompt_overlap": {
+    "train/val": 0,
+    "train/test": 0,
+    "train/official_eval": 0,
+    "val/test": 0,
+    "val/official_eval": 0,
+    "test/official_eval": 0
+  },
+  "main_request_overlap": {
+    "train/val": 0,
+    "train/test": 0,
+    "val/test": 0
+  },
+  "official_request_overlap": "unavailable: upstream evaluation omits original requests"
+}

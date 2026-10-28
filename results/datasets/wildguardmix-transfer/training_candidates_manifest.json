@@ -1,0 +1,57 @@
+{
+  "condition": "wildguardmix-filtered",
+  "role": "unused training candidates",
+  "source": {
+    "repository": "allenai/wildguardmix",
+    "revision": "d29c47f41c8b51348b5c8e8c81c039b3132b66d1",
+    "files_sha256": {
+      "train/wildguard_train.parquet": "02ecea8a724a9146a1e473a95a7cdf262adfe9c7d5408953ca86d2fcfbdc8953",
+      "test/wildguard_test.parquet": "6ccc2909c1ae6d41424fac69f1fc32535b1de39cb8f80407d81e8bc64a0bebca",
+      "README.md": "4cdee2c6fa839a2802237826a09f594522a31b2c33afe691f46be5ee98d66512"
+    },
+    "license": "ODC-BY",
+    "verified_against_hub": true
+  },
+  "task": "binary prompt harmfulness",
+  "label_mapping": {
+    "unharmful": 0,
+    "harmful": 1
+  },
+  "partition": {
+    "rows": 28643,
+    "groups": 28643,
+    "counts": {
+      "label_1": 13425,
+      "vanilla_harmful": 6376,
+      "label_0": 15218,
+      "adversarial_benign": 7170,
+      "vanilla_benign": 8048,
+      "adversarial_harmful": 7049
+    },
+    "sha256": "8352eb4dfa3315899f8682d3562e2d3b95aedfc484c81eb7e9845402feff98b9",
+    "id_sha256": "daede86add7a7f02049d83b60c2ab74411e1cde3db3273658480e682b5a48def"
+  },
+  "audit": {
+    "train_source": {
+      "raw_rows": 86759,
+      "duplicate_rows_same_label": 38926,
+      "empty_prompts": 14,
+      "conflicting_prompt_ids": 15,
+      "rows_after_conflict": 1,
+      "unique_labeled_prompts": 47788
+    },
+    "test_source": {
+      "raw_rows": 1725,
+      "missing_prompt_harm_label": 26,
+      "unique_labeled_prompts": 1699
+    },
+    "test_prompts_removed_for_wildjailbreak_overlap": 4,
+    "train_prompts_removed_for_wildjailbreak_overlap": 19145,
+    "train_prompts_removed_for_own_test_overlap": 0,
+    "train_candidates_vs_external_test_overlap": 0,
+    "candidate_train_rows": 28643,
+    "external_test_rows": 1695,
+    "overlap_scope": "normalized exact prompt matching; original-request and semantic overlap unavailable"
+  },
+  "trained": false
+}

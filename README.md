@@ -98,7 +98,11 @@ Preparation removes normalized duplicates and conflicting labels, keeps each ori
 
 The audit checks exact prompt overlap across all partitions and underlying-request overlap across the main splits. The official evaluation omits the original request identifiers, so its overlap check is limited to exact text. Counts, source revisions, and file hashes are saved in [the data manifest](results/large/data_manifest.json).
 
-The same ordering also defines training pools of 150,000 and 183,005 prompts. Both contain the 100,000-prompt set and share no underlying request with validation or test. The reported models use only the 100,000-prompt pool. WildGuardMix was not added: 2,851 of its unique labeled training prompts also appear in the WildJailbreak test split. The counts are in [results/data_conditions.json](results/data_conditions.json).
+The same ordering defines nested pools of 100,000, 150,000, and 183,005 unique training prompts. The larger pools contain the exact original 100,000-row prefix. Validation, test, and official evaluation files remain identical, with no measured prompt overlap between partitions and no underlying-request overlap in the grouped splits. [Frozen manifests and overlap checks](results/datasets/) record each condition. The completed training results above use the 100,000-row pool.
+
+WildGuardMix provides a separate transfer evaluation. We use its prompt-harmfulness labels, discard missing labels, empty prompts, and conflicting duplicates, then remove prompts found in any WildJailbreak partition. Its official test retains **1,695 prompts: 754 harmful and 941 benign**. No WildGuardMix prompts are used to fit or select these classifiers. The [transfer configuration](configs/transfer_evaluation.json) fixes the checkpoints, seeds, and 0.5 threshold before evaluation.
+
+The same filtering leaves **28,643 WildGuardMix training candidates** outside all WildJailbreak partitions and the WildGuardMix test. Combining these with the full WildJailbreak training pool would give **211,648 unique candidates**. This combined pool has not been trained on; the size comparison and transfer evaluation are separate experiments. Exact overlap can be measured, but the source does not provide the original requests needed to check semantic or request-level overlap. The [audit](results/datasets/wildguardmix-transfer/manifest.json) records the exclusions.
 
 ## Train the models
 

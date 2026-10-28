@@ -33,3 +33,5 @@ data/models/
 # Runtime progress is kept locally; completed metrics are versioned.
 /results/experiments/**/status.json
 /results/experiments/**/config.json
+/data/processed/conditions/
+/data/evaluation/

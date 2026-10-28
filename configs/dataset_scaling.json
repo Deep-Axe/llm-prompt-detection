@@ -1,0 +1,410 @@
+{
+  "schema_version": 1,
+  "name": "wildjailbreak-training-size-comparison",
+  "baseline_results_commit": "a73b606",
+  "repository_commit_at_freeze": "5af2b2e37094a11a5cc98918f18acaf84d3fde78",
+  "seeds": [
+    4442,
+    4443,
+    4444
+  ],
+  "threshold": 0.5,
+  "selection": "highest validation F1",
+  "patience": 2,
+  "min_delta": 0.0,
+  "max_tokens": 256,
+  "vocabulary_limit": 20000,
+  "gradient_accumulation": 1,
+  "gradient_clip": 1.0,
+  "mixed_precision": "CUDA encoder runs only",
+  "gradient_checkpointing": "pretrained encoders",
+  "models": {
+    "mlp": {
+      "epoch_cap": 10,
+      "batch_size": 256,
+      "learning_rate": 0.001,
+      "hidden_units": 64,
+      "features": 32768,
+      "representation": "hashed word 1-2 / character 3-5 TF-IDF"
+    },
+    "cnn": {
+      "epoch_cap": 10,
+      "batch_size": 64,
+      "learning_rate": 0.001,
+      "embedding_dim": 64,
+      "filters": 64,
+      "widths": [
+        3,
+        4,
+        5
+      ]
+    },
+    "bilstm": {
+      "epoch_cap": 10,
+      "batch_size": 64,
+      "learning_rate": 0.001,
+      "embedding_dim": 64,
+      "hidden_size": 64,
+      "pooling": "mean and max"
+    },
+    "distilbert": {
+      "epoch_cap": 5,
+      "batch_size": 32,
+      "learning_rate": 2e-05,
+      "weight_decay": 0.01,
+      "warmup_fraction": 0.1,
+      "model_source": {
+        "repository": "distilbert/distilbert-base-uncased",
+        "revision": "12040accade4e8a0f71eabdb258fecc2e7e948be",
+        "files_sha256": {
+          "tokenizer.json": "ce64fce797c24f68df90b40a3f74f579b336a493db14bd583fd520ea0d8c9a98",
+          "tokenizer_config.json": "a025160ef0431f1a392f6f050c1310f4c5d9fb6f275932dbccba73c4d214bf10",
+          "vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3",
+          "model.safetensors": "5e3f1108e3cb34ee048634875d8482665b65ac713291a7e32396fb18f6ff0063",
+          "config.json": "69c94b0222d5d1f4b0ad027ca7416cdafb98378cbbb8305d0bf47c9365c60c83"
+        }
+      }
+    },
+    "deberta": {
+      "epoch_cap": 5,
+      "batch_size": 16,
+      "learning_rate": 2e-05,
+      "weight_decay": 0.01,
+      "warmup_fraction": 0.1,
+      "model_source": {
+        "repository": "microsoft/deberta-v3-base",
+        "revision": "8ccc9b6f36199bec6961081d44eb72fb3f7353f3"
+      }
+    }
+  },
+  "conditions": {
+    "wildjailbreak-100k": {
+      "dataset": "allenai/wildjailbreak",
+      "revision": "5ddc12a7894f842b0619b8e1c7ee496b198af009",
+      "license": "ODC-BY",
+      "task": "binary prompt harmfulness",
+      "seed": 4442,
+      "label_mapping": {
+        "vanilla_benign": 0,
+        "adversarial_benign": 0,
+        "vanilla_harmful": 1,
+        "adversarial_harmful": 1
+      },
+      "raw_counts": {
+        "raw_eval": 2210,
+        "raw_train": 261538,
+        "duplicate_texts": 105,
+        "conflicting_labels": 1,
+        "duplicate_bridge_groups": 5,
+        "excluded_train_variants": 14
+      },
+      "official_eval_limit": "Upstream evaluation omits vanilla requests; exact text overlap removed, underlying-request overlap cannot be checked.",
+      "train_pool_before_cap": 183005,
+      "split_method": "70/15/15 hash of normalized vanilla request; train capped by text hash",
+      "raw_file_sha256": {
+        "train/train.tsv": "376719bfdb46ad1a19e7ba4f587f80cc7cb1368cc213ee647ef739c170550f7a",
+        "eval/eval.tsv": "eeb7e43aafa0151588f5cb8994b99adc0ee34a57819d92f43a6084f0b7fe4fa4"
+      },
+      "partitions": {
+        "train": {
+          "rows": 100000,
+          "groups": 56872,
+          "counts": {
+            "label_1": 50715,
+            "adversarial_harmful": 31655,
+            "label_0": 49285,
+            "adversarial_benign": 30086,
+            "vanilla_benign": 19199,
+            "vanilla_harmful": 19060
+          },
+          "sha256": "92aad92389864e81cffb07eb02639a551677690a215364fe318df07c26457d6c"
+        },
+        "val": {
+          "rows": 39502,
+          "groups": 15164,
+          "counts": {
+            "label_0": 19385,
+            "adversarial_benign": 11822,
+            "label_1": 20117,
+            "adversarial_harmful": 12517,
+            "vanilla_harmful": 7600,
+            "vanilla_benign": 7563
+          },
+          "sha256": "192ad4cd320e159f7db6d49e98402647015591d0abaa8693ed89c2a7cca4f235"
+        },
+        "test": {
+          "rows": 38911,
+          "groups": 14824,
+          "counts": {
+            "label_1": 19780,
+            "adversarial_harmful": 12331,
+            "label_0": 19131,
+            "adversarial_benign": 11756,
+            "vanilla_benign": 7375,
+            "vanilla_harmful": 7449
+          },
+          "sha256": "7e5b9ccd899b8394c1ecdbf169e38ddfe14b33a733d6bc2d48e26ac35e81479b"
+        },
+        "official_eval": {
+          "rows": 2210,
+          "groups": 2210,
+          "counts": {
+            "label_1": 2000,
+            "adversarial_harmful": 2000,
+            "label_0": 210,
+            "adversarial_benign": 210
+          },
+          "sha256": "ffa338c1a10a7b31cb242f0036083dbe74577ea6ca1116c304966de5367555c8"
+        }
+      },
+      "data_directory": "data/processed/large"
+    },
+    "wildjailbreak-150k": {
+      "dataset": "allenai/wildjailbreak",
+      "revision": "5ddc12a7894f842b0619b8e1c7ee496b198af009",
+      "license": "ODC-BY",
+      "task": "binary prompt harmfulness",
+      "seed": 4442,
+      "label_mapping": {
+        "vanilla_benign": 0,
+        "adversarial_benign": 0,
+        "vanilla_harmful": 1,
+        "adversarial_harmful": 1
+      },
+      "raw_counts": {
+        "raw_eval": 2210,
+        "raw_train": 261538,
+        "duplicate_texts": 105,
+        "conflicting_labels": 1,
+        "duplicate_bridge_groups": 5,
+        "excluded_train_variants": 14
+      },
+      "official_eval_limit": "Upstream evaluation omits vanilla requests; exact text overlap removed, underlying-request overlap cannot be checked.",
+      "train_pool_before_cap": 183005,
+      "split_method": "70/15/15 hash of normalized vanilla request; train capped by text hash",
+      "raw_file_sha256": {
+        "train/train.tsv": "376719bfdb46ad1a19e7ba4f587f80cc7cb1368cc213ee647ef739c170550f7a",
+        "eval/eval.tsv": "eeb7e43aafa0151588f5cb8994b99adc0ee34a57819d92f43a6084f0b7fe4fa4"
+      },
+      "condition": "wildjailbreak-150k",
+      "partitions": {
+        "train": {
+          "rows": 150000,
+          "groups": 66683,
+          "counts": {
+            "label_1": 76055,
+            "adversarial_harmful": 47447,
+            "label_0": 73945,
+            "adversarial_benign": 45220,
+            "vanilla_benign": 28725,
+            "vanilla_harmful": 28608
+          },
+          "sha256": "d077750b3d5a3c0b0ffbeabfa1645ffcb6c7d8f8a76864c96d141c15277f2053",
+          "id_sha256": "5a26742684ec0690ab9fafceca43fb554e595f889f0fc8c9247a4364aa28a03c"
+        },
+        "val": {
+          "rows": 39502,
+          "groups": 15164,
+          "counts": {
+            "label_0": 19385,
+            "adversarial_benign": 11822,
+            "label_1": 20117,
+            "adversarial_harmful": 12517,
+            "vanilla_harmful": 7600,
+            "vanilla_benign": 7563
+          },
+          "sha256": "192ad4cd320e159f7db6d49e98402647015591d0abaa8693ed89c2a7cca4f235"
+        },
+        "test": {
+          "rows": 38911,
+          "groups": 14824,
+          "counts": {
+            "label_1": 19780,
+            "adversarial_harmful": 12331,
+            "label_0": 19131,
+            "adversarial_benign": 11756,
+            "vanilla_benign": 7375,
+            "vanilla_harmful": 7449
+          },
+          "sha256": "7e5b9ccd899b8394c1ecdbf169e38ddfe14b33a733d6bc2d48e26ac35e81479b"
+        },
+        "official_eval": {
+          "rows": 2210,
+          "groups": 2210,
+          "counts": {
+            "label_1": 2000,
+            "adversarial_harmful": 2000,
+            "label_0": 210,
+            "adversarial_benign": 210
+          },
+          "sha256": "ffa338c1a10a7b31cb242f0036083dbe74577ea6ca1116c304966de5367555c8"
+        }
+      },
+      "source_train_rows": 150000,
+      "nested_training_order": "normalized prompt ID, ascending",
+      "label_definition": "prompt harmfulness; completion and refusal labels excluded",
+      "prefix_100k_sha256": "92aad92389864e81cffb07eb02639a551677690a215364fe318df07c26457d6c",
+      "overlap_audit": {
+        "exact_prompt_overlap": {
+          "train/val": 0,
+          "train/test": 0,
+          "train/official_eval": 0,
+          "val/test": 0,
+          "val/official_eval": 0,
+          "test/official_eval": 0
+        },
+        "main_request_overlap": {
+          "train/val": 0,
+          "train/test": 0,
+          "val/test": 0
+        },
+        "official_request_overlap": "unavailable: upstream evaluation omits original requests"
+      },
+      "data_directory": "data/processed/conditions/wildjailbreak-150k"
+    },
+    "wildjailbreak-183005": {
+      "dataset": "allenai/wildjailbreak",
+      "revision": "5ddc12a7894f842b0619b8e1c7ee496b198af009",
+      "license": "ODC-BY",
+      "task": "binary prompt harmfulness",
+      "seed": 4442,
+      "label_mapping": {
+        "vanilla_benign": 0,
+        "adversarial_benign": 0,
+        "vanilla_harmful": 1,
+        "adversarial_harmful": 1
+      },
+      "raw_counts": {
+        "raw_eval": 2210,
+        "raw_train": 261538,
+        "duplicate_texts": 105,
+        "conflicting_labels": 1,
+        "duplicate_bridge_groups": 5,
+        "excluded_train_variants": 14
+      },
+      "official_eval_limit": "Upstream evaluation omits vanilla requests; exact text overlap removed, underlying-request overlap cannot be checked.",
+      "train_pool_before_cap": 183005,
+      "split_method": "70/15/15 hash of normalized vanilla request; train capped by text hash",
+      "raw_file_sha256": {
+        "train/train.tsv": "376719bfdb46ad1a19e7ba4f587f80cc7cb1368cc213ee647ef739c170550f7a",
+        "eval/eval.tsv": "eeb7e43aafa0151588f5cb8994b99adc0ee34a57819d92f43a6084f0b7fe4fa4"
+      },
+      "condition": "wildjailbreak-183005",
+      "partitions": {
+        "train": {
+          "rows": 183005,
+          "groups": 70008,
+          "counts": {
+            "label_1": 92880,
+            "adversarial_harmful": 57880,
+            "label_0": 90125,
+            "adversarial_benign": 55117,
+            "vanilla_benign": 35008,
+            "vanilla_harmful": 35000
+          },
+          "sha256": "6aee1b196f928e02c6cf9d71c6a85f25740283d5d1caa1d3050c3e182a471895",
+          "id_sha256": "383a6cf0c1ef6886754bb49da530e8192031ac30c086ae3669c3d9277f1ea14d"
+        },
+        "val": {
+          "rows": 39502,
+          "groups": 15164,
+          "counts": {
+            "label_0": 19385,
+            "adversarial_benign": 11822,
+            "label_1": 20117,
+            "adversarial_harmful": 12517,
+            "vanilla_harmful": 7600,
+            "vanilla_benign": 7563
+          },
+          "sha256": "192ad4cd320e159f7db6d49e98402647015591d0abaa8693ed89c2a7cca4f235"
+        },
+        "test": {
+          "rows": 38911,
+          "groups": 14824,
+          "counts": {
+            "label_1": 19780,
+            "adversarial_harmful": 12331,
+            "label_0": 19131,
+            "adversarial_benign": 11756,
+            "vanilla_benign": 7375,
+            "vanilla_harmful": 7449
+          },
+          "sha256": "7e5b9ccd899b8394c1ecdbf169e38ddfe14b33a733d6bc2d48e26ac35e81479b"
+        },
+        "official_eval": {
+          "rows": 2210,
+          "groups": 2210,
+          "counts": {
+            "label_1": 2000,
+            "adversarial_harmful": 2000,
+            "label_0": 210,
+            "adversarial_benign": 210
+          },
+          "sha256": "ffa338c1a10a7b31cb242f0036083dbe74577ea6ca1116c304966de5367555c8"
+        }
+      },
+      "source_train_rows": 183005,
+      "nested_training_order": "normalized prompt ID, ascending",
+      "label_definition": "prompt harmfulness; completion and refusal labels excluded",
+      "prefix_100k_sha256": "92aad92389864e81cffb07eb02639a551677690a215364fe318df07c26457d6c",
+      "overlap_audit": {
+        "exact_prompt_overlap": {
+          "train/val": 0,
+          "train/test": 0,
+          "train/official_eval": 0,
+          "val/test": 0,
+          "val/official_eval": 0,
+          "test/official_eval": 0
+        },
+        "main_request_overlap": {
+          "train/val": 0,
+          "train/test": 0,
+          "val/test": 0
+        },
+        "official_request_overlap": "unavailable: upstream evaluation omits original requests"
+      },
+      "data_directory": "data/processed/conditions/wildjailbreak-183005"
+    }
+  },
+  "baseline_inventory": {
+    "results/large/checkpoint_manifest.json": "8c7ba6284c4a46f8d1294ae751ee59d3b0703d84d4f5f6007ab7093922337285",
+    "results/large/local_distilbert_capacity.json": "374b7dbb58639b4b8e5b9e514e0e1e9201ff79c58261634be55bcf8c3fd64c81",
+    "results/large/huggingface_publication.json": "626a3f597ae361b0d9483615ad956f9e1621ed06471dade7fe77cc3c3a0672cd",
+    "results/large/mlp.json": "e844932de65f0c93df7f8fd20a131de3b4cef9a7ce05b22d7da6ac256efe9baf",
+    "results/large/data_manifest.json": "199c42406c3c7dc0db5a30c61f54da1566f4ff9c132d649692e3e9b6482cb39a",
+    "results/large/comparison.png": "ef5716009112e1263760c9c35d374c3db3c9d65eb716b47df43ae35c27452ce8",
+    "results/large/comparison.json": "de3cb9c4693b46253e7e6cb35e3a7681352297dd15b4f05611b2a8d819642c3f",
+    "results/large/hub_inference_verification.json": "baff214b9987d13232d8fffc45ac5c6a38f507b4a863836b1cca2817409d88bf",
+    "results/large/checkpoint_verification.json": "ab6d47670bb3a6267dbf776fe0e0983ba7e2d3fa598e3596a666f1c314887ef7",
+    "results/large/comparison.pdf": "adbe85f946abb3ac6c28131ca2c9811c43cec6ee5ed9f67e349d4c54e9f1602c",
+    "results/large/cnn_benchmark.json": "7194996fcef665250e44427f7b8aaa4ab9db4f07e03340da1a7c1a26b7cf03f2",
+    "results/large/comparison.csv": "d7c1210381e573e568224bb49211db48bb4601e7696501e3b249ed2d42f13bfa",
+    "results/large/README.md": "36267351c3276c3fdfa96e52d43f97894f150267fd7dc15cc4bfb41ec1ff223a",
+    "results/large/bilstm.json": "88962319584d36af35436e7d2c873887f3fd9f85bb5dbb65d1795e2c3cfffa3c",
+    "results/large/cnn.json": "12880b1cfcdc1bdd270b3814639b3c8600f28548ea5b0d360e6161a57a117fab",
+    "results/large/distilbert.json": "813b2e53a9ef0635a09868a5b4d825b63b9c087b7c43b34b23b24ad1929890e7",
+    "results/large/huggingface_package_verification.json": "3cf55702b6c7a304bbbd3bb8ff3e70185d3a79c2c9d89d8447d25288797a20ce",
+    "results/large/local_distilbert_batch32_capacity.json": "132dae9a1a5ef62c1c59f89407b0cd0dda99a1aeb2e57ca2ae4d880c348f80bb",
+    "results/large/data_audit.json": "378b122d21917187be34e7ae28fb047660e5c953cd1a3752183b30a827ce6792",
+    "results/large/uncertainty.json": "62f42ae13b8ec55794a16de6f4b55cdd94e57c66b6002a26658d22211c768254",
+    "artifacts/large/mlp/checkpoint.joblib": "96fc214d36c7bc5abcd98ede3bd4d9853702aaf72b69e16954b08ed73f2b3854",
+    "artifacts/large/cnn/best.pt": "a17996f6364ab630dbed8dabf75a393d1b48b9b1538418efc70ba659fcc1bfee",
+    "artifacts/large/cnn/vocabulary.json": "f2472611d132a1e0ebcc4ca22fa93853aeb82a8887d38edc36a725513534ae3b",
+    "artifacts/large/bilstm/best.pt": "4c04d43cebcf330f860537699ba3dfcf799064b70555974c6a7788d1d8bb1c74",
+    "artifacts/large/bilstm/vocabulary.json": "f2472611d132a1e0ebcc4ca22fa93853aeb82a8887d38edc36a725513534ae3b",
+    "artifacts/large/distilbert/model/config.json": "0b377078ad4a4eded2a75c357e58724606795c3d0bd9d99f6a0f217c83b4f872",
+    "artifacts/large/distilbert/model/model.safetensors": "8bdd20ee3196741b89025d9ecd23cd4a136c8b58f79c23fe6974de0e4a8029be",
+    "artifacts/large/distilbert/model/tokenizer.json": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66",
+    "artifacts/large/distilbert/model/tokenizer_config.json": "32fbafc9a97ea9f01b2fef65c5df3a84a1a84a3e66ba737cb36ac1dc4545869a",
+    "artifacts/large/distilbert/model/vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+  },
+  "smoke_policy": {
+    "purpose": "save/resume verification only; excluded from experiment rankings",
+    "train_rows": 512,
+    "evaluation_rows_per_partition": 128,
+    "epoch_cap": 2
+  },
+  "resume_policy": "same configuration, code hashes, data hashes, and protocol; optimizer-update boundaries",
+  "reference_protocol_sha256": "3800592e3d72ab0ee0516f5619d87780d2cd4ba4bb83cf55e15316e97f4bd821",
+  "comparison_policy": "Fixed model settings across nested training pools; validation checkpoint selection; three seeds per model and condition. Existing 100000-row repeated runs form the reference."
+}
