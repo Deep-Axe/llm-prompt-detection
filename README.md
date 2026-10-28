@@ -2,7 +2,7 @@
 
 This project compares four models for detecting harmful prompts: a TF–IDF MLP, a sentence CNN, a BiLSTM, and DistilBERT. It includes data preparation, training, evaluation, and inference from the published checkpoints.
 
-The experiments use 100,000 unique training prompts from [WildJailbreak](https://huggingface.co/datasets/allenai/wildjailbreak). The original three-epoch baseline and the longer runs across three seeds are complete. DistilBERT was fine-tuned across the full encoder and classification head.
+The reference experiments use 100,000 unique training prompts from [WildJailbreak](https://huggingface.co/datasets/allenai/wildjailbreak). The original three-epoch baseline and the longer runs across three seeds are complete. DistilBERT was fine-tuned across the full encoder and classification head.
 
 [Models on Hugging Face](https://huggingface.co/DeeAxe/llm-prompt-detection) · [Baseline results](results/large/comparison.csv) · [Repeated-seed results](results/experiments/comparison.csv) · [Training configuration](configs/training_protocol.json)
 
@@ -19,7 +19,7 @@ The shared test set contains 38,911 prompts. The official challenge provides a f
 
 ![Model comparison](results/large/comparison.png)
 
-DistilBERT has the highest test F1, but rejects 40% of benign prompts in the official challenge. False positives remain a major issue. The baseline uses one training seed and mostly synthetic data. The repeated-seed results below extend its training budget. Larger datasets and models, and inference speed, remain to be evaluated.
+DistilBERT has the highest test F1, but rejects 40% of benign prompts in the official challenge. False positives remain a major issue. The baseline uses one training seed and mostly synthetic data. The repeated-seed results below extend its training budget. Training on larger pools is underway. Larger encoders and inference speed remain to be evaluated.
 
 The labels describe prompt harmfulness. Evaluating prompt injection will require a separate experiment with application context.
 
@@ -55,7 +55,7 @@ These scores describe transfer to a different source and test distribution. [Tra
 
 ## Setup
 
-The recorded runs use Python 3.10 and PyTorch 2.5.1. From the repository root:
+Local training uses Python 3.10 and PyTorch 2.5.1. The Kaggle queues use Python 3.12 and PyTorch 2.10 in a pinned container. Each result records its actual environment. For a local installation:
 
 ```bash
 python3.10 -m venv .venv
@@ -111,7 +111,7 @@ Preparation removes normalized duplicates and conflicting labels, keeps each ori
 
 The audit checks exact prompt overlap across all partitions and underlying-request overlap across the main splits. The official evaluation omits the original request identifiers, so its overlap check is limited to exact text. Counts, source revisions, and file hashes are saved in [the data manifest](results/large/data_manifest.json).
 
-The same ordering defines nested pools of 100,000, 150,000, and 183,005 unique training prompts. The larger pools contain the exact original 100,000-row prefix. Validation, test, and official evaluation files remain identical, with no measured prompt overlap between partitions and no underlying-request overlap in the grouped splits. [Frozen manifests and overlap checks](results/datasets/) record each condition. The completed training results above use the 100,000-row pool.
+The same ordering defines nested pools of 100,000, 150,000, and 183,005 unique training prompts. The larger pools contain the exact original 100,000-row prefix. Validation, test, and official evaluation files remain identical, with no measured prompt overlap between partitions and no underlying-request overlap in the grouped splits. [Frozen manifests and overlap checks](results/datasets/) record each condition. The original baseline and repeated-seed reference use the 100,000-row pool.
 
 WildGuardMix provides a separate transfer evaluation. We use its prompt-harmfulness labels, discard missing labels, empty prompts, and conflicting duplicates, then remove prompts found in any WildJailbreak partition. Its official test retains **1,695 prompts: 754 harmful and 941 benign**. No WildGuardMix prompts are used to fit or select these classifiers. The [transfer configuration](configs/transfer_evaluation.json) fixes the checkpoints, seeds, and 0.5 threshold before evaluation.
 
