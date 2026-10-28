@@ -1,0 +1,10 @@
+{
+  "kernel": "deepamahuja/prompt-detection-distilbert-seeds",
+  "metrics_recomputed": true,
+  "source_revision": {
+    "commit": "35f6e99e225a9fcd354d370fccea8a7376211396",
+    "archive_sha256": "aab65a86f95f5ba30293e0c717ae8bc0b9004bba822fb5c19754352f9c680603"
+  },
+  "model_archive_sha256": "8a4318e7eafb54092d3233c8d4c0b5d9510bcd4c847f2f58f85a4d8ed5c43604",
+  "prediction_archive_sha256": "31de23456fa13b0951496bfeffb26bc8f5178a2794c632d88a64c80efcefe760"
+}
