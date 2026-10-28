@@ -2,7 +2,7 @@
 
 This project compares four models for detecting harmful prompts: a TF–IDF MLP, a sentence CNN, a BiLSTM, and DistilBERT. It includes data preparation, training, evaluation, and inference from the published checkpoints.
 
-The current experiment uses 100,000 unique training prompts from [WildJailbreak](https://huggingface.co/datasets/allenai/wildjailbreak). All four models completed three epochs on the same split. DistilBERT was fine-tuned across the full encoder and classification head.
+The experiments use 100,000 unique training prompts from [WildJailbreak](https://huggingface.co/datasets/allenai/wildjailbreak). The original three-epoch baseline and the longer runs across three seeds are complete. DistilBERT was fine-tuned across the full encoder and classification head.
 
 [Models on Hugging Face](https://huggingface.co/DeeAxe/llm-prompt-detection) · [Baseline results](results/large/comparison.csv) · [Repeated-seed results](results/experiments/comparison.csv) · [Training configuration](configs/training_protocol.json)
 
@@ -19,9 +19,26 @@ The shared test set contains 38,911 prompts. The official challenge provides a f
 
 ![Model comparison](results/large/comparison.png)
 
-DistilBERT has the highest test F1, but rejects 40% of benign prompts in the official challenge. False positives remain a major issue. These runs use one training seed and mostly synthetic data. Further work will cover longer training, larger datasets and models, repeated seeds, and inference speed.
+DistilBERT has the highest test F1, but rejects 40% of benign prompts in the official challenge. False positives remain a major issue. The baseline uses one training seed and mostly synthetic data. The repeated-seed results below extend its training budget. Larger datasets and models, and inference speed, remain to be evaluated.
 
 The labels describe prompt harmfulness. Evaluating prompt injection will require a separate experiment with application context.
+
+## Repeated-seed results
+
+All four architectures completed runs with seeds 4442, 4443, and 4444 on the same 100,000 training prompts. The epoch caps were ten for MLP/CNN/BiLSTM and five for DistilBERT, with validation-based early stopping after two epochs without improvement. Each run evaluates its best validation checkpoint at a fixed threshold of 0.5.
+
+| Model | Baseline test F1 | Test F1, mean ± sample SD | Official benign acceptance, mean |
+| --- | ---: | ---: | ---: |
+| TF–IDF MLP | 0.9355 | 0.9377 ± 0.0007 | 0.5286 |
+| CNN | 0.9290 | 0.9410 ± 0.0024 | 0.5016 |
+| BiLSTM | 0.9423 | 0.9493 ± 0.0012 | 0.5175 |
+| DistilBERT | 0.9792 | 0.9798 ± 0.0004 | 0.5968 |
+
+DistilBERT remains the strongest on the shared test, with a small gain over its baseline. Its official benign acceptance is still about 60%, so false positives remain an important limitation.
+
+[Full metrics](results/experiments/summary.json), [per-seed records](results/experiments/wildjailbreak-100k/), and [validation curves](results/experiments/validation_curves.csv) include the actual epochs, selected checkpoints, timings, and source hashes.
+
+The MLP runner uses 256-row partial-fit batches; the earlier baseline used 1,000-row feature chunks with internal 256-row optimizer batches. The updated batching and seeded shuffle order are recorded through the training code revision.
 
 ## Setup
 
