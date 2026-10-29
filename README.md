@@ -53,6 +53,22 @@ The validation-selected 100,000-row models were evaluated on 1,695 filtered Wild
 
 These scores describe transfer to a different source and test distribution. [Transfer metrics](results/transfer/wildguardmix-transfer/summary.csv) include all three seeds and the source and checkpoint hashes.
 
+## Training-size comparison
+
+All sizes use the same held-out partitions, model settings, and three seeds. Vocabularies and TF–IDF statistics are fitted separately on each training pool. The 100,000-row runs are the completed reference. Epoch caps are fixed, so larger pools also allow more optimizer updates. The larger runs enable deterministic GPU operations; each condition records its runner revision.
+
+The larger-pool runs are in progress. The table includes architectures with all three seeds complete.
+
+| Training prompts | Model | Test F1, mean ± sample SD | Test MCC, mean |
+| ---: | --- | ---: | ---: |
+| 100,000 | TF–IDF MLP | 0.9377 ± 0.0007 | 0.8727 |
+| 100,000 | CNN | 0.9410 ± 0.0024 | 0.8791 |
+| 100,000 | BiLSTM | 0.9493 ± 0.0012 | 0.8969 |
+| 100,000 | DistilBERT | 0.9798 ± 0.0004 | 0.9589 |
+| 183,005 | TF–IDF MLP | 0.9427 ± 0.0006 | 0.8836 |
+
+[Training-size metrics](results/experiments/scaling_comparison.csv) include per-condition means and standard deviations. Each run records its source, data hashes, actual epochs, and validation-selected checkpoint. The shared test was already used in the original baseline.
+
 ## Setup
 
 Local training uses Python 3.10 and PyTorch 2.5.1. The Kaggle queues use Python 3.12 and PyTorch 2.10 in a pinned container. Each result records its actual environment. For a local installation:
