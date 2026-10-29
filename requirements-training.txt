@@ -5,3 +5,5 @@ transformers==4.46.3
 huggingface-hub==0.36.2
 psutil==6.1.1
 pyarrow==25.0.1
+# Figures from recorded metrics; headless rendering.
+matplotlib==3.5.1

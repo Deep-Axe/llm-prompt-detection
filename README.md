@@ -53,6 +53,21 @@ The validation-selected 100,000-row models were evaluated on 1,695 filtered Wild
 
 These scores describe transfer to a different source and test distribution. [Transfer metrics](results/transfer/wildguardmix-transfer/summary.csv) include all three seeds and the source and checkpoint hashes.
 
+## Error analysis
+
+Saved predictions are compared by source, prompt family, length, and training seed. On WildGuardMix, 121 of the 754 prompts labeled harmful are missed by every architecture across all three seeds. DistilBERT's mean harmful miss rate is 23.03% there, compared with 2.10% on the shared WildJailbreak test.
+
+![False positives and missed harmful prompts across evaluation sources](results/error_analysis/wildjailbreak-100k/source_errors.png)
+
+[Slice metrics](results/error_analysis/wildjailbreak-100k/slices.csv) include class counts and seed variation. [Persistent error counts](results/error_analysis/wildjailbreak-100k/stable_errors.csv) separate errors shared by all three seeds from those that change across seeds. Length ranges are descriptive regex-token counts; DistilBERT uses WordPiece tokens. The evaluation sources have different distributions and label definitions.
+
+```bash
+python src/analyze_classifier_errors.py
+python src/plot_classifier_errors.py
+```
+
+The analysis verifies prediction IDs, labels, and saved metrics before producing the tables. Prompt text and annotated review samples stay in ignored `traige/error_review/`. Re-running preserves those annotations when the selected samples match. Plotting uses Matplotlib; the figure provenance records the versions used.
+
 ## Training-size comparison
 
 All sizes use the same held-out partitions, model settings, and three seeds. Vocabularies and TF–IDF statistics are fitted separately on each training pool. The 100,000-row runs are the completed reference. Epoch caps are fixed, so larger pools also allow more optimizer updates. The larger runs enable deterministic GPU operations; each condition records its runner revision.
