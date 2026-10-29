@@ -72,6 +72,24 @@
     "reference_100k_f1_mean": 0.9377087253262858
   },
   {
+    "condition": "wildjailbreak-150k",
+    "model": "mlp",
+    "protocol_sha256": "90c6310ecea006d88192ce71808e7f15ded92886c0625a18df43fb63010e1d30",
+    "runs": 3,
+    "complete_seed_set": true,
+    "f1_mean": 0.9407587784532557,
+    "f1_std": 0.00043395457824232155,
+    "accuracy_mean": 0.9392802378076465,
+    "accuracy_std": 0.0005011985463000274,
+    "mcc_mean": 0.8786183962821846,
+    "mcc_std": 0.0009782822901312999,
+    "official_recall_mean": 0.8536666666666667,
+    "official_recall_std": 0.00600694043031337,
+    "official_benign_acceptance_mean": 0.49523809523809526,
+    "official_benign_acceptance_std": 0.008247860988423228,
+    "reference_100k_f1_mean": 0.9377087253262858
+  },
+  {
     "condition": "wildjailbreak-183005",
     "model": "cnn",
     "protocol_sha256": "90c6310ecea006d88192ce71808e7f15ded92886c0625a18df43fb63010e1d30",
