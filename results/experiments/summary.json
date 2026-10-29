@@ -1,5 +1,5 @@
 {
-  "runs_found": 15,
+  "runs_found": 18,
   "summary": [
     {
       "protocol_sha256": "3800592e3d72ab0ee0516f5619d87780d2cd4ba4bb83cf55e15316e97f4bd821",
@@ -237,6 +237,66 @@
         "official_benign_acceptance": {
           "mean": 0.5285714285714286,
           "std": 0.032991443953692946
+        }
+      },
+      "complete_seed_set": true
+    },
+    {
+      "protocol_sha256": "90c6310ecea006d88192ce71808e7f15ded92886c0625a18df43fb63010e1d30",
+      "condition": "wildjailbreak-183005",
+      "model": "cnn",
+      "seeds": [
+        4442,
+        4443,
+        4444
+      ],
+      "runs": 3,
+      "data_hashes": {
+        "train": "6aee1b196f928e02c6cf9d71c6a85f25740283d5d1caa1d3050c3e182a471895",
+        "val": "192ad4cd320e159f7db6d49e98402647015591d0abaa8693ed89c2a7cca4f235",
+        "test": "7e5b9ccd899b8394c1ecdbf169e38ddfe14b33a733d6bc2d48e26ac35e81479b",
+        "official_eval": "ffa338c1a10a7b31cb242f0036083dbe74577ea6ca1116c304966de5367555c8"
+      },
+      "metrics": {
+        "accuracy": {
+          "mean": 0.9493373767486486,
+          "std": 0.0004256639767265592
+        },
+        "precision": {
+          "mean": 0.9544264218022137,
+          "std": 0.00039594209856701277
+        },
+        "recall": {
+          "mean": 0.9454836535220762,
+          "std": 0.0006280635373638061
+        },
+        "f1": {
+          "mean": 0.9499339249789628,
+          "std": 0.00042782972318161226
+        },
+        "mcc": {
+          "mean": 0.8987035783818332,
+          "std": 0.0008486519407850872
+        },
+        "roc_auc": {
+          "mean": 0.9898220792525211,
+          "std": 0.00024258579531827293
+        },
+        "average_precision": {
+          "mean": 0.9902846078357698,
+          "std": 0.00019880076635629183
+        },
+        "brier_score": {
+          "mean": 0.041660807558685904,
+          "std": 0.0010100069646301058
+        },
+        "official_recall": {
+          "mean": 0.8255,
+          "std": 0.0050000000000000044
+        },
+        "official_benign_acceptance": {
+          "mean": 0.5507936507936508,
+          "std": 0.023489918391982112
         }
       },
       "complete_seed_set": true
