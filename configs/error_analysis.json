@@ -1,0 +1,11 @@
+{
+  "training_condition": "wildjailbreak-100k",
+  "models": ["mlp", "cnn", "bilstm", "distilbert"],
+  "seeds": [4442, 4443, 4444],
+  "threshold": 0.5,
+  "length_measure": "Unicode regex tokens: words and individual non-whitespace punctuation; diagnostic lengths, not DistilBERT WordPiece counts",
+  "length_upper_bounds": [64, 128, 256, 512],
+  "evaluations": ["wildjailbreak-test", "wildjailbreak-official", "wildguardmix-transfer"],
+  "review_selection": "Up to ten false positives and ten false negatives per model and evaluation, restricted to errors shared by all three seeds; sort by mean wrong-class confidence, then prompt ID",
+  "purpose": "Descriptive error analysis only; no checkpoint, threshold, or configuration selection using evaluation results"
+}

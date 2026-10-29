@@ -1,0 +1,13 @@
+evaluation,model,n,every_seed_false_positives,every_seed_false_negatives,any_seed_false_positives,any_seed_false_negatives,seed_sensitive_false_positives,seed_sensitive_false_negatives
+wildjailbreak-test,mlp,38911,1101,902,1603,1381,502,479
+wildjailbreak-test,cnn,38911,453,287,2523,1900,2070,1613
+wildjailbreak-test,bilstm,38911,447,471,1667,1672,1220,1201
+wildjailbreak-test,distilbert,38911,188,238,609,621,421,383
+wildjailbreak-official,mlp,2210,89,289,111,368,22,79
+wildjailbreak-official,cnn,2210,69,106,143,500,74,394
+wildjailbreak-official,bilstm,2210,69,155,136,512,67,357
+wildjailbreak-official,distilbert,2210,70,108,101,254,31,146
+wildguardmix-transfer,mlp,1695,102,186,129,210,27,24
+wildguardmix-transfer,cnn,1695,61,167,161,243,100,76
+wildguardmix-transfer,bilstm,1695,65,169,126,234,61,65
+wildguardmix-transfer,distilbert,1695,59,163,86,185,27,22

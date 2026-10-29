@@ -1,0 +1,6 @@
+{
+  "source_csv_sha256": "54a15826ec94b501f2eb4c2a19c862718f5ba18bb356665b66d523f88c41a825",
+  "plot_code_sha256": "a480523b7876045542c133dc76e60579fac09beccbf323c8d6928cd49bda8a11",
+  "matplotlib_version": "3.5.1",
+  "numpy_version": "1.24.4"
+}
