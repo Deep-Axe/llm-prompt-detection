@@ -100,6 +100,106 @@
       "mcc_std": 0.0010226959579713827,
       "roc_auc_mean": 0.9153401718171406,
       "roc_auc_std": 0.00306128455234079
+    },
+    {
+      "training_condition": "wildjailbreak-150k",
+      "model": "mlp",
+      "n": 1695,
+      "seeds": [
+        4442,
+        4443,
+        4444
+      ],
+      "complete_seed_set": true,
+      "accuracy_mean": 0.8192723697148475,
+      "accuracy_std": 0.0035561733176056962,
+      "precision_mean": 0.8312754776975213,
+      "precision_std": 0.004005977751855223,
+      "recall_mean": 0.7449160035366932,
+      "recall_std": 0.005021139120955157,
+      "benign_acceptance_mean": 0.8788522848034006,
+      "benign_acceptance_std": 0.002811637950121758,
+      "f1_mean": 0.7857281082663081,
+      "f1_std": 0.004406412904388416,
+      "mcc_mean": 0.6331109351855293,
+      "mcc_std": 0.007277179797521607,
+      "roc_auc_mean": 0.8858519117781093,
+      "roc_auc_std": 0.0011779284734596681
+    },
+    {
+      "training_condition": "wildjailbreak-150k",
+      "model": "cnn",
+      "n": 1695,
+      "seeds": [
+        4442,
+        4443,
+        4444
+      ],
+      "complete_seed_set": true,
+      "accuracy_mean": 0.8257620452310718,
+      "accuracy_std": 0.001228121533608309,
+      "precision_mean": 0.8518091684183577,
+      "precision_std": 0.005641835150391761,
+      "recall_mean": 0.7365163572060124,
+      "recall_std": 0.00940928234031511,
+      "benign_acceptance_mean": 0.8972724052426496,
+      "benign_acceptance_std": 0.005852891123577187,
+      "f1_mean": 0.7899300222094582,
+      "f1_std": 0.003142196642053389,
+      "mcc_mean": 0.6474292406869178,
+      "mcc_std": 0.0021232177026979013,
+      "roc_auc_mean": 0.883664264083114,
+      "roc_auc_std": 0.002059496172365772
+    },
+    {
+      "training_condition": "wildjailbreak-183005",
+      "model": "mlp",
+      "n": 1695,
+      "seeds": [
+        4442,
+        4443,
+        4444
+      ],
+      "complete_seed_set": true,
+      "accuracy_mean": 0.8261553588987217,
+      "accuracy_std": 0.0006812392556809583,
+      "precision_mean": 0.8465946894090607,
+      "precision_std": 0.003273851553651941,
+      "recall_mean": 0.7440318302387268,
+      "recall_std": 0.0022971496121603242,
+      "benign_acceptance_mean": 0.8919589089620971,
+      "benign_acceptance_std": 0.0030677485079150927,
+      "f1_mean": 0.792000297076121,
+      "f1_std": 0.00013667759223822984,
+      "mcc_mean": 0.6477081370443357,
+      "mcc_std": 0.0015858630710044123,
+      "roc_auc_mean": 0.8879167054255919,
+      "roc_auc_std": 0.001746270493496189
+    },
+    {
+      "training_condition": "wildjailbreak-183005",
+      "model": "cnn",
+      "n": 1695,
+      "seeds": [
+        4442,
+        4443,
+        4444
+      ],
+      "complete_seed_set": true,
+      "accuracy_mean": 0.8261553588987217,
+      "accuracy_std": 0.007585959300682768,
+      "precision_mean": 0.8592186695940702,
+      "precision_std": 0.008787368167816622,
+      "recall_mean": 0.7285587975243147,
+      "recall_std": 0.011279708949755102,
+      "benign_acceptance_mean": 0.9043570669500531,
+      "benign_acceptance_std": 0.0059168590465781086,
+      "f1_mean": 0.7884994800276969,
+      "f1_std": 0.009756187373367246,
+      "mcc_mean": 0.6489363853303912,
+      "mcc_std": 0.015531057310161253,
+      "roc_auc_mean": 0.8856278147201229,
+      "roc_auc_std": 0.0016717343367229393
     }
   ]
 }
