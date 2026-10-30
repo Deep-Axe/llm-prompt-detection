@@ -81,6 +81,7 @@ The larger-pool runs are in progress. The table includes architectures with all 
 | 100,000 | BiLSTM | 0.9493 ± 0.0012 | 0.8969 |
 | 100,000 | DistilBERT | 0.9798 ± 0.0004 | 0.9589 |
 | 150,000 | TF–IDF MLP | 0.9408 ± 0.0004 | 0.8786 |
+| 150,000 | CNN | 0.9452 ± 0.0033 | 0.8881 |
 | 183,005 | TF–IDF MLP | 0.9427 ± 0.0006 | 0.8836 |
 | 183,005 | CNN | 0.9499 ± 0.0004 | 0.8987 |
 

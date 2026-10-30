@@ -1,5 +1,5 @@
 {
-  "runs_found": 21,
+  "runs_found": 24,
   "summary": [
     {
       "protocol_sha256": "3800592e3d72ab0ee0516f5619d87780d2cd4ba4bb83cf55e15316e97f4bd821",
@@ -237,6 +237,66 @@
         "official_benign_acceptance": {
           "mean": 0.5285714285714286,
           "std": 0.032991443953692946
+        }
+      },
+      "complete_seed_set": true
+    },
+    {
+      "protocol_sha256": "90c6310ecea006d88192ce71808e7f15ded92886c0625a18df43fb63010e1d30",
+      "condition": "wildjailbreak-150k",
+      "model": "cnn",
+      "seeds": [
+        4442,
+        4443,
+        4444
+      ],
+      "runs": 3,
+      "data_hashes": {
+        "train": "d077750b3d5a3c0b0ffbeabfa1645ffcb6c7d8f8a76864c96d141c15277f2053",
+        "val": "192ad4cd320e159f7db6d49e98402647015591d0abaa8693ed89c2a7cca4f235",
+        "test": "7e5b9ccd899b8394c1ecdbf169e38ddfe14b33a733d6bc2d48e26ac35e81479b",
+        "official_eval": "ffa338c1a10a7b31cb242f0036083dbe74577ea6ca1116c304966de5367555c8"
+      },
+      "metrics": {
+        "accuracy": {
+          "mean": 0.9440175443105207,
+          "std": 0.0036148336640648517
+        },
+        "precision": {
+          "mean": 0.9415735446566686,
+          "std": 0.007747358430944943
+        },
+        "recall": {
+          "mean": 0.9488035052241321,
+          "std": 0.003359731996694857
+        },
+        "f1": {
+          "mean": 0.9451569896156853,
+          "std": 0.003311300927063753
+        },
+        "mcc": {
+          "mean": 0.8880508131530741,
+          "std": 0.0071615165582395125
+        },
+        "roc_auc": {
+          "mean": 0.9879714512310834,
+          "std": 0.0008569296716575272
+        },
+        "average_precision": {
+          "mean": 0.9886009929173575,
+          "std": 0.0005183977816491984
+        },
+        "brier_score": {
+          "mean": 0.04385986284519657,
+          "std": 0.0014793909399346702
+        },
+        "official_recall": {
+          "mean": 0.8426666666666667,
+          "std": 0.017134273644754644
+        },
+        "official_benign_acceptance": {
+          "mean": 0.5111111111111112,
+          "std": 0.01802828046285804
         }
       },
       "complete_seed_set": true
