@@ -82,8 +82,10 @@ The larger-pool runs are in progress. The table includes architectures with all 
 | 100,000 | DistilBERT | 0.9798 ± 0.0004 | 0.9589 |
 | 150,000 | TF–IDF MLP | 0.9408 ± 0.0004 | 0.8786 |
 | 150,000 | CNN | 0.9452 ± 0.0033 | 0.8881 |
+| 150,000 | BiLSTM | 0.9543 ± 0.0007 | 0.9073 |
 | 183,005 | TF–IDF MLP | 0.9427 ± 0.0006 | 0.8836 |
 | 183,005 | CNN | 0.9499 ± 0.0004 | 0.8987 |
+| 183,005 | BiLSTM | 0.9568 ± 0.0003 | 0.9122 |
 
 [Training-size metrics](results/experiments/scaling_comparison.csv) include per-condition means and standard deviations. Each run records its source, data hashes, actual epochs, and validation-selected checkpoint. The shared test was already used in the original baseline.
 
