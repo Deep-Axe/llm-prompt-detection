@@ -72,7 +72,7 @@ The analysis verifies prediction IDs, labels, and saved metrics before producing
 
 All sizes use the same held-out partitions, model settings, and three seeds. Vocabularies and TF–IDF statistics are fitted separately on each training pool. The 100,000-row runs are the completed reference. Epoch caps are fixed, so larger pools also allow more optimizer updates. The larger runs enable deterministic GPU operations; each condition records its runner revision.
 
-The larger-pool runs are in progress. The table includes architectures with all three seeds complete.
+The larger-pool comparison is complete.
 
 | Training prompts | Model | Test F1, mean ± sample SD | Test MCC, mean |
 | ---: | --- | ---: | ---: |
@@ -83,9 +83,11 @@ The larger-pool runs are in progress. The table includes architectures with all 
 | 150,000 | TF–IDF MLP | 0.9408 ± 0.0004 | 0.8786 |
 | 150,000 | CNN | 0.9452 ± 0.0033 | 0.8881 |
 | 150,000 | BiLSTM | 0.9543 ± 0.0007 | 0.9073 |
+| 150,000 | DistilBERT | 0.9830 ± 0.0005 | 0.9655 |
 | 183,005 | TF–IDF MLP | 0.9427 ± 0.0006 | 0.8836 |
 | 183,005 | CNN | 0.9499 ± 0.0004 | 0.8987 |
 | 183,005 | BiLSTM | 0.9568 ± 0.0003 | 0.9122 |
+| 183,005 | DistilBERT | 0.9847 ± 0.0005 | 0.9688 |
 
 [Training-size metrics](results/experiments/scaling_comparison.csv) include per-condition means and standard deviations. Each run records its source, data hashes, actual epochs, and validation-selected checkpoint. The shared test was already used in the original baseline.
 

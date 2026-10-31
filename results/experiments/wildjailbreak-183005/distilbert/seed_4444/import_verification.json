@@ -1,0 +1,10 @@
+{
+  "kernel": "deepamahuja/prompt-detection-bilstm-scaling",
+  "metrics_recomputed": true,
+  "source_revision": {
+    "commit": "ed185558061cbc2e70ea450514c2dad8072e6603",
+    "archive_sha256": "4c32997345526e25406ae80e8dce71938dacf46b0d86c777dafd28ba626905c3"
+  },
+  "model_archive_sha256": "5e60638a0a2bbde7b55dbb517c460c7e8427a9335ed74a7a3fad43ed3935ead8",
+  "prediction_archive_sha256": "4ea87b663fde48c52f3ae43801a19be82c1f5c8334efd5b42ba9cbdc593846cd"
+}
