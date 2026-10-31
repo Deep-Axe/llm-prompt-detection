@@ -1,0 +1,17 @@
+{
+  "status": "verified",
+  "training_rows": 100000,
+  "source": {
+    "path": "data/models/cnn/wildjailbreak-100k-vocabulary.json",
+    "sha256": "4faa1cb744c24df27db4a7af7545fc79ef0d77d6c2f9ecbef7d1c5a85dee1ed5",
+    "train_partition_sha256": "92aad92389864e81cffb07eb02639a551677690a215364fe318df07c26457d6c",
+    "fit_max_tokens": 256,
+    "vocabulary_limit": 20000,
+    "reference_condition": "wildjailbreak-100k",
+    "policy": "Reuse the same training-only vocabulary for capacity and context comparisons"
+  },
+  "reconstructed_from_training_only": true,
+  "reference_seed_vocabularies_identical": true,
+  "vocabulary_entries": 20000,
+  "validation_and_test_used_for_fitting": false
+}

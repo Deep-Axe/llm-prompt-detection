@@ -12,6 +12,8 @@ from sklearn.feature_extraction.text import HashingVectorizer, TfidfTransformer
 from large_data import PARTITIONS, rows, word_tokens
 from train_large_mlp import prefix
 from experiment_state import atomic_json, digest_json
+from evaluation import ROOT
+from prepare_large_corpus import file_hash
 
 
 def selected_rows(data, split, limit):
@@ -22,11 +24,24 @@ def cache_fingerprint(config):
     representation = 'tfidf' if config['model']=='mlp' else 'encoder' if config['model'] in ('distilbert','deberta') else 'regex'
     settings = {'representation':representation, 'data_hashes':config['data_hashes'],
                 'max_tokens':config['max_tokens'], 'smoke_only':config['smoke_only'],
+                'vocabulary_source':config.get('vocabulary_source'),
                 'limits':[config['smoke_train_rows'],config['smoke_eval_rows']] if config['smoke_only'] else None,
                 'feature_batch_size':config['batch_size'] if representation=='tfidf' else None,
                 'encoder_source':config['model_settings'].get('model_source') if representation=='encoder' else None,
                 'code_hashes':{name:config['code_hashes'][name] for name in ['experiment_data.py','large_data.py','train_large_mlp.py']}}
     return digest_json(settings)
+
+
+
+def load_fixed_vocabulary(path, expected_sha256):
+    if file_hash(path)!=expected_sha256:
+        raise ValueError('Fixed vocabulary checksum differs')
+    vocabulary=json.loads(path.read_text())
+    if not vocabulary or len(vocabulary)>20000 or any(not isinstance(k,str) or type(v) is not int for k,v in vocabulary.items()):
+        raise ValueError('Invalid vocabulary schema')
+    if sorted(vocabulary.values())!=list(range(2,len(vocabulary)+2)):
+        raise ValueError('Vocabulary IDs must be contiguous, reserving zero and one')
+    return vocabulary
 
 
 def prepare(data, folder, manifest, config, encoder, reuse_cache=None):
@@ -92,10 +107,16 @@ def prepare(data, folder, manifest, config, encoder, reuse_cache=None):
             from transformers import AutoTokenizer
             tokenizer=AutoTokenizer.from_pretrained(encoder,local_files_only=True)
         else:
-            counts=Counter()
-            for r in selected_rows(data,'train',limits['train']):
-                counts.update(word_tokens(r['text'],config['max_tokens']))
-            vocabulary={t:i+2 for i,(t,_) in enumerate(sorted(counts.items(),key=lambda v:(-v[1],v[0]))[:20000])}
+            source=config.get('vocabulary_source')
+            if source:
+                if source['train_partition_sha256']!=manifest['partitions']['train']['sha256']:
+                    raise ValueError('Fixed vocabulary was fitted on a different training partition')
+                vocabulary=load_fixed_vocabulary(ROOT/source['path'],source['sha256'])
+            else:
+                counts=Counter()
+                for r in selected_rows(data,'train',limits['train']):
+                    counts.update(word_tokens(r['text'],config['max_tokens']))
+                vocabulary={t:i+2 for i,(t,_) in enumerate(sorted(counts.items(),key=lambda v:(-v[1],v[0]))[:20000])}
             info['vocabulary']=vocabulary
             atomic_json(cache / 'vocabulary.json',vocabulary)
         for split in PARTITIONS:

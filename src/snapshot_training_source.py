@@ -11,6 +11,7 @@ from evaluation import ROOT
 from experiment_state import atomic_json
 from large_data import validate_manifest
 from condition_data import condition_directory
+from prepare_large_corpus import file_hash
 
 
 def main():
@@ -48,6 +49,13 @@ def main():
                     except OSError:
                         shutil.copy2(source / name,destination / name)
             validate_manifest(destination)
+        if protocol.get('vocabulary_source'):
+            definition=protocol['vocabulary_source']
+            source=ROOT/definition['path'];destination=args.output/definition['path']
+            if file_hash(source)!=definition['sha256']: raise ValueError('Vocabulary source changed')
+            destination.parent.mkdir(parents=True,exist_ok=True)
+            if not destination.exists(): shutil.copy2(source,destination)
+            if file_hash(destination)!=definition['sha256']: raise ValueError('Snapshot vocabulary differs')
     print(args.output)
 
 

@@ -260,6 +260,20 @@ python src/summarize_training_results.py
 
 The summary reports means and sample standard deviations across seeds, and identifies incomplete seed sets. Completed checkpoints and predictions remain outside GitHub.
 
+## CNN width and context
+
+The CNN extensions use 128-dimensional embeddings and 128 filters for each width (3, 4, and 5), compared with 64 of each in the reference. They retain the same 100,000 training prompts, evaluation partitions, vocabulary, optimizer, and three seeds. A 256-token condition measures the width change; a 512-token condition changes the context of that same wider model. Both have a ten-epoch cap and early stopping with patience two.
+
+The original vocabulary is reconstructed from training prompts and verified before reuse. Each exported checkpoint includes `model_config.json`, recording its dimensions, context, and file checksums. Dedicated inference loads these settings:
+
+```bash
+python src/predict_cnn.py \
+  --checkpoint artifacts/cnn_extensions/wildjailbreak-100k-cnn-wide-512/cnn/seed_4442 \
+  --text "Explain how rainbows form."
+```
+
+`src/prepare_cnn_extensions.py` verifies the vocabulary and writes both frozen configurations. `src/run_cnn_extensions.py` schedules one seed of each context before the remaining seeds, using a committed source snapshot and a supplied deadline. Results, portable-inference checks, and transfer evaluations are stored in [results/cnn_extensions/](results/cnn_extensions/). Original model artifacts are preserved.
+
 ## Repository layout
 
 | Path | Contents |
