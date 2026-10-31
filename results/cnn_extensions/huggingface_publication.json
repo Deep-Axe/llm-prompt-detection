@@ -1,0 +1,86 @@
+{
+  "repository": "DeeAxe/llm-prompt-detection",
+  "revision": "e42fff23b052a8e387b7f68f8a08dfaa78576e10",
+  "models_published": 6,
+  "remote_checksums_verified": true,
+  "models": [
+    {
+      "condition": "wildjailbreak-100k-cnn-wide-256",
+      "model": "cnn",
+      "seed": 4442,
+      "path": "experiments/wildjailbreak-100k-cnn-wide-256/cnn/seed_4442",
+      "files_sha256": {
+        "wildjailbreak-100k-cnn-wide-256/cnn/seed_4442/best.pt": "e4afbc20b03172a8af24f4b63dfd048324ccd1256ec3421d1d17d4e5379cd995",
+        "wildjailbreak-100k-cnn-wide-256/cnn/seed_4442/vocabulary.json": "4faa1cb744c24df27db4a7af7545fc79ef0d77d6c2f9ecbef7d1c5a85dee1ed5",
+        "wildjailbreak-100k-cnn-wide-256/cnn/seed_4442/model_config.json": "5a68b8ee507dfa8cd141814a093b09408e41708f07403eabab73fc88116c3b51",
+        "wildjailbreak-100k-cnn-wide-256/cnn/seed_4442/README.md": "add06c1bc75608834f0d96d7386b8d0017c1b81ac46f5675673790fe1b47e0bb",
+        "wildjailbreak-100k-cnn-wide-256/cnn/seed_4442/training_result.json": "10be4613b749abfe9c4e1d6c24a6bb274d722020d7139acb9b3f8c39cdb113d7"
+      }
+    },
+    {
+      "condition": "wildjailbreak-100k-cnn-wide-256",
+      "model": "cnn",
+      "seed": 4443,
+      "path": "experiments/wildjailbreak-100k-cnn-wide-256/cnn/seed_4443",
+      "files_sha256": {
+        "wildjailbreak-100k-cnn-wide-256/cnn/seed_4443/best.pt": "0ace106adb4570151e4b1b98ec4b5a6b1de2659c1f6174bce45ecced45973a67",
+        "wildjailbreak-100k-cnn-wide-256/cnn/seed_4443/vocabulary.json": "4faa1cb744c24df27db4a7af7545fc79ef0d77d6c2f9ecbef7d1c5a85dee1ed5",
+        "wildjailbreak-100k-cnn-wide-256/cnn/seed_4443/model_config.json": "c5c903441d51519d404d3a1e585aad1508d054bef490be9cdcbab3e4b074a417",
+        "wildjailbreak-100k-cnn-wide-256/cnn/seed_4443/README.md": "2c8b4868af345883901c8daad798ba86ba3d5bbdb9748455cec42558e30c4b00",
+        "wildjailbreak-100k-cnn-wide-256/cnn/seed_4443/training_result.json": "41e919e0a2094b08ec571c91e04d4bab6a35f8201d5cc9a9b0420d992230a9a8"
+      }
+    },
+    {
+      "condition": "wildjailbreak-100k-cnn-wide-256",
+      "model": "cnn",
+      "seed": 4444,
+      "path": "experiments/wildjailbreak-100k-cnn-wide-256/cnn/seed_4444",
+      "files_sha256": {
+        "wildjailbreak-100k-cnn-wide-256/cnn/seed_4444/best.pt": "90256b10b05ea846f4be3a987176aacf4b860a2410ef061dab3c0da4a89ce430",
+        "wildjailbreak-100k-cnn-wide-256/cnn/seed_4444/vocabulary.json": "4faa1cb744c24df27db4a7af7545fc79ef0d77d6c2f9ecbef7d1c5a85dee1ed5",
+        "wildjailbreak-100k-cnn-wide-256/cnn/seed_4444/model_config.json": "543edbb5fb28fa53bde63261f9c164ddee7112c4ea72929a3de25d7a03b156d8",
+        "wildjailbreak-100k-cnn-wide-256/cnn/seed_4444/README.md": "d7780b2244c135a2e694cf202b14d9a13dba2f20216e7e964fb0d67856e5fba4",
+        "wildjailbreak-100k-cnn-wide-256/cnn/seed_4444/training_result.json": "678b6d4cf9d4ab0cdfc41293e5da822e279fd9a7f4959675339d697613c16541"
+      }
+    },
+    {
+      "condition": "wildjailbreak-100k-cnn-wide-512",
+      "model": "cnn",
+      "seed": 4442,
+      "path": "experiments/wildjailbreak-100k-cnn-wide-512/cnn/seed_4442",
+      "files_sha256": {
+        "wildjailbreak-100k-cnn-wide-512/cnn/seed_4442/best.pt": "7392754717da74111358b36666af58ce3985abc889443b2d85487700cdb2aabb",
+        "wildjailbreak-100k-cnn-wide-512/cnn/seed_4442/vocabulary.json": "4faa1cb744c24df27db4a7af7545fc79ef0d77d6c2f9ecbef7d1c5a85dee1ed5",
+        "wildjailbreak-100k-cnn-wide-512/cnn/seed_4442/model_config.json": "d334faeb1584d2b858ac257bcccfe59ca2ab9ca9fd4f7dd838aee25081e4cfde",
+        "wildjailbreak-100k-cnn-wide-512/cnn/seed_4442/README.md": "1b50f319708df7a99039401628bad712a5a75f5ce2dbabb5cd471278160f6835",
+        "wildjailbreak-100k-cnn-wide-512/cnn/seed_4442/training_result.json": "7918dedc540a75d1fb8cd101aa15bb7c3459d7edf40f725b440392dc53057afc"
+      }
+    },
+    {
+      "condition": "wildjailbreak-100k-cnn-wide-512",
+      "model": "cnn",
+      "seed": 4443,
+      "path": "experiments/wildjailbreak-100k-cnn-wide-512/cnn/seed_4443",
+      "files_sha256": {
+        "wildjailbreak-100k-cnn-wide-512/cnn/seed_4443/best.pt": "679987a0219b20264e4b6439ee4afbdb4028109fc09dd3c295738ad4a83091d4",
+        "wildjailbreak-100k-cnn-wide-512/cnn/seed_4443/vocabulary.json": "4faa1cb744c24df27db4a7af7545fc79ef0d77d6c2f9ecbef7d1c5a85dee1ed5",
+        "wildjailbreak-100k-cnn-wide-512/cnn/seed_4443/model_config.json": "bf27894cd5bed39f693ff6bd292e9a3afec7a3a6abf3a155403241b410c57401",
+        "wildjailbreak-100k-cnn-wide-512/cnn/seed_4443/README.md": "cd0d23238e65e71aca93ebf5596583e502fd077f4fa2b35a80a532a61be386f7",
+        "wildjailbreak-100k-cnn-wide-512/cnn/seed_4443/training_result.json": "d6bb2687c6ae4c4d962afb06e796393253e0679f6b47739f5c7e0f7a8ad074fe"
+      }
+    },
+    {
+      "condition": "wildjailbreak-100k-cnn-wide-512",
+      "model": "cnn",
+      "seed": 4444,
+      "path": "experiments/wildjailbreak-100k-cnn-wide-512/cnn/seed_4444",
+      "files_sha256": {
+        "wildjailbreak-100k-cnn-wide-512/cnn/seed_4444/best.pt": "ba14e3d51279c89b8f4099c077a250129abe30b894aceace1fc0a95b9ce9dd6b",
+        "wildjailbreak-100k-cnn-wide-512/cnn/seed_4444/vocabulary.json": "4faa1cb744c24df27db4a7af7545fc79ef0d77d6c2f9ecbef7d1c5a85dee1ed5",
+        "wildjailbreak-100k-cnn-wide-512/cnn/seed_4444/model_config.json": "b1c52f917092a504e34481e3cb40d8ce0f8ff663b3601d36d5c926b4bdc851c3",
+        "wildjailbreak-100k-cnn-wide-512/cnn/seed_4444/README.md": "13d5fe96fb5ac6f81ed5dcdd9df06c079da37ed07fe8596a69dc612a8087c300",
+        "wildjailbreak-100k-cnn-wide-512/cnn/seed_4444/training_result.json": "99f8a100bee3a773ede507bc20d9302ab2d08c13f037a2c4fa9211ba7862856a"
+      }
+    }
+  ]
+}

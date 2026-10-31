@@ -1,0 +1,9 @@
+{
+  "kernel": "deepamahuja/prompt-detection-cnn-width-context",
+  "source_revision": {
+    "commit": "ca939ca5cf8f496122550ae268fbd37e7f2adce2",
+    "archive_sha256": "cca108a6aea9a14e335d2b682248b60ba499e79ca4cedf476c3f62a1f60b9b1f"
+  },
+  "model_archive_sha256": "b3a431be2c18c35b6f8dff0907824db6273ed527a739591d0e40134fd58f76e3",
+  "predictions_archive_sha256": "6a499d0a310dd36adad4e407750e9d52fdf25b4c4316987109f827d2c1e53b79"
+}

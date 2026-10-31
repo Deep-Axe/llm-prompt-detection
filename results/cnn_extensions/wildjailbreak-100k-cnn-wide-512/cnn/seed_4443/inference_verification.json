@@ -1,0 +1,15 @@
+{
+  "status": "verified",
+  "samples_per_partition": 128,
+  "all_saved_metrics_recomputed": true,
+  "max_probability_differences": {
+    "train": 0.0,
+    "val": 0.0,
+    "test": 0.0,
+    "official_eval": 0.0
+  },
+  "model_config_sha256": "bf27894cd5bed39f693ff6bd292e9a3afec7a3a6abf3a155403241b410c57401",
+  "checkpoint_sha256": "679987a0219b20264e4b6439ee4afbdb4028109fc09dd3c295738ad4a83091d4",
+  "vocabulary_sha256": "4faa1cb744c24df27db4a7af7545fc79ef0d77d6c2f9ecbef7d1c5a85dee1ed5",
+  "inference_code_sha256": "eaca57e538c465d8a6bb4d830c3687fbb3b4d007ea18ebd967ff07b231c7cbfe"
+}

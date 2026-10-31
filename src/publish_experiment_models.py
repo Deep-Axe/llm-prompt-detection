@@ -51,9 +51,9 @@ Shared-test F1: {r['metrics']['test']['f1']:.6f}. The shared test was also used 
 
 Training source: allenai/wildjailbreak, revision 5ddc12a7894f842b0619b8e1c7ee496b198af009, ODC-BY (https://opendatacommons.org/licenses/by/1-0/). DistilBERT, where applicable: distilbert/distilbert-base-uncased, revision 12040accade4e8a0f71eabdb258fecc2e7e948be, Apache-2.0. Code: https://github.com/Deep-Axe/llm-prompt-detection (MIT).
 
-Training state, raw prompts, and per-example predictions are excluded. The training result records model settings, data hashes, source revision, and environment.
+Raw prompts, per-example predictions, and separate recovery-checkpoint files are excluded. Joblib files serialize the recorded scikit-learn estimator. The training result records model settings, data hashes, source revision, and environment.
 
-Load with `src/predict_experiments.py` from the code repository, using condition `{condition}`, model `{model}`, and seed `{seed}`. Neural checkpoint weights use float32. Scikit-learn/joblib checkpoints require the recorded dependency versions and trusted files.
+Load with `src/predict_experiments.py` from the code repository, using condition `{condition}`, model `{model}`, and seed `{seed}`. PyTorch checkpoint weights use float32. Scikit-learn/joblib checkpoints retain their recorded dtypes and require the recorded dependency versions and trusted files.
 '''
         (destination/'README.md').write_text(text)
         files={str(p.relative_to(staging)):file_hash(p) for p in destination.iterdir() if p.is_file()}

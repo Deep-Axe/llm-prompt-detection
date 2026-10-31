@@ -19,7 +19,7 @@ The shared test set contains 38,911 prompts. The official challenge provides a f
 
 ![Model comparison](results/large/comparison.png)
 
-DistilBERT has the highest test F1, but rejects 40% of benign prompts in the official challenge. False positives remain a major issue. The baseline uses one training seed and mostly synthetic data. The repeated-seed results below extend its training budget. Training on larger pools is underway. Larger encoders and inference speed remain to be evaluated.
+DistilBERT has the highest test F1, but rejects 40% of benign prompts in the official challenge. False positives remain a major issue. The baseline uses one training seed and mostly synthetic data. The repeated-seed results below extend its training budget. The nested-pool comparisons are complete. CPU inference measurements and the wider-CNN experiments extend the quality comparison with deployment cost and model capacity.
 
 The labels describe prompt harmfulness. Evaluating prompt injection will require a separate experiment with application context.
 
@@ -132,6 +132,16 @@ scores = classifier.probabilities([
     "Summarize this article.",
 ])
 ```
+
+Repeated-seed models and wider CNNs are also published under experiment subfolders. Select their training condition and seed explicitly:
+
+```bash
+python src/predict_experiments.py --repo-id DeeAxe/llm-prompt-detection \
+  --condition wildjailbreak-100k-cnn-wide-512 --model cnn --seed 4442 \
+  --text "Explain how rainbows form."
+```
+
+The [core publication manifest](results/experiments/huggingface_publication.json) covers 36 checkpoints; the [CNN extension manifest](results/cnn_extensions/huggingface_publication.json) covers six. Both record pinned Hub revisions and verified remote checksums. Hub downloads and local inference were checked for a full-pool reference CNN and a 512-token wider CNN.
 
 ## Prepare the dataset
 
@@ -262,7 +272,29 @@ python src/summarize_training_results.py
 
 The summary reports means and sample standard deviations across seeds, and identifies incomplete seed sets. Completed checkpoints and predictions remain outside GitHub.
 
+## CPU inference cost
+
+A fixed set of 64 validation prompts is processed one request at a time, with eight warm-up requests and one PyTorch/BLAS thread. Every model uses the same prompts on the same local CPU. Timings include tokenization or TF–IDF preprocessing and model inference; checkpoint loading is recorded separately. The [benchmark records](results/inference_benchmark/) contain per-request timings, median, sample p95, parameters, and process memory.
+
+```bash
+python src/benchmark_inference.py
+```
+
+The measurements describe this workload and CPU setup. Process memory includes dependencies, and the sample p95 is not a production-service latency guarantee.
+
 ## CNN width and context
+
+All six wider-CNN runs and their transfer evaluations are complete. The capacity runs used Kaggle T4 GPUs.
+
+| CNN configuration | Parameters | Test F1, mean ± SD | Transfer F1, mean ± SD | CPU median, ms |
+| --- | ---: | ---: | ---: | ---: |
+| 64-dim / 64 filters, 256 tokens | 1,329,665 | 0.9410 ± 0.0024 | 0.7783 ± 0.0125 | 0.77 |
+| 128-dim / 128 filters, 256 tokens | 2,757,633 | 0.9444 ± 0.0012 | 0.7836 ± 0.0086 | 1.76 |
+| 128-dim / 128 filters, 512 tokens | 2,757,633 | 0.9438 ± 0.0032 | 0.7848 ± 0.0064 | 2.92 |
+
+Widening gives a small main-test gain. The 512-token condition has a similar transfer score and a lower mean main-test F1 than the 256-token wider model, with higher CPU latency. Quality uses three seeds; CPU timing uses the seed-4442 checkpoint on the same fixed validation workload.
+
+A [small post-hoc benign smoke check](results/cnn_extensions/benign_smoke_summary.json) also found incorrect rejections in every CNN condition. It is a diagnostic convenience set, and its counts do not estimate a population false-positive rate.
 
 The CNN extensions use 128-dimensional embeddings and 128 filters for each width (3, 4, and 5), compared with 64 of each in the reference. They retain the same 100,000 training prompts, evaluation partitions, vocabulary, optimizer, and three seeds. A 256-token condition measures the width change; a 512-token condition changes the context of that same wider model. Both have a ten-epoch cap and early stopping with patience two.
 
