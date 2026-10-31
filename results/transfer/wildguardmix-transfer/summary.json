@@ -152,6 +152,54 @@
       "roc_auc_std": 0.002059496172365772
     },
     {
+      "training_condition": "wildjailbreak-150k",
+      "model": "bilstm",
+      "n": 1695,
+      "seeds": [
+        4442,
+        4443,
+        4444
+      ],
+      "complete_seed_set": true,
+      "accuracy_mean": 0.8302851524090462,
+      "accuracy_std": 0.006252945170338074,
+      "precision_mean": 0.8671678655248858,
+      "precision_std": 0.004760558106121331,
+      "recall_mean": 0.7303271441202476,
+      "recall_std": 0.011960874675922792,
+      "benign_acceptance_mean": 0.9103790294013461,
+      "benign_acceptance_std": 0.002674401146039972,
+      "f1_mean": 0.7928662039616952,
+      "f1_std": 0.008697165949089725,
+      "mcc_mean": 0.6578122559378884,
+      "mcc_std": 0.012497851061490357,
+      "roc_auc_mean": 0.8930857366215936,
+      "roc_auc_std": 0.0030912556462917595
+    },
+    {
+      "training_condition": "wildjailbreak-150k",
+      "model": "distilbert",
+      "n": 1695,
+      "seeds": [
+        4444
+      ],
+      "complete_seed_set": false,
+      "accuracy_mean": 0.8578171091445428,
+      "accuracy_std": null,
+      "precision_mean": 0.9052132701421801,
+      "precision_std": null,
+      "recall_mean": 0.7599469496021221,
+      "recall_std": null,
+      "benign_acceptance_mean": 0.9362380446333688,
+      "benign_acceptance_std": null,
+      "f1_mean": 0.8262436914203317,
+      "f1_std": null,
+      "mcc_mean": 0.7152222711716313,
+      "mcc_std": null,
+      "roc_auc_mean": 0.9152701708493419,
+      "roc_auc_std": null
+    },
+    {
       "training_condition": "wildjailbreak-183005",
       "model": "mlp",
       "n": 1695,
@@ -200,6 +248,54 @@
       "mcc_std": 0.015531057310161253,
       "roc_auc_mean": 0.8856278147201229,
       "roc_auc_std": 0.0016717343367229393
+    },
+    {
+      "training_condition": "wildjailbreak-183005",
+      "model": "bilstm",
+      "n": 1695,
+      "seeds": [
+        4442,
+        4443,
+        4444
+      ],
+      "complete_seed_set": true,
+      "accuracy_mean": 0.8308751229105211,
+      "accuracy_std": 0.00324930415769095,
+      "precision_mean": 0.8643790136077175,
+      "precision_std": 0.002915001885332015,
+      "recall_mean": 0.7351900972590628,
+      "recall_std": 0.011587393830310485,
+      "benign_acceptance_mean": 0.9075451647183846,
+      "benign_acceptance_std": 0.0036812982094980855,
+      "f1_mean": 0.7945210613305571,
+      "f1_std": 0.0056706870026358705,
+      "mcc_mean": 0.6586324791351333,
+      "mcc_std": 0.005997140980506756,
+      "roc_auc_mean": 0.8912375231496489,
+      "roc_auc_std": 0.003457724434966532
+    },
+    {
+      "training_condition": "wildjailbreak-183005",
+      "model": "distilbert",
+      "n": 1695,
+      "seeds": [
+        4444
+      ],
+      "complete_seed_set": false,
+      "accuracy_mean": 0.8578171091445428,
+      "accuracy_std": null,
+      "precision_mean": 0.902668759811617,
+      "precision_std": null,
+      "recall_mean": 0.7625994694960212,
+      "recall_std": null,
+      "benign_acceptance_mean": 0.9341126461211477,
+      "benign_acceptance_std": null,
+      "f1_mean": 0.8267433501078361,
+      "f1_std": null,
+      "mcc_mean": 0.7148604949451141,
+      "mcc_std": null,
+      "roc_auc_mean": 0.9154350724580488,
+      "roc_auc_std": null
     }
   ]
 }
