@@ -70,6 +70,9 @@ def main():
         'smoke_eval_rows':protocol['smoke_policy']['evaluation_rows_per_partition']}
     revision_file=ROOT / 'source_revision.json'
     config['source_revision']=json.loads(revision_file.read_text()) if revision_file.exists() else None
+    if protocol.get('vocabulary_source'):
+        if args.model not in ('cnn','bilstm'): raise ValueError('Fixed token vocabularies apply to sequence models')
+        config['vocabulary_source']=protocol['vocabulary_source']
     if config['threshold']!=.5: raise ValueError('Metric harness requires the frozen 0.5 threshold')
     config['fingerprint']=digest_json(config)
     relative=Path(args.condition) / args.model / f'seed_{args.seed}'
@@ -131,7 +134,12 @@ def main():
             if len(layer_probes)!=expected_layers: raise ValueError('Cannot verify every encoder layer')
         else:
             vocabulary=cache_info['vocabulary']
-            model=SentenceCNN(len(vocabulary)+2) if args.model=='cnn' else BiLSTM(len(vocabulary)+2)
+            if args.model=='cnn':
+                model=SentenceCNN(len(vocabulary)+2,embedding_dim=definition.get('embedding_dim',64),
+                                  filters=definition.get('filters',64),widths=tuple(definition.get('widths',[3,4,5])))
+            else:
+                model=BiLSTM(len(vocabulary)+2,embedding_dim=definition.get('embedding_dim',64),
+                             hidden_size=definition.get('hidden_size',64))
         model.to(device)
         optimizer=torch.optim.AdamW(model.parameters(),lr=definition['learning_rate'],weight_decay=definition.get('weight_decay',0.))
         arrays={s:tuple(np.load(cache / f'{s}_{kind}.npy',mmap_mode='r') for kind in ['ids','lengths','labels']) for s in PARTITIONS}
@@ -266,6 +274,14 @@ def main():
         joblib.dump(features | {'model':model,'max_tokens':config['max_tokens']},artifact / 'checkpoint.joblib')
     else:
         shutil.copy2(cache / 'vocabulary.json',artifact / 'vocabulary.json')
+        architecture={'embedding_dim':definition.get('embedding_dim',64)}
+        if args.model=='cnn': architecture.update(filters=definition.get('filters',64),widths=definition.get('widths',[3,4,5]))
+        else: architecture['hidden_size']=definition.get('hidden_size',64)
+        atomic_json(artifact/'model_config.json',{'architecture':args.model,'architecture_settings':architecture,
+            'max_tokens':config['max_tokens'],'vocabulary_sha256':file_hash(artifact/'vocabulary.json'),
+            'checkpoint_sha256':file_hash(best_path),'train_partition_sha256':hashes['train'],
+            'label_mapping':{'benign':0,'harmful':1},'threshold':config['threshold'],
+            'tokenization':'lowercase Unicode regex words and individual non-whitespace punctuation'})
     result={'schema_version':1,'status':'complete','model':args.model,'condition':args.condition,'seed':args.seed,
         'protocol_sha256':config['protocol_sha256'],'run_fingerprint':config['fingerprint'],'config':config,
         'smoke_only':args.smoke,'source_train_rows':manifest['partitions']['train']['rows'],'train_rows':n,

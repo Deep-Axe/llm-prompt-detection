@@ -35,3 +35,6 @@ data/models/
 /results/experiments/**/config.json
 /data/processed/conditions/
 /data/evaluation/
+
+/results/cnn_extensions/**/status.json
+/results/cnn_extensions/**/config.json

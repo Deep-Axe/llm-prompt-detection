@@ -1,0 +1,32 @@
+{
+  "purpose": "bounded save/resume smoke verification; not a full training comparison",
+  "protocol_sha256": "cec2d8581edb7d22b8b059361d9c3fb61facee624ae0946e9894a4785b41a620",
+  "models": {
+    "cnn": {
+      "passed": true,
+      "seed": 4442,
+      "smoke_only": true,
+      "train_rows": 512,
+      "epochs_run": 2,
+      "interrupted_after_updates": 1,
+      "resumed_mid_epoch": true,
+      "optimizer_state_verified": true,
+      "scheduler_state_verified": true,
+      "amp_state_verified": null,
+      "rng_state_verified": true,
+      "max_weight_difference": 0.0,
+      "max_probability_differences": {
+        "train": 0.0,
+        "val": 0.0,
+        "test": 0.0,
+        "official_eval": 0.0
+      },
+      "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "encoder_gradient_verified": null,
+      "encoder_weight_changed": null
+    }
+  },
+  "status": "passed",
+  "baseline_files_checked": 0,
+  "baseline_unchanged": true
+}
