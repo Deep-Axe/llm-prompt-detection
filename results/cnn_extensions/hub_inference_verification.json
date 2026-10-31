@@ -1,0 +1,13 @@
+{
+  "status": "verified",
+  "repository": "DeeAxe/llm-prompt-detection",
+  "revision": "e42fff23b052a8e387b7f68f8a08dfaa78576e10",
+  "condition": "wildjailbreak-100k-cnn-wide-512",
+  "seed": 4442,
+  "max_tokens": 512,
+  "embedding_dim": 128,
+  "filters": 128,
+  "device": "cpu",
+  "examples_checked": 2,
+  "max_probability_difference": 0.0
+}

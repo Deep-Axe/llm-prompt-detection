@@ -1,0 +1,11 @@
+{
+  "status": "verified",
+  "repo_id": "DeeAxe/llm-prompt-detection",
+  "revision": "799f87d22ba018f419912edb93c68c260670e112",
+  "condition": "wildjailbreak-183005",
+  "architecture": "cnn",
+  "seed": 4442,
+  "device": "cpu",
+  "examples_checked": 2,
+  "max_probability_difference": 0.0
+}
