@@ -14,6 +14,7 @@ from predict_cnn import CNNClassifier
 
 def evaluate(device='cuda'):
     torch.set_num_threads(1)
+    torch.use_deterministic_algorithms(True)
     data=ROOT/'data/processed/large';manifest=validate_manifest(data)
     metadata={s:[{k:r[k] for k in ['id','label','family','group']} for r in rows(data/f'{s}.jsonl')] for s in PARTITIONS}
     samples={s:list(islice(rows(data/f'{s}.jsonl'),128)) for s in PARTITIONS}
