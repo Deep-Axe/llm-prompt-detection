@@ -1,5 +1,5 @@
 {
-  "runs_found": 32,
+  "runs_found": 36,
   "summary": [
     {
       "protocol_sha256": "3800592e3d72ab0ee0516f5619d87780d2cd4ba4bb83cf55e15316e97f4bd821",
@@ -366,9 +366,11 @@
       "condition": "wildjailbreak-150k",
       "model": "distilbert",
       "seeds": [
+        4442,
+        4443,
         4444
       ],
-      "runs": 1,
+      "runs": 3,
       "data_hashes": {
         "train": "d077750b3d5a3c0b0ffbeabfa1645ffcb6c7d8f8a76864c96d141c15277f2053",
         "val": "192ad4cd320e159f7db6d49e98402647015591d0abaa8693ed89c2a7cca4f235",
@@ -377,47 +379,47 @@
       },
       "metrics": {
         "accuracy": {
-          "mean": 0.9827041196576803,
-          "std": null
+          "mean": 0.9827555190049088,
+          "std": 0.0004903185224830869
         },
         "precision": {
-          "mean": 0.9837950068364815,
-          "std": null
+          "mean": 0.9836007197331799,
+          "std": 0.0002703356165983152
         },
         "recall": {
-          "mean": 0.9821536905965622,
-          "std": null
+          "mean": 0.9824570273003034,
+          "std": 0.0008025534816171326
         },
         "f1": {
-          "mean": 0.9829736635717358,
-          "std": null
+          "mean": 0.9830284586028001,
+          "std": 0.00048753031974944113
         },
         "mcc": {
-          "mean": 0.9654009820645173,
-          "std": null
+          "mean": 0.9655029691573699,
+          "std": 0.0009800028100217753
         },
         "roc_auc": {
-          "mean": 0.9982576862554643,
-          "std": null
+          "mean": 0.998375192033174,
+          "std": 0.00010762904648266725
         },
         "average_precision": {
-          "mean": 0.9983947014849274,
-          "std": null
+          "mean": 0.9984726108138134,
+          "std": 7.442864538764511e-05
         },
         "brier_score": {
-          "mean": 0.016405879696681443,
-          "std": null
+          "mean": 0.016288728584792387,
+          "std": 0.0004343422987931345
         },
         "official_recall": {
-          "mean": 0.9245,
-          "std": null
+          "mean": 0.9185,
+          "std": 0.005408326913195958
         },
         "official_benign_acceptance": {
-          "mean": 0.6095238095238096,
-          "std": null
+          "mean": 0.5952380952380952,
+          "std": 0.020756661635907996
         }
       },
-      "complete_seed_set": false
+      "complete_seed_set": true
     },
     {
       "protocol_sha256": "90c6310ecea006d88192ce71808e7f15ded92886c0625a18df43fb63010e1d30",
@@ -604,9 +606,11 @@
       "condition": "wildjailbreak-183005",
       "model": "distilbert",
       "seeds": [
+        4442,
+        4443,
         4444
       ],
-      "runs": 1,
+      "runs": 3,
       "data_hashes": {
         "train": "6aee1b196f928e02c6cf9d71c6a85f25740283d5d1caa1d3050c3e182a471895",
         "val": "192ad4cd320e159f7db6d49e98402647015591d0abaa8693ed89c2a7cca4f235",
@@ -615,47 +619,47 @@
       },
       "metrics": {
         "accuracy": {
-          "mean": 0.9850427899565676,
-          "std": null
+          "mean": 0.9844259977898281,
+          "std": 0.0005366249394212785
         },
         "precision": {
-          "mean": 0.9864193777237256,
-          "std": null
+          "mean": 0.9856487481375349,
+          "std": 0.0011870030366451928
         },
         "recall": {
-          "mean": 0.9841253791708797,
-          "std": null
+          "mean": 0.9836872261543647,
+          "std": 0.0011751805440924378
         },
         "f1": {
-          "mean": 0.9852710431745711,
-          "std": null
+          "mean": 0.9846662539565258,
+          "std": 0.0005280584595568403
         },
         "mcc": {
-          "mean": 0.9700811487416643,
-          "std": null
+          "mean": 0.9688478920673301,
+          "std": 0.0010725010476425503
         },
         "roc_auc": {
-          "mean": 0.9987353677024026,
-          "std": null
+          "mean": 0.9986775417153373,
+          "std": 5.5960629677362084e-05
         },
         "average_precision": {
-          "mean": 0.9987779739491355,
-          "std": null
+          "mean": 0.9987624668431402,
+          "std": 1.4904777320351812e-05
         },
         "brier_score": {
-          "mean": 0.01413059443317123,
-          "std": null
+          "mean": 0.014685427772334442,
+          "std": 0.0004810747072589145
         },
         "official_recall": {
-          "mean": 0.924,
-          "std": null
+          "mean": 0.9261666666666667,
+          "std": 0.002929732638541129
         },
         "official_benign_acceptance": {
-          "mean": 0.5952380952380952,
-          "std": null
+          "mean": 0.5873015873015873,
+          "std": 0.013746434980705392
         }
       },
-      "complete_seed_set": false
+      "complete_seed_set": true
     },
     {
       "protocol_sha256": "90c6310ecea006d88192ce71808e7f15ded92886c0625a18df43fb63010e1d30",

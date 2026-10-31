@@ -1,0 +1,10 @@
+{
+  "kernel": "deepamahuja/prompt-detection-distilbert-scaling",
+  "metrics_recomputed": true,
+  "source_revision": {
+    "commit": "ed185558061cbc2e70ea450514c2dad8072e6603",
+    "archive_sha256": "4c32997345526e25406ae80e8dce71938dacf46b0d86c777dafd28ba626905c3"
+  },
+  "model_archive_sha256": "247efd350d6ce57cbc91ba3d90c08c343a2127da136ca97a5fea6420575b454b",
+  "prediction_archive_sha256": "e22e4f70cc2ef43b950093d2574ffdbea035f3c0cd3e30492191f8c11afc5a4b"
+}
